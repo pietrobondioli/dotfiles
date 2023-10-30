@@ -26,7 +26,7 @@ yay -S base-devel wget git curl xorg-xrandr arandr man-db
 yay -S thunar xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance
 
 # Utilities and system tools
-yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted
+yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn
 
 # Font essentials
 yay -S otf-font-awesome ttf-jetbrains-mono-nerd ttf-jetbrains-mono otf-font-awesome-4 ttf-droid ttf-fantasque-sans-mono adobe-source-code-pro-fonts noto-fonts-emoji

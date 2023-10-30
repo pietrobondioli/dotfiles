@@ -11,7 +11,7 @@ set $mod Mod4
 #-------
 # Fonts
 #-------
-font pango:monospace 8
+font pango:JetBrainsMonoNL Nerd Font Regular 9
 
 # This font is scalable on retina/hidpi displays (thanks to pango)
 #font pango:DejaVu Sans Mono 8
@@ -72,7 +72,7 @@ for_window [class="firefox" title="Library"] floating enable
 for_window [window_type="dialog"] floating enable
 for_window [class="Steam" title="^Steam - Update News$"] floating enable
 for_window [class="Blueman-manager"] floating enable
-for_window [class="(?i)networkmanager_dmenu"] floating enable
+for_window [class="Nm-connection-editor"] floating enable
 
 
 #-------
@@ -115,22 +115,28 @@ bindsym $mod+a focus parent
 #-------
 # Workspaces
 #-------
-workspace "m1w1" output DP-1
-workspace "m1w2" output DP-1
-workspace "m1w3" output DP-1
-workspace "m2w1" output DP-2
-workspace "m2w2" output DP-2
-workspace "m2w3" output DP-2
-set $m1w1 "m1w1"
-set $m1w2 "m1w2"
-set $m1w3 "m1w3"
-set $m2w1 "m2w1"
-set $m2w2 "m2w2"
-set $m2w3 "m2w3"
+set $wp1 "1"
+set $wp2 "2"
+set $wp3 "3"
+set $wp4 "4"
+set $wp5 "5"
+
 bindsym $mod+Prior workspace prev
 bindsym $mod+Next workspace next
 bindsym $mod+Shift+Prior move container to workspace prev
 bindsym $mod+Shift+Next move container to workspace next
+
+bindsym $mod+1 workspace $wp1
+bindsym $mod+2 workspace $wp2
+bindsym $mod+3 workspace $wp3
+bindsym $mod+4 workspace $wp4
+bindsym $mod+5 workspace $wp5
+
+bindsym $mod+Shift+1 move container to workspace $wp1
+bindsym $mod+Shift+2 move container to workspace $wp2
+bindsym $mod+Shift+3 move container to workspace $wp3
+bindsym $mod+Shift+4 move container to workspace $wp4
+bindsym $mod+Shift+5 move container to workspace $wp5
 
 #-------
 # i3 Commands
