@@ -1,4 +1,4 @@
-x # i3 Dots
+# i3 Dots
 
 ## 1. Setting up the `yay` AUR helper
 
@@ -22,8 +22,11 @@ These are the foundational packages required for setting up the system.
 # General dependencies
 yay -S base-devel wget git curl xorg-xrandr arandr man-db
 
+# i3
+yay -S i3 i3status i3lock-colors i3blocks
+
 # Theming and appearance
-yay -S thunar xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance
+yay -S thunar xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance materia-gtk-theme papirus-icon-theme
 
 # Utilities and system tools
 yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn
