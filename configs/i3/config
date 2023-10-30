@@ -34,7 +34,7 @@ exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-ag
 # Visual Autostart
 #-------
 exec_always --no-startup-id picom &
-exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/sea_watchtower.png
+exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/yellow_trees.jpg
 
 #-------
 # Utility Autostart
@@ -71,7 +71,8 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 # Floating Windows
 #-------
 floating_modifier $mod
-gaps inner 8px
+gaps inner 10px
+gaps outer 2px
 tiling_drag modifier titlebar
 for_window [class="firefox" title="Library"] floating enable
 for_window [window_type="dialog"] floating enable
