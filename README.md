@@ -23,7 +23,7 @@ These are the foundational packages required for setting up the system.
 yay -S linux-headers base-devel wget git curl xorg-xrandr arandr man-db
 
 # i3
-yay -S i3 i3status i3lock-colors i3blocks
+yay -S i3 i3status i3lock-colors i3blocks bumblebee-status
 
 # Theming and appearance
 yay -S thunar xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance materia-gtk-theme papirus-icon-theme
