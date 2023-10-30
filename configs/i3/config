@@ -109,7 +109,7 @@ bindsym $mod+f fullscreen toggle
 # Screenshots
 #-------
 bindsym $mod+Print exec "flameshot gui"
-bindsym $mod+Shift+Print exec "flameshot full --path ~/Pictures/"
+bindsym $mod+Shift+Print exec "flameshot full --path ~/pictures/"
 
 #-------
 # Layouts and Focus

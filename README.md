@@ -1,5 +1,11 @@
 # i3 Dots
 
+Just another i3 rice.
+
+Screenshot:
+
+![Screenshot](./sample.png)
+
 ## 1. Setting up the `yay` AUR helper
 
 The Arch User Repository (AUR) provides a collection of user-contributed packages. `yay` is a helper that makes it easier to manage these packages. First, you need to install `yay`:
@@ -26,10 +32,10 @@ yay -S linux-headers base-devel wget git curl xorg-xrandr arandr man-db
 yay -S i3 i3status i3lock-colors i3blocks bumblebee-status
 
 # Theming and appearance
-yay -S thunar xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance materia-gtk-theme papirus-icon-theme
+yay -S thunar xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance materia-gtk-theme papirus-icon-theme bibata-cursor-theme vimix-cursors
 
 # Utilities and system tools
-yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn
+yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn qimgv
 
 # Font essentials
 yay -S otf-font-awesome ttf-jetbrains-mono-nerd ttf-jetbrains-mono otf-font-awesome-4 ttf-droid ttf-fantasque-sans-mono adobe-source-code-pro-fonts noto-fonts-emoji
@@ -69,11 +75,12 @@ chmod 700 ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 ### Step 1: Installing the driver packages
 
 1. This step might be a bit confusing. First find your [nvidia card from this list here](https://nouveau.freedesktop.org/CodeNames.html)
-2. Check what driver packages you need to install from the list below
+2. After reading if you still don't know what driver you need, take a look of that list on gentoo wiki [here](https://wiki.gentoo.org/wiki/NVIDIA#Feature_support) that lists the latest driver that supports your CHIPSET. For example, if you have a GTX 3060, you need to install the latest version of nvidia, so just `yay -S nvidia nvidia-utils lib32-nvidia-utils`.
+3. Check what driver packages you need to install from the list below
 
 | Driver name                                      | Base driver       | OpenGL             | OpenGL (multilib)        |
-| ------------------------------------------------ | ----------------- | ------------------ | ------------------------ |
-| Maxwell (NV110) series and newer                 | nvidia            | nvidia-utils       | lib32-nvidia-utils       |
+| ------------------------------------------------ | ----------------- | ------------------ | ------------------------ | --- |
+| Maxwell (NV110) series and newer                 | nvidia            | nvidia-utils       | lib32-nvidia-utils       | m   |
 | Kepler (NVE0) series                             | nvidia-470xx-dkms | nvidia-470xx-utils | lib32-nvidia-470xx-utils |
 | GeForce 400/500/600 series cards [NVCx and NVDx] | nvidia-390xx      | nvidia-390xx-utils | lib32-nvidia-390xx-utils |
 
@@ -105,7 +112,7 @@ yay -S nvidia nvidia-utils lib32-nvidia-utils
    - Find `options`
    - Append the line with `nvidia-drm.modeset=1`
    - For example: `options root=UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx rw quiet nvidia-drm.modeset=1`
-   - Save the file with _CTRL+O_
+   - Save the file
 
 In my case I am using systemd-boot, so my file was:
 
