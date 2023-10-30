@@ -20,7 +20,7 @@ These are the foundational packages required for setting up the system.
 
 ```bash
 # General dependencies
-yay -S base-devel wget git curl xorg-xrandr arandr man-db
+yay -S linux-headers base-devel wget git curl xorg-xrandr arandr man-db
 
 # i3
 yay -S i3 i3status i3lock-colors i3blocks
@@ -59,7 +59,94 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/
 chmod 700 ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 ```
 
-## 4. Development Dependencies
+## Nvidia config
+
+### Default Prerequisites
+
+- If you are using anything other than the regular linux kernel, such as linux-lts, you need to make changes accordingly.
+- Do not reboot before you have finished all the steps below.
+
+### Step 1: Installing the driver packages
+
+1. This step might be a bit confusing. First find your [nvidia card from this list here](https://nouveau.freedesktop.org/CodeNames.html)
+2. Check what driver packages you need to install from the list below
+
+| Driver name                                      | Base driver       | OpenGL             | OpenGL (multilib)        |
+| ------------------------------------------------ | ----------------- | ------------------ | ------------------------ |
+| Maxwell (NV110) series and newer                 | nvidia            | nvidia-utils       | lib32-nvidia-utils       |
+| Kepler (NVE0) series                             | nvidia-470xx-dkms | nvidia-470xx-utils | lib32-nvidia-470xx-utils |
+| GeForce 400/500/600 series cards [NVCx and NVDx] | nvidia-390xx      | nvidia-390xx-utils | lib32-nvidia-390xx-utils |
+
+3. Install the correct packages, for example `yay -S nvidia-470xx-dkms nvidia-470xx-utils lib32-nvidia-470xx-utils`
+4. I also recommend you to install nvidia-settings via `yay -S nvidia-settings`
+
+In my case I have a GeForce RTX 3060 Ti, which is a NV110 card, so I installed the following packages:
+
+```bash
+yay -S nvidia nvidia-utils lib32-nvidia-utils
+```
+
+### Step 2: Enabling DRM kernel mode setting
+
+1. Add the kernel parameter
+
+   A. If you are using grub:
+
+   - Go to your grub file with `sudo nano /etc/default/grub`
+   - Find `GRUB_CMDLINE_LINUX_DEFAULT`
+   - Append the line with `nvidia-drm.modeset=1`
+   - For example: `GRUB_CMDLINE_LINUX_DEFAULT="quiet splash nvidia-drm.modeset=1"`
+   - Save the file with _CTRL+O_
+   - Finish the grub config with `sudo grub-mkconfig -o /boot/grub/grub.cfg`
+
+   B. If you are using systemd-boot:
+
+   - Go to your systemd-boot file with `sudo nano /boot/loader/entries/arch.conf`
+   - Find `options`
+   - Append the line with `nvidia-drm.modeset=1`
+   - For example: `options root=UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx rw quiet nvidia-drm.modeset=1`
+   - Save the file with _CTRL+O_
+
+In my case I am using systemd-boot, so my file was:
+
+```bash
+# Created by: archinstall
+# Created on: 2023-10-29_22-09-49
+title   Arch Linux (linux)
+linux   /vmlinuz-linux
+initrd  /amd-ucode.img
+initrd  /initramfs-linux.img
+options root=PARTUUID=1a3bdf5e-4121-47cf-b93c-df8686e8bf49 zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs
+```
+
+And I changed it to:
+
+```bash
+# Created by: archinstall
+# Created on: 2023-10-29_22-09-49
+title   Arch Linux (linux)
+linux   /vmlinuz-linux
+initrd  /amd-ucode.img
+initrd  /initramfs-linux.img
+options root=PARTUUID=1a3bdf5e-4121-47cf-b93c-df8686e8bf49 zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs nvidia-drm.modeset=1
+```
+
+2. Add the early loading
+
+- Go to your mkinitcpio configuration file with `sudo nano /etc/mkinitcpio.conf`
+- Find `MODULES=()`
+- Edit the line to match `MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)`
+- Save the file with _CTRL+O_
+- Finish the mkinitcpio configuration with `sudo mkinitcpio -P`
+
+3. Adding the pacman hook
+
+- Find the _nvidia.hook_ in this repository ([here](./nvidia/nvidia.hook)), make a local copy and open the file with your preferred editor
+- Find `Target=nvidia`
+- Replace the _nvidia_ with the base driver you installed, e.g. `nvidia-470xx-dkms`
+- Save the file and move it to `/etc/pacman.d/hooks/` , for example with `sudo mv ./nvidia.hook /etc/pacman.d/hooks/`
+
+## 4. Development
 
 These are packages and utilities related to software development.
 

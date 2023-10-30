@@ -26,7 +26,7 @@ font pango: Droid Sans Mono 10
 #-------
 # Start XDG autostart .desktop files using dex
 exec --no-startup-id dex --autostart --environment i3
-exec_always --no-startup-id xrandr --output DP-1 --primary --pos 0x1081 --output DP-2 --pos 0x0
+exec_always --no-startup-id xrandr --output DP-4 --primary --pos 0x1081 --output DP-2 --pos 0x0
 exec_always --no-startup-id setxkbmap -layout us -variant intl
 exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
@@ -34,7 +34,7 @@ exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-ag
 # Visual Autostart
 #-------
 exec_always --no-startup-id picom &
-exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/yellow_trees.jpg
+exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/city.jpg
 
 #-------
 # Utility Autostart
@@ -123,11 +123,18 @@ bindsym $mod+a focus parent
 #-------
 # Workspaces
 #-------
+workspace_auto_back_and_forth yes
+
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
 set $ws4 "4"
-set $ws5 "5"
+
+# Assign workspaces to specific monitors
+workspace $ws1 output DP-1
+workspace $ws2 output DP-1
+workspace $ws3 output DP-1
+workspace $ws4 output DP-2
 
 bindsym $mod+Prior workspace prev
 bindsym $mod+Next workspace next
@@ -138,13 +145,11 @@ bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
 bindsym $mod+3 workspace $ws3
 bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
 
 bindsym $mod+Shift+1 move container to workspace $ws1
 bindsym $mod+Shift+2 move container to workspace $ws2
 bindsym $mod+Shift+3 move container to workspace $ws3
 bindsym $mod+Shift+4 move container to workspace $ws4
-bindsym $mod+Shift+5 move container to workspace $ws5
 
 #-------
 # i3 Commands
