@@ -33,8 +33,7 @@ exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-ag
 # Visual Autostart
 #-------
 exec_always --no-startup-id picom &
-exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/i3/wallpapers/mario.jpg
-exec_always --no-startup-id --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/sea_watchtower.png
 
 #-------
 # Utility Autostart
@@ -46,12 +45,17 @@ exec_always --no-startup-id battery&
 #-------
 # Lock and Network
 #-------
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- $HOME/.config/scripts/lock
 exec --no-startup-id nm-applet
 
 #######
 # Keybindings
 #######
+
+#-------
+# Lock
+#-------
+bindsym $mod+Shift+L exec $HOME/.config/scripts/lock
 
 #-------
 # Audio Controls
@@ -152,3 +156,10 @@ bindsym $mod+Ctrl+Right resize shrink width 1 px or 1 ppt
 bindsym $mod+Ctrl+Up resize grow height 1 px or 1 ppt
 bindsym $mod+Ctrl+Down resize shrink height 1 px or 1 ppt
 bindsym $mod+Ctrl+Left resize grow width 1 px or 1 ppt
+
+#######
+# Bar Configuration
+#######
+bar {
+        status_command i3status
+}
