@@ -131,9 +131,7 @@ set $ws4 "4"
 
 # Assign workspaces to specific monitors
 workspace $ws1 output DP-1
-workspace $ws2 output DP-1
-workspace $ws3 output DP-1
-workspace $ws4 output DP-2
+workspace $ws2 output DP-2
 
 bindsym $mod+Prior workspace prev
 bindsym $mod+Next workspace next
@@ -142,13 +140,9 @@ bindsym $mod+Shift+Next move container to workspace next
 
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
 
 bindsym $mod+Shift+1 move container to workspace $ws1
 bindsym $mod+Shift+2 move container to workspace $ws2
-bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace $ws4
 
 #-------
 # i3 Commands
@@ -168,31 +162,7 @@ bindsym $mod+Ctrl+Left resize grow width 1 px or 1 ppt
 #######
 # Bar Configuration
 #######
-# Dracula color scheme
-# set $dracula-bg       #282a36
-# set $dracula-fg       #f8f8f2
-# set $dracula-comment  #6272a4
-# set $dracula-cyan     #8be9fd
-# set $dracula-purple   #bd93f9
-# set $dracula-orange   #ffb86c
-# set $dracula-pink     #ff79c6
-
-# client.focused          $dracula-cyan   $dracula-bg     $dracula-fg     $dracula-purple
-# client.unfocused        $dracula-bg     $dracula-bg     $dracula-comment $dracula-bg
-# client.focused_inactive $dracula-bg     $dracula-bg     $dracula-comment $dracula-bg
-# client.urgent           $dracula-orange $dracula-orange $dracula-fg     $dracula-orange
-
 bar {
-    # status_command i3blocks -c $HOME/.config/i3blocks/i3blocks.conf
-    # i3bar_command i3bar --transparency
     status_command bumblebee-status -m caffeine datetime pasink pasource \
         xrandr arch_update nic cpu memory battery -p time.format="%H:%M" -t dracula-powerline
-    # colors {
-    #     background $dracula-bg
-    #     separator $dracula-comment
-    #     #                       border          background      text
-    #     focused_workspace     $dracula-cyan   $dracula-bg     $dracula-fg
-    #     inactive_workspace    $dracula-bg     $dracula-bg     $dracula-comment
-    #     urgent_workspace      $dracula-orange $dracula-orange $dracula-fg
-    # }
 }
