@@ -6,7 +6,7 @@ Screenshot:
 
 ![Screenshot](./sample.png)
 
-## 1. Setting up the `yay` AUR helper
+## Setting up the `yay` AUR helper
 
 The Arch User Repository (AUR) provides a collection of user-contributed packages. `yay` is a helper that makes it easier to manage these packages. First, you need to install `yay`:
 
@@ -20,7 +20,7 @@ cd yay
 makepkg -si
 ```
 
-## 2. Installing Essential Dependencies
+## Installing Essential Dependencies
 
 These are the foundational packages required for setting up the system.
 
@@ -63,6 +63,23 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/
 
 # Adjust permissions
 chmod 700 ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+```
+
+## Timeshift
+
+Timeshift is a system restore utility for Linux. It creates incremental snapshots of the file system at regular intervals, and allows you to easily restore the system to a previous state.
+
+```bash
+# Install Timeshift
+yay -S timeshift
+```
+
+Open timeshift and use the wizard to configure scheduled snapshots of the system. After that ensure the service `cronie` is enabled and running:
+
+```bash
+# Enable and start cronie
+sudo systemctl enable cronie
+sudo systemctl start cronie
 ```
 
 ## Nvidia config
@@ -153,7 +170,7 @@ options root=PARTUUID=1a3bdf5e-4121-47cf-b93c-df8686e8bf49 zswap.enabled=0 rootf
 - Replace the _nvidia_ with the base driver you installed, e.g. `nvidia-470xx-dkms`
 - Save the file and move it to `/etc/pacman.d/hooks/` , for example with `sudo mv ./nvidia.hook /etc/pacman.d/hooks/`
 
-## 4. Development
+## Development
 
 These are packages and utilities related to software development.
 
