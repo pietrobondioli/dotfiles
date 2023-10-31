@@ -164,6 +164,16 @@ These are packages and utilities related to software development.
 yay -S visual-studio-code-bin rider
 ```
 
+Change vscode desktop to exec from shell to fix PATH issues:
+
+```bash
+# Open vscode desktop file
+sudo vim /usr/share/applications/code.desktop
+
+# Change the exec line to
+Exec=zsh -i -c "code"
+```
+
 ### Node.js with Nvm
 
 Nvm (Node Version Manager) allows you to easily manage multiple versions of Node.js.
