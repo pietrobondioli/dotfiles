@@ -6,6 +6,61 @@ Screenshot:
 
 ![Screenshot](./sample.png)
 
+## Configuring Wi-Fi (When not in cable)
+
+Start iwd service if not started:
+
+```bash
+systemctl start iwd
+```
+
+```bash
+systemctl enable iwd
+```
+
+Add this config to iwd config file so it can configure ip and all stuff automatically:
+
+```bash
+cat << 'EOF' | sudo tee /etc/iwd/main.conf
+[General]
+EnableNetworkConfiguration=true
+
+[Network]
+NameResolvingService=systemd
+RoutePriorityOffset=300
+EnableIPv6=true
+EOF
+```
+
+Now setup yout connection, here is some helpful commands:
+
+```bash
+# Open iwctl
+iwctl
+```
+
+```bash
+# list all available Wi-Fi devices by typing, it typically looks like `wlan0` or `wlp2s0`
+device list
+```
+
+```bash
+# scan for networks with your device
+station device_name scan
+```
+
+```bash
+# see the available networks
+station device_name get-networks
+```
+
+```bash
+# connect to some wifi network from listed networks, you will be prompted to enter the passphrase, type and you are all set up
+station device_name connect SSID
+```
+
+After successfully connecting, you can verify your IP address with `ip addr` or `ip a` to ensure you have been assigned an IP by the router.
+
 ## Setting up the `yay` AUR helper
 
 The Arch User Repository (AUR) provides a collection of user-contributed packages. `yay` is a helper that makes it easier to manage these packages. First, you need to install `yay`:
@@ -13,54 +68,86 @@ The Arch User Repository (AUR) provides a collection of user-contributed package
 ```bash
 # Install necessary dependencies
 pacman -S --needed git base-devel
+```
 
+```bash
 # Clone the `yay` repository and install
 git clone https://aur.archlinux.org/yay.git
+```
+
+```bash
 cd yay
+```
+
+```bash
 makepkg -si
 ```
 
-## Installing Essential Dependencies
+## Installing Dependencies
 
 These are the foundational packages required for setting up the system.
 
 ```bash
 # General dependencies
 yay -S linux-headers base-devel wget git curl xorg-xrandr arandr man-db
+```
 
+```bash
 # i3
 yay -S i3 i3status i3lock-colors i3blocks bumblebee-status
+```
 
+```bash
 # Theming and appearance
 yay -S thunar xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance materia-gtk-theme papirus-icon-theme bibata-cursor-theme vimix-cursors
+```
 
+```bash
 # Utilities and system tools
-yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn qimgv
+yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn qimgv zsh
+```
 
+```bash
 # Font essentials
 yay -S otf-font-awesome ttf-jetbrains-mono-nerd ttf-jetbrains-mono otf-font-awesome-4 ttf-droid ttf-fantasque-sans-mono adobe-source-code-pro-fonts noto-fonts-emoji
+```
 
+```bash
 # Document viewers
 yay -S zathura zathura-pdf-mupdf
+```
 
+```bash
 # Communication and media apps
 yay -S discord spotify
 ```
 
-## 3. Setting up Zsh with Oh My Zsh
+## Start Services
+
+```bash
+sudo systemctl enable bluetooth.service
+```
+
+## Setting up Zsh with Oh My Zsh
 
 Zsh is an advanced shell, and Oh My Zsh is a framework for managing Zsh configurations.
 
 ```bash
 # Install Oh My Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
 
+```bash
 # Add autosuggestions plugin
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+```
 
+```bash
 # Add syntax highlighting plugin
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+```
 
+```bash
 # Adjust permissions
 chmod 700 ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 ```
@@ -79,6 +166,9 @@ Open timeshift and use the wizard to configure scheduled snapshots of the system
 ```bash
 # Enable and start cronie
 sudo systemctl enable cronie
+```
+
+```bash
 sudo systemctl start cronie
 ```
 
@@ -96,13 +186,13 @@ sudo systemctl start cronie
 3. Check what driver packages you need to install from the list below
 
 | Driver name                                      | Base driver       | OpenGL             | OpenGL (multilib)        |
-| ------------------------------------------------ | ----------------- | ------------------ | ------------------------ | --- |
-| Maxwell (NV110) series and newer                 | nvidia            | nvidia-utils       | lib32-nvidia-utils       | m   |
+| ------------------------------------------------ | ----------------- | ------------------ | ------------------------ |
+| Maxwell (NV110) series and newer                 | nvidia            | nvidia-utils       | lib32-nvidia-utils       |
 | Kepler (NVE0) series                             | nvidia-470xx-dkms | nvidia-470xx-utils | lib32-nvidia-470xx-utils |
 | GeForce 400/500/600 series cards [NVCx and NVDx] | nvidia-390xx      | nvidia-390xx-utils | lib32-nvidia-390xx-utils |
 
-3. Install the correct packages, for example `yay -S nvidia-470xx-dkms nvidia-470xx-utils lib32-nvidia-470xx-utils`
-4. I also recommend you to install nvidia-settings via `yay -S nvidia-settings`
+1. Install the correct packages, for example `yay -S nvidia-470xx-dkms nvidia-470xx-utils lib32-nvidia-470xx-utils`
+2. I also recommend you to install nvidia-settings via `yay -S nvidia-settings`
 
 In my case I have a GeForce RTX 3060 Ti, which is a NV110 card, so I installed the following packages:
 
@@ -186,7 +276,9 @@ Change vscode desktop to exec from shell to fix PATH issues:
 ```bash
 # Open vscode desktop file
 sudo vim /usr/share/applications/code.desktop
+```
 
+```bash
 # Change the exec line to
 Exec=zsh -i -c "code"
 ```
@@ -198,7 +290,9 @@ Nvm (Node Version Manager) allows you to easily manage multiple versions of Node
 ```bash
 # Install Nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+```
 
+```bash
 # Install the latest LTS (Long Term Support) version of Node.js
 nvm install lts
 ```
