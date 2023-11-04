@@ -172,6 +172,50 @@ sudo systemctl enable cronie
 sudo systemctl start cronie
 ```
 
+## SSH keys
+
+For github (and other services), generate a SSH key:
+
+```bash
+ssh-keygen -t ed25519 -C "dev@pietrobondioli.com.br"
+```
+
+Azure only supports RSA keys, so if you want to use Azure, you need to generate an RSA key:
+
+```bash
+ssh-keygen -t rsa -b 4096 -C "dev@pietrobondioli.com.br"
+```
+
+Eval the ssh-agent:
+
+```bash
+eval "$(ssh-agent -s)"
+```
+
+Add ed25519 key to ssh-agent:
+
+```bash
+ssh-add ~/.ssh/id_ed25519
+```
+
+Get the public key to add to services:
+
+```bash
+cat ~/.ssh/id_ed25519.pub
+```
+
+Add rsa key to ssh-agent:
+
+```bash
+ssh-add ~/.ssh/id_rsa
+```
+
+Get the public key to add to services:
+
+```bash
+cat ~/.ssh/id_rsa.pub
+```
+
 ## Nvidia config
 
 ### Default Prerequisites
