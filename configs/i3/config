@@ -29,6 +29,7 @@ exec --no-startup-id dex --autostart --environment i3
 # exec_always --no-startup-id setxkbmap -layout us -variant intl
 exec_always --no-startup-id setxkbmap -layout br -model abnt2
 exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec_always --no-startup-id redshift -O 3000 -P
 
 #-------
 # Visual Autostart
