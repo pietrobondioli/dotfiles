@@ -353,4 +353,29 @@ yay -S dotnet-targeting-pack-6.0 dotnet-runtime-6.0 dotnet-sdk-6.0 dotnet-runtim
 yay -S dotnet-targeting-pack-preview-bin dotnet-runtime-preview-bin dotnet-sdk-preview-bin dotnet-host-preview-bin aspnet-targeting-pack-preview-bin aspnet-runtime-preview-bin aspnet-targeting-pack-6.0 aspnet-targeting-pack aspnet-runtime-6.0 aspnet-runtime
 ```
 
+### Docker
+
+Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers.
+
+```bash
+# Install Docker
+yay -S docker docker-compose
+```
+
+```bash
+# Enable and start Docker
+sudo systemctl enable docker.service
+```
+
+```bash
+sudo systemctl start docker.service
+```
+
+```bash
+# Add your user to the docker group
+sudo usermod -aG docker $USER
+```
+
+Now you need to logout and login again to apply the changes.
+
 ---
