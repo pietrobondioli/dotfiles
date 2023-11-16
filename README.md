@@ -89,7 +89,7 @@ These are the foundational packages required for setting up the system.
 
 ```bash
 # General dependencies
-yay -S linux-headers base-devel wget git curl xorg-xrandr arandr man-db
+yay -S linux-headers base-devel wget git curl xorg-xrandr arandr man-db git-lfs
 ```
 
 ```bash
@@ -104,7 +104,7 @@ yay -S xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance mate
 
 ```bash
 # Utilities and system tools
-yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn qimgv zsh thunar thunar-archive-plugin xarchiver
+yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn qimgv zsh thunar thunar-archive-plugin xarchiver lm_sensors htop
 ```
 
 ```bash
@@ -151,6 +151,25 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/
 # Adjust permissions
 chmod 700 ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 ```
+
+## Firewall
+
+```bash
+# Install UFW
+yay -S ufw gufw
+```
+
+```bash
+# Enable UFW
+sudo systemctl enable ufw
+```
+
+```bash
+# Start UFW
+sudo systemctl start ufw
+```
+
+Now open the gui and turn on the firewall.
 
 ## Timeshift
 
@@ -377,5 +396,12 @@ sudo usermod -aG docker $USER
 ```
 
 Now you need to logout and login again to apply the changes.
+
+## Database Tools
+
+```bash
+# Install DBeaver
+yay -S dbeaver
+```
 
 ---
