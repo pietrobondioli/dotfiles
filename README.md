@@ -104,12 +104,12 @@ yay -S xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance mate
 
 ```bash
 # Utilities and system tools
-yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn qimgv zsh thunar thunar-archive-plugin xarchiver lm_sensors htop
+yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn qimgv zsh thunar thunar-archive-plugin xarchiver lm_sensors htop onlyoffice-bin simplescreenrecorder
 ```
 
 ```bash
 # Font essentials
-yay -S otf-font-awesome ttf-jetbrains-mono-nerd ttf-jetbrains-mono otf-font-awesome-4 ttf-droid ttf-fantasque-sans-mono adobe-source-code-pro-fonts noto-fonts-emoji
+yay -S otf-font-awesome ttf-jetbrains-mono-nerd ttf-jetbrains-mono otf-font-awesome-4 ttf-droid ttf-fantasque-sans-mono adobe-source-code-pro-fonts noto-fonts-emoji ttf-ms-fonts
 ```
 
 ```bash
@@ -369,7 +369,7 @@ nvm install lts
 yay -S dotnet-targeting-pack-6.0 dotnet-runtime-6.0 dotnet-sdk-6.0 dotnet-runtime dotnet-host dotnet-sdk
 
 # Optional: Install preview versions of .NET packages
-yay -S dotnet-targeting-pack-preview-bin dotnet-runtime-preview-bin dotnet-sdk-preview-bin dotnet-host-preview-bin aspnet-targeting-pack-preview-bin aspnet-runtime-preview-bin aspnet-targeting-pack-6.0 aspnet-targeting-pack aspnet-runtime-6.0 aspnet-runtime
+yay -S dotnet-targeting-pack-bin dotnet-runtime-bin dotnet-sdk-bin dotnet-host-bin aspnet-targeting-pack-bin aspnet-runtime-bin aspnet-targeting-pack-6.0 aspnet-targeting-pack aspnet-runtime-6.0 aspnet-runtime
 ```
 
 ### Docker
