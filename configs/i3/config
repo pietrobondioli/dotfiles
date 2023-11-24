@@ -81,8 +81,9 @@ for_window [class="Steam" title="^Steam - Update News$"] floating enable
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Nm-connection-editor"] floating enable
 for_window [class="Pavucontrol"] floating enablec
-for_window [class="Seahorse"] floating enable``
+for_window [class="Seahorse"] floating enable
 for_window [class="Gparted"] floating enable
+for_window [class="Gufw.py"] floating enable
 
 #-------
 # Default Programs
