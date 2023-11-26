@@ -104,7 +104,7 @@ yay -S xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance mate
 
 ```bash
 # Utilities and system tools
-yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn qimgv zsh thunar thunar-archive-plugin xarchiver lm_sensors htop onlyoffice-bin simplescreenrecorder
+yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn qimgv zsh thunar thunar-archive-plugin xarchiver lm_sensors htop onlyoffice-bin obs-studio obs-backgroundremoval droidcam-obs-plugin gnome-disk-utility dosfstools ntfs-3g
 ```
 
 ```bash
@@ -397,11 +397,15 @@ sudo usermod -aG docker $USER
 
 Now you need to logout and login again to apply the changes.
 
-## Database Tools
+## Some dev stuff
 
 ```bash
 # Install DBeaver
-yay -S dbeaver
+yay -S dbeaver mssql mssql-fts mosquitto fritzing
 ```
 
----
+## 3d printing
+
+```bash
+yay -S cura-bin blender cuda
+```
