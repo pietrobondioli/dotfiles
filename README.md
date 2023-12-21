@@ -104,7 +104,7 @@ yay -S xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance mate
 
 ```bash
 # Utilities and system tools
-yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn qimgv zsh thunar thunar-archive-plugin xarchiver lm_sensors htop onlyoffice-bin obs-studio obs-backgroundremoval droidcam-obs-plugin gnome-disk-utility dosfstools ntfs-3g
+yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn qimgv zsh thunar thunar-archive-plugin xarchiver lm_sensors htop onlyoffice-bin obs-studio obs-backgroundremoval droidcam-obs-plugin gnome-disk-utility dosfstools ntfs-3g rclone rclone-browser obsidian
 ```
 
 ```bash
@@ -372,6 +372,20 @@ yay -S dotnet-targeting-pack-6.0 dotnet-runtime-6.0 dotnet-sdk-6.0 dotnet-runtim
 yay -S dotnet-targeting-pack-bin dotnet-runtime-bin dotnet-sdk-bin dotnet-host-bin aspnet-targeting-pack-bin aspnet-runtime-bin aspnet-targeting-pack-6.0 aspnet-targeting-pack aspnet-runtime-6.0 aspnet-runtime
 ```
 
+### Java Development
+
+Java is a general-purpose, class-based, object-oriented programming language designed for having lesser implementation dependencies.
+
+```bash
+# Install Java
+yay -S jdk-openjdk jdk8-openjdk maven
+```
+
+```bash
+# Install IntelliJ IDEA
+yay -S intellij-idea-community-edition
+```
+
 ### Docker
 
 Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers.
@@ -407,5 +421,5 @@ yay -S dbeaver mssql mssql-fts mosquitto fritzing
 ## 3d printing
 
 ```bash
-yay -S cura-bin blender cuda
+yay -S blender mainsail orca-slicer
 ```
