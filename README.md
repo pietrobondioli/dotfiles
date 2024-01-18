@@ -104,7 +104,7 @@ yay -S xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance mate
 
 ```bash
 # Utilities and system tools
-yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn qimgv zsh thunar thunar-archive-plugin xarchiver lm_sensors htop onlyoffice-bin obs-studio obs-backgroundremoval droidcam-obs-plugin gnome-disk-utility dosfstools ntfs-3g rclone rclone-browser obsidian
+yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn zsh thunar thunar-archive-plugin xarchiver lm_sensors htop onlyoffice-bin obs-studio obs-backgroundremoval droidcam-obs-plugin gnome-disk-utility dosfstools ntfs-3g rclone rclone-browser obsidian feh qbittorrent popsicle unrar pwgen
 ```
 
 ```bash
@@ -386,7 +386,7 @@ yay -S jdk-openjdk jdk8-openjdk maven
 yay -S intellij-idea-community-edition
 ```
 
-### Docker
+### Docker && Kubernetes
 
 Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers.
 
@@ -411,6 +411,26 @@ sudo usermod -aG docker $USER
 
 Now you need to logout and login again to apply the changes.
 
+```bash
+# Install Kubernetes
+yay -S kubectl kubectx kubeseal kubelogin
+```
+
+```bash
+# Install Minikube
+yay -S minikube-bin
+```
+
+```bash
+# Install Helm
+yay -S helm
+```
+
+```bash
+# Install K9s
+yay -S k9s
+```
+
 ## Some dev stuff
 
 ```bash
@@ -422,4 +442,10 @@ yay -S dbeaver mssql mssql-fts mosquitto fritzing
 
 ```bash
 yay -S blender mainsail orca-slicer
+```
+
+## Gaming
+
+```bash
+yay -S lutris wine-staging winetricks minecraft-launcher
 ```
