@@ -1,0 +1,12 @@
+#!/bin/bash
+
+dir=$(find ${1:-.} -type d -print 2>/dev/null | fzf +m) || {
+	echo "No directories found"
+	exit 1
+}
+if [ -n "$dir" ]; then cd "$dir"; else
+	echo "No selection made"
+	exit 1
+fi
+
+nvim .

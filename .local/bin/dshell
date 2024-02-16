@@ -1,0 +1,3 @@
+#!/bin/bash
+
+container=$(docker ps --format '{{.Names}}' | fzf --exit-0) && docker exec -it "$container" /bin/sh

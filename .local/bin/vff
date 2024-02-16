@@ -1,0 +1,15 @@
+#!/bin/bash
+
+file=$(find ${1:-.} -type f -print 2>/dev/null | fzf +m) || {
+	echo "No files found"
+	exit 1
+}
+dir=$(dirname "$file")
+filename=$(basename "$file")
+
+if [ -n "$dir" ]; then cd "$dir"; else
+	echo "No selection made"
+	exit 1
+fi
+
+[ -n "$filename" ] && nvim "$filename"
