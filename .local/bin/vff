@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file=$(find ${1:-.} -type f -print 2>/dev/null | fzf +m) || {
+file=$(find ~/work ~/projects ~/sandbox ~/ -type f -print 2>/dev/null | fzf +m) || {
 	echo "No files found"
 	exit 1
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dir=$(find ${1:-.} -type d -print 2>/dev/null | fzf +m) || {
+dir=$(find ~/work ~/projects ~/sandbox ~/ -type d -print 2>/dev/null | fzf +m) || {
 	echo "No directories found"
 	exit 1
 }
