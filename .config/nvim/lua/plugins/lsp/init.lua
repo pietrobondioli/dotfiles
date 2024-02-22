@@ -1,19 +1,27 @@
+local Utils = require("utils")
+
 return {
     "neovim/nvim-lspconfig",
     event = {"BufReadPost"},
     cmd = {"LspInfo", "LspInstall", "LspUninstall", "Mason"},
     dependencies = { -- Plugin and UI to automatically install LSPs to stdpath
-    "williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "hrsh7th/cmp-nvim-lsp",
-    -- Install none-ls for diagnostics, code actions, and formatting
-    "nvimtools/none-ls.nvim",
+        "williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim",
+        "hrsh7th/cmp-nvim-lsp",
+        -- Install none-ls for diagnostics, code actions, and formatting
+        "nvimtools/none-ls.nvim"
 
-    -- Install neodev for better nvim configuration and plugin authoring via lsp configurations
-    "folke/neodev.nvim", -- Progress/Status update for LSP
-    {
-        "j-hui/fidget.nvim",
-        tag = "legacy"
-    }, -- Extended LSP handlers
-    "Hoffs/omnisharp-extended-lsp.nvim"},
+        -- Install neodev for better nvim configuration and plugin authoring via lsp configurations
+        -- "folke/neodev.nvim", -- Progress/Status update for LSP
+        -- {"j-hui/fidget.nvim", tag = "legacy"}, -- Extended LSP handlers
+        -- "Hoffs/omnisharp-extended-lsp.nvim", --  teste abaixo
+        -- {
+        --     "folke/neoconf.nvim",
+        --     cmd = "Neoconf",
+        --     config = false,
+        --     dependencies = {"nvim-lspconfig"}
+        -- }, {"folke/neodev.nvim", opts = {}}, "mason.nvim",
+        -- "williamboman/mason-lspconfig.nvim"
+    },
     ---@class PluginLspOpts
     opts = {
         -- options for vim.diagnostic.config()
@@ -31,28 +39,27 @@ return {
             severity_sort = true,
             signs = {
                 text = {
-                    [vim.diagnostic.severity.ERROR] = require("lazyvim.config").icons.diagnostics.Error,
-                    [vim.diagnostic.severity.WARN] = require("lazyvim.config").icons.diagnostics.Warn,
-                    [vim.diagnostic.severity.HINT] = require("lazyvim.config").icons.diagnostics.Hint,
-                    [vim.diagnostic.severity.INFO] = require("lazyvim.config").icons.diagnostics.Info
+                    [vim.diagnostic.severity.ERROR] = require("config").icons
+                        .diagnostics.Error,
+                    [vim.diagnostic.severity.WARN] = require("config").icons
+                        .diagnostics.Warn,
+                    [vim.diagnostic.severity.HINT] = require("config").icons
+                        .diagnostics.Hint,
+                    [vim.diagnostic.severity.INFO] = require("config").icons
+                        .diagnostics.Info
                 }
             }
         },
         -- Enable this to enable the builtin LSP inlay hints on Neovim >= 0.10.0
         -- Be aware that you also will need to properly configure your LSP server to
         -- provide the inlay hints.
-        inlay_hints = {
-            enabled = false
-        },
+        inlay_hints = {enabled = false},
         -- add any global capabilities here
         capabilities = {},
         -- options for vim.lsp.buf.format
         -- `bufnr` and `filter` is handled by the LazyVim formatter,
         -- but can be also overridden when specified
-        format = {
-            formatting_options = nil,
-            timeout_ms = nil
-        },
+        format = {formatting_options = nil, timeout_ms = nil},
         -- LSP Server Settings
         ---@type lspconfig.options
         servers = {
@@ -64,12 +71,8 @@ return {
                 -- keys = {},
                 settings = {
                     Lua = {
-                        workspace = {
-                            checkThirdParty = false
-                        },
-                        completion = {
-                            callSnippet = "Replace"
-                        }
+                        workspace = {checkThirdParty = false},
+                        completion = {callSnippet = "Replace"}
                     }
                 }
             }
@@ -77,37 +80,57 @@ return {
     },
     config = function()
         local null_ls = require("null-ls")
-        local map_lsp_keybinds = require("user.keymaps").map_lsp_keybinds -- Has to load keymaps before pluginslsp
+
+        -- setup keymaps
+        Utils.lsp.on_attach(function(client, buffer)
+            require("plugins.lsp.keymaps").on_attach(client, buffer)
+        end)
+
+        local register_capability =
+            vim.lsp.handlers["client/registerCapability"]
+
+        vim.lsp.handlers["client/registerCapability"] =
+            function(err, res, ctx)
+                local ret = register_capability(err, res, ctx)
+                local client_id = ctx.client_id
+                ---@type lsp.Client
+                local client = vim.lsp.get_client_by_id(client_id)
+                local buffer = vim.api.nvim_get_current_buf()
+                require("lazyvim.plugins.lsp.keymaps").on_attach(client, buffer)
+                return ret
+            end
 
         -- Use neodev to configure lua_ls in nvim directories - must load before lspconfig
         require("neodev").setup()
 
         -- Setup mason so it can manage 3rd party LSP servers
-        require("mason").setup({
-            ui = {
-                border = "rounded"
-            }
-        })
+        require("mason").setup({ui = {border = "rounded"}})
 
         -- Configure mason to auto install servers
         require("mason-lspconfig").setup({
-            ensure_installed = {"bashls", "cssls", "graphql", "html", "jsonls", "lua_ls", "marksman", "prismals",
-                                "pyright", "sqlls", "tailwindcss", "tsserver", "yamlls", "omnisharp", "angularls",
-                                "ansiblels", "dockerls", "docker_compose_language_service", "eslint", "gopls",
-                                "golangci_lint_ls", "rust_analyzer", "grammarly", "lemminx", "tflint", "ltex",
-                                "java_language_server", "htmx", "azure_pipelines_ls", "arduino_language_server",
-                                "ast_grep"},
+            ensure_installed = {
+                "bashls", "cssls", "graphql", "html", "jsonls", "lua_ls",
+                "marksman", "prismals", "pyright", "sqlls", "tailwindcss",
+                "tsserver", "yamlls", "omnisharp", "angularls", "ansiblels",
+                "dockerls", "docker_compose_language_service", "eslint",
+                "gopls", "golangci_lint_ls", "rust_analyzer", "grammarly",
+                "lemminx", "tflint", "ltex", "java_language_server", "htmx",
+                "azure_pipelines_ls", "arduino_language_server", "ast_grep"
+            },
             automatic_installation = true
         })
 
         -- Override tsserver diagnostics to filter out specific messages
-        local messages_to_filter = {"This may be converted to an async function.",
-                                    "'_Assertion' is declared but never used.",
-                                    "'__Assertion' is declared but never used.",
-                                    "The signature '(data: string): string' of 'atob' is deprecated.",
-                                    "The signature '(data: string): string' of 'btoa' is deprecated."}
+        local messages_to_filter = {
+            "This may be converted to an async function.",
+            "'_Assertion' is declared but never used.",
+            "'__Assertion' is declared but never used.",
+            "The signature '(data: string): string' of 'atob' is deprecated.",
+            "The signature '(data: string): string' of 'btoa' is deprecated."
+        }
 
-        local function tsserver_on_publish_diagnostics_override(_, result, ctx, config)
+        local function tsserver_on_publish_diagnostics_override(_, result, ctx,
+                                                                config)
             local filtered_diagnostics = {}
 
             for _, diagnostic in ipairs(result.diagnostics) do
@@ -142,12 +165,8 @@ return {
             lua_ls = {
                 settings = {
                     Lua = {
-                        workspace = {
-                            checkThirdParty = false
-                        },
-                        telemetry = {
-                            enabled = false
-                        }
+                        workspace = {checkThirdParty = false},
+                        telemetry = {enabled = false}
                     }
                 }
             }, -- Lua Language Server
@@ -159,13 +178,10 @@ return {
                 -- filetypes = { "reason" },
             }, -- Tailwind CSS Language Server
             tsserver = {
-                settings = {
-                    experimental = {
-                        enableProjectDiagnostics = true
-                    }
-                },
+                settings = {experimental = {enableProjectDiagnostics = true}},
                 handlers = {
-                    ["textDocument/publishDiagnostics"] = vim.lsp.with(tsserver_on_publish_diagnostics_override, {})
+                    ["textDocument/publishDiagnostics"] = vim.lsp.with(
+                        tsserver_on_publish_diagnostics_override, {})
                 }
             }, -- TypeScript Language Server
             yamlls = {
@@ -174,7 +190,10 @@ return {
                 }
             }, -- YAML Language Server
             omnisharp = {
-                cmd = {omnisharp_bin, "--languageserver", "--hostPID", tostring(pid)},
+                cmd = {
+                    omnisharp_bin, "--languageserver", "--hostPID",
+                    tostring(pid)
+                },
                 handlers = {
                     ["textDocument/definition"] = require('omnisharp_extended').handler
                 }
@@ -204,10 +223,10 @@ return {
                 settings = {
                     yaml = {
                         schemas = {
-                            ["https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json"] = {"/azure-pipeline*.y*l",
-                                                                                                                                 "/*.azure*",
-                                                                                                                                 "Azure-Pipelines/**/*.y*l",
-                                                                                                                                 "Pipelines/*.y*l"}
+                            ["https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json"] = {
+                                "/azure-pipeline*.y*l", "/*.azure*",
+                                "Azure-Pipelines/**/*.y*l", "Pipelines/*.y*l"
+                            }
                         }
                     }
                 }
@@ -218,17 +237,17 @@ return {
 
         -- Default handlers for LSP
         local default_handlers = {
-            ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-                border = "rounded"
-            }),
-            ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-                border = "rounded"
-            })
+            ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover,
+                                                  {border = "rounded"}),
+            ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers
+                                                              .signature_help,
+                                                          {border = "rounded"})
         }
 
         -- nvim-cmp supports additional completion capabilities
         local capabilities = vim.lsp.protocol.make_client_capabilities()
-        local default_capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+        local default_capabilities =
+            require("cmp_nvim_lsp").default_capabilities(capabilities)
 
         ---@diagnostic disable-next-line: unused-local
         local on_attach = function(_client, buffer_number)
@@ -236,16 +255,16 @@ return {
             map_lsp_keybinds(buffer_number)
 
             -- Create a command `:Format` local to the LSP buffer
-            vim.api.nvim_buf_create_user_command(buffer_number, "Format", function(_)
+            vim.api.nvim_buf_create_user_command(buffer_number, "Format",
+                                                 function(_)
                 vim.lsp.buf.format({
                     filter = function(format_client)
                         -- Use Prettier to format TS/JS if it's available
-                        return format_client.name ~= "tsserver" or not null_ls.is_registered("prettier")
+                        return format_client.name ~= "tsserver" or
+                                   not null_ls.is_registered("prettier")
                     end
                 })
-            end, {
-                desc = "LSP: Format current buffer with LSP"
-            })
+            end, {desc = "LSP: Format current buffer with LSP"})
 
             -- if client.server_capabilities.codeLensProvider then
             -- 	vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "CursorHold" }, {
@@ -262,7 +281,8 @@ return {
             require("lspconfig")[name].setup({
                 capabilities = default_capabilities,
                 filetypes = config.filetypes,
-                handlers = vim.tbl_deep_extend("force", {}, default_handlers, config.handlers or {}),
+                handlers = vim.tbl_deep_extend("force", {}, default_handlers,
+                                               config.handlers or {}),
                 on_attach = on_attach,
                 settings = config.settings
             })
@@ -276,38 +296,39 @@ return {
         null_ls.setup({
             border = "rounded",
             sources = { -- Formatting
-            formatting.prettierd, -- JavaScript, TypeScript, CSS, etc.
-            formatting.stylua, -- Lua
-            formatting.black.with({
-                extra_args = {"--fast"}
-            }), -- Python
-            -- Add more formatting tools as needed
-            -- Diagnostics
-            diagnostics.eslint_d.with({
-                condition = function(utils)
-                    return utils.root_has_file({".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json", ".eslintrc"})
-                end
-            }), -- JavaScript, TypeScript
-            diagnostics.flake8, -- Python
-            diagnostics.hadolint, -- Dockerfiles
-            diagnostics.ansiblelint, -- Ansible
-            -- diagnostics
-            -- code actions
-            code_actions.eslint_d.with({
-                condition = function(utils)
-                    return utils.root_has_file({".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json", ".eslintrc"})
-                end
-            })}
+                formatting.prettierd, -- JavaScript, TypeScript, CSS, etc.
+                formatting.stylua, -- Lua
+                formatting.black.with({extra_args = {"--fast"}}), -- Python
+                -- Add more formatting tools as needed
+                -- Diagnostics
+                diagnostics.eslint_d.with({
+                    condition = function(utils)
+                        return utils.root_has_file({
+                            ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json",
+                            ".eslintrc"
+                        })
+                    end
+                }), -- JavaScript, TypeScript
+                diagnostics.flake8, -- Python
+                diagnostics.hadolint, -- Dockerfiles
+                diagnostics.ansiblelint, -- Ansible
+                -- diagnostics
+                -- code actions
+                code_actions.eslint_d.with({
+                    condition = function(utils)
+                        return utils.root_has_file({
+                            ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json",
+                            ".eslintrc"
+                        })
+                    end
+                })
+            }
         })
 
         -- Configure borderd for LspInfo ui
         require("lspconfig.ui.windows").default_options.border = "rounded"
 
         -- Configure diagostics border
-        vim.diagnostic.config({
-            float = {
-                border = "rounded"
-            }
-        })
+        vim.diagnostic.config({float = {border = "rounded"}})
     end
 }

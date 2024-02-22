@@ -1,19 +1,17 @@
 local LazyUtil = require("lazy.core.util")
 
----@class util: LazyUtilCore
----@field ui util.ui
----@field lsp util.lsp
----@field root util.root
----@field telescope util.telescope
----@field terminal util.terminal
----@field toggle util.toggle
----@field format util.format
----@field plugin util.plugin
----@field extras util.extras
----@field inject util.inject
----@field news util.news
----@field json util.json
----@field lualine util.lualine
+---@class utils: LazyUtilCore
+---@field ui utils.ui
+---@field lsp utils.lsp
+---@field root utils.root
+---@field telescope utils.telescope
+---@field terminal utils.terminal
+---@field toggle utils.toggle
+---@field format utils.format
+---@field plugin utils.plugin
+---@field inject utils.inject
+---@field json utils.json
+---@field lualine utils.lualine
 local M = {}
 
 ---@type table<string, string|string[]>
@@ -31,27 +29,24 @@ local deprecated = {
 
 setmetatable(M, {
     __index = function(t, k)
-        if LazyUtil[k] then
-            return LazyUtil[k]
-        end
+        if LazyUtil[k] then return LazyUtil[k] end
         local dep = deprecated[k]
         if dep then
             local mod = type(dep) == "table" and dep[1] or dep
             local key = type(dep) == "table" and dep[2] or k
-            M.deprecate([[require("utils").]] .. k, [[require("utils").]] .. mod .. "." .. key)
+            M.deprecate([[require("utils").]] .. k,
+                        [[require("utils").]] .. mod .. "." .. key)
             ---@diagnostic disable-next-line: no-unknown
-            t[mod] = require("util." .. mod) -- load here to prevent loops
+            t[mod] = require("utils." .. mod) -- load here to prevent loops
             return t[mod][key]
         end
         ---@diagnostic disable-next-line: no-unknown
-        t[k] = require("util." .. k)
+        t[k] = require("utils." .. k)
         return t[k]
     end
 })
 
-function M.is_win()
-    return vim.loop.os_uname().sysname:find("Windows") ~= nil
-end
+function M.is_win() return vim.loop.os_uname().sysname:find("Windows") ~= nil end
 
 ---@param plugin string
 function M.has(plugin)
@@ -62,37 +57,27 @@ end
 function M.on_very_lazy(fn)
     vim.api.nvim_create_autocmd("User", {
         pattern = "VeryLazy",
-        callback = function()
-            fn()
-        end
+        callback = function() fn() end
     })
 end
 
 ---@param name string
 function M.opts(name)
     local plugin = require("lazy.core.config").plugins[name]
-    if not plugin then
-        return {}
-    end
+    if not plugin then return {} end
     local Plugin = require("lazy.core.plugin")
     return Plugin.values(plugin, "opts", false)
 end
 
 function M.deprecate(old, new)
-    M.warn(("`%s` is deprecated. Please use `%s` instead"):format(old, new), {
-        title = "LazyVim",
-        once = true,
-        stacktrace = true,
-        stacklevel = 6
-    })
+    M.warn(("`%s` is deprecated. Please use `%s` instead"):format(old, new),
+           {title = "LazyVim", once = true, stacktrace = true, stacklevel = 6})
 end
 
 -- delay notifications till vim.notify was replaced or after 500ms
 function M.lazy_notify()
     local notifs = {}
-    local function temp(...)
-        table.insert(notifs, vim.F.pack_len(...))
-    end
+    local function temp(...) table.insert(notifs, vim.F.pack_len(...)) end
 
     local orig = vim.notify
     vim.notify = temp
@@ -115,11 +100,7 @@ function M.lazy_notify()
     end
 
     -- wait till vim.notify has been replaced
-    check:start(function()
-        if vim.notify ~= temp then
-            replay()
-        end
-    end)
+    check:start(function() if vim.notify ~= temp then replay() end end)
     -- or if it took more than 500ms, then something went wrong
     timer:start(500, 0, replay)
 end
