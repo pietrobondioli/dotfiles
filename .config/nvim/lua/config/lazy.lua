@@ -10,5 +10,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
-require("lazy").setup({{import = "plugins"}},
-                      {change_detection = {enabled = true, notify = false}})
+require("lazy").setup({
+    {import = "plugins"}, {import = "plugins.extras.lang"},
+    {import = "plugins.extras.coding"}, {import = "plugins.extras.formatting"},
+    {import = "plugins.extras.linting"}
+}, {change_detection = {enabled = true, notify = true}})

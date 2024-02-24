@@ -1,4 +1,4 @@
-local Util = require("utils")
+local Utils = require("utils")
 
 ---@class LazyVimConfig: LazyVimOptions
 local M = {}
@@ -9,7 +9,7 @@ M.version = "10.10.0" -- x-release-please-version
 local defaults = {
     -- colorscheme can be a string like `catppuccin` or a function that will load the colorscheme
     ---@type string|fun()
-    colorscheme = function() require("catppuccin").load() end,
+    colorscheme = function() require("tokyonight").load() end,
     -- load the default settings
     defaults = {
         autocmds = true, -- config.autocmds
@@ -121,7 +121,7 @@ function M.json.load()
         if ok then
             M.json.data = vim.tbl_deep_extend("force", M.json.data, json or {})
             if M.json.data.version ~= M.json.version then
-                Util.json.migrate()
+                Utils.json.migrate()
             end
         end
     end
@@ -146,8 +146,8 @@ function M.setup(opts)
             if lazy_autocmds then M.load("autocmds") end
             M.load("keymaps")
 
-            Util.format.setup()
-            Util.root.setup()
+            Utils.format.setup()
+            Utils.root.setup()
 
             vim.api.nvim_create_user_command("LazyHealth", function()
                 vim.cmd([[Lazy! load all]])
@@ -156,8 +156,8 @@ function M.setup(opts)
         end
     })
 
-    Util.track("colorscheme")
-    Util.try(function()
+    Utils.track("colorscheme")
+    Utils.try(function()
         if type(M.colorscheme) == "function" then
             M.colorscheme()
         else
@@ -166,11 +166,11 @@ function M.setup(opts)
     end, {
         msg = "Could not load your colorscheme",
         on_error = function(msg)
-            Util.error(msg)
+            Utils.error(msg)
             vim.cmd.colorscheme("habamax")
         end
     })
-    Util.track()
+    Utils.track()
 end
 
 ---@param buf? number
@@ -189,8 +189,8 @@ end
 function M.load(name)
     local function _load(mod)
         if require("lazy.core.cache").find(mod)[1] then
-            Util.try(function() require(mod) end,
-                     {msg = "Failed loading " .. mod})
+            Utils.try(function() require(mod) end,
+                      {msg = "Failed loading " .. mod})
         end
     end
     -- always load lazyvim, then user file
@@ -212,9 +212,9 @@ function M.init()
     if plugin then vim.opt.rtp:append(plugin.dir) end
 
     package.preload["plugins.lsp.format"] = function()
-        Util.deprecate([[require("plugins.lsp.format")]],
-                       [[require("utils").format]])
-        return Util.format
+        Utils.deprecate([[require("plugins.lsp.format")]],
+                        [[require("utils").format]])
+        return Utils.format
     end
 
     -- delay notifications till vim.notify was replaced or after 500ms
@@ -225,7 +225,7 @@ function M.init()
     -- after installing missing plugins
     M.load("options")
 
-    Util.plugin.setup()
+    Utils.plugin.setup()
     M.json.load()
 end
 

@@ -16,10 +16,15 @@ map("n", "H", "^", {desc = "Go to start of line"})
 map("n", "L", "$", {desc = "Go to end of line"})
 
 -- Move to window using the <ctrl> hjkl keys
-map("n", "<C-h>", "<C-w>h", {desc = "Go to left window", remap = true})
-map("n", "<C-j>", "<C-w>j", {desc = "Go to lower window", remap = true})
-map("n", "<C-k>", "<C-w>k", {desc = "Go to upper window", remap = true})
-map("n", "<C-l>", "<C-w>l", {desc = "Go to right window", remap = true})
+
+map("n", "<C-h>", "<Cmd>NvimTmuxNavigateLeft<CR>",
+    {desc = "Go to left window", remap = true})
+map("n", "<C-j>", "<Cmd>NvimTmuxNavigateDown<CR>",
+    {desc = "Go to lower window", remap = true})
+map("n", "<C-k>", "<Cmd>NvimTmuxNavigateUp<CR>",
+    {desc = "Go to upper window", remap = true})
+map("n", "<C-l>", "<Cmd>NvimTmuxNavigateRight<CR>",
+    {desc = "Go to right window", remap = true})
 
 -- Resize window using <ctrl> arrow keys
 map("n", "<C-Up>", "<cmd>resize +2<cr>", {desc = "Increase window height"})
@@ -173,17 +178,14 @@ end, {desc = "Search [G]it [F]iles"})
 
 -- quit
 map("n", "<leader>qq", "<cmd>qa<cr>", {desc = "Quit all"})
+map("n", "<leader>qQ", "<cmd>qa!<cr>", {desc = "Quit all (force)"})
+map("n", "<leader>q", "<cmd>q<cr>", {desc = "Quit"})
 
 -- highlights under cursor
 map("n", "<leader>ui", vim.show_pos, {desc = "Inspect Pos"})
 
--- floating terminal
-local lazyterm = function() Utils.terminal(nil, {cwd = Utils.root()}) end
-map("n", "<leader>ft", lazyterm, {desc = "Terminal (root dir)"})
-map("n", "<leader>fT", function() Utils.terminal() end,
-    {desc = "Terminal (cwd)"})
-map("n", "<c-/>", lazyterm, {desc = "Terminal (root dir)"})
-map("n", "<c-_>", lazyterm, {desc = "which_key_ignore"})
+-- horizontal terminal
+map("n", "<c-/>", "<Cmd>ToggleTerm", {desc = "Terminal (root dir)"})
 
 -- Terminal Mappings
 map("t", "<esc><esc>", "<c-\\><c-n>", {desc = "Enter Normal Mode"})
@@ -202,7 +204,7 @@ map("n", "<leader>w|", "<C-W>v", {desc = "Split window right", remap = true})
 map("n", "<leader>-", "<C-W>s", {desc = "Split window below", remap = true})
 map("n", "<leader>|", "<C-W>v", {desc = "Split window right", remap = true})
 -- Press leader rw to rotate open windows
-map("n", "<leader>rw", "<cmd>RotateWindows<cr>", {desc = "[R]otate [W]indows"})
+map("n", "<leader>wr", "<cmd>RotateWindows<cr>", {desc = "[R]otate [W]indows"})
 
 -- tabs
 map("n", "<leader><tab>l", "<cmd>tablast<cr>", {desc = "Last Tab"})
@@ -312,9 +314,6 @@ map("n", "<leader>d",
 map("n", "<leader>?", function() require("telescope.builtin").oldfiles() end,
     {desc = "Find recently opened files"})
 
-map("n", "<leader>sb", function() require("telescope.builtin").buffers() end,
-    {desc = "Search Open Buffers"})
-
 map("n", "<leader>sf",
     function() require("telescope.builtin").find_files({hidden = true}) end,
     {desc = "Search Files"})
@@ -322,15 +321,7 @@ map("n", "<leader>sf",
 map("n", "<leader>sh", function() require("telescope.builtin").help_tags() end,
     {desc = "Search Help"})
 
-map("n", "<leader>sg", function() require("telescope.builtin").live_grep() end,
-    {desc = "Search by Grep"})
-
-map("n", "<leader>sc", function()
-    require("telescope.builtin").commands(
-        require("telescope.themes").get_dropdown({previewer = false}))
-end, {desc = "Search Commands"})
-
-map("n", "<leader>/", function()
+map("n", "<leader>.", function()
     require("telescope.builtin").current_buffer_fuzzy_find(require(
                                                                "telescope.themes").get_dropdown(
                                                                {
@@ -342,3 +333,58 @@ map("n", "<leader>ss", function()
     require("telescope.builtin").spell_suggest(
         require("telescope.themes").get_dropdown({previewer = false}))
 end, {desc = "Search Spelling suggestions"})
+
+map("n", "<leader>:", "<cmd>Telescope command_history<cr>",
+    {desc = "Command History"})
+map("n", "<leader><space>", Utils.telescope("files"),
+    {desc = "Find Files (root dir)"})
+map("n", "<leader>fb",
+    "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>",
+    {desc = "Buffers"})
+map("n", "<leader>fc", Utils.telescope.config_files(),
+    {desc = "Find Config File"})
+map("n", "<leader>ff", Utils.telescope("files"),
+    {desc = "Find Files (root dir)"})
+map("n", "<leader>fF", Utils.telescope("files", {cwd = false}),
+    {desc = "Find Files (cwd)"})
+map("n", "<leader>fg", "<cmd>Telescope git_files<cr>",
+    {desc = "Find Files (git-files)"})
+map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", {desc = "Recent"})
+map("n", "<leader>fR", Utils.telescope("oldfiles", {cwd = vim.loop.cwd()}),
+    {desc = "Recent (cwd)"})
+map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", {desc = "commits"})
+map("n", "<leader>gs", "<cmd>Telescope git_status<CR>", {desc = "status"})
+map("n", '<leader>s"', "<cmd>Telescope registers<cr>", {desc = "Registers"})
+map("n", "<leader>sa", "<cmd>Telescope autocommands<cr>",
+    {desc = "Auto Commands"})
+map("n", "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>",
+    {desc = "Buffer"})
+map("n", "<leader>sc", "<cmd>Telescope command_history<cr>",
+    {desc = "Command History"})
+map("n", "<leader>sC", "<cmd>Telescope commands<cr>", {desc = "Commands"})
+map("n", "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>",
+    {desc = "Document diagnostics"})
+map("n", "<leader>sD", "<cmd>Telescope diagnostics<cr>",
+    {desc = "Workspace diagnostics"})
+map("n", "<leader>sg", Utils.telescope("live_grep"), {desc = "Grep (root dir)"})
+map("n", "<leader>sG", Utils.telescope("live_grep", {cwd = false}),
+    {desc = "Grep (cwd)"})
+map("n", "<leader>sh", "<cmd>Telescope help_tags<cr>", {desc = "Help Pages"})
+map("n", "<leader>sH", "<cmd>Telescope highlights<cr>",
+    {desc = "Search Highlight Groups"})
+map("n", "<leader>sk", "<cmd>Telescope keymaps<cr>", {desc = "Key Maps"})
+map("n", "<leader>sM", "<cmd>Telescope man_pages<cr>", {desc = "Man Pages"})
+map("n", "<leader>sm", "<cmd>Telescope marks<cr>", {desc = "Jump to Mark"})
+map("n", "<leader>so", "<cmd>Telescope vim_options<cr>", {desc = "Options"})
+map("n", "<leader>sR", "<cmd>Telescope resume<cr>", {desc = "Resume"})
+map("n", "<leader>sw", Utils.telescope("grep_string", {word_match = "-w"}),
+    {desc = "Word (root dir)"})
+map("n", "<leader>sW",
+    Utils.telescope("grep_string", {cwd = false, word_match = "-w"}),
+    {desc = "Word (cwd)"})
+map("v", "<leader>sw", Utils.telescope("grep_string"),
+    {desc = "Selection (root dir)"})
+map("v", "<leader>sW", Utils.telescope("grep_string", {cwd = false}),
+    {desc = "Selection (cwd)"})
+map("n", "<leader>uC", Utils.telescope("colorscheme", {enable_preview = true}),
+    {desc = "Colorscheme with preview"})

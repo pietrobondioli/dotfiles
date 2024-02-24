@@ -1,5 +1,5 @@
 local Plugin = require("lazy.core.plugin")
-local Util = require("utils")
+local Utils = require("utils")
 
 ---@class utils.plugin
 local M = {}
@@ -27,7 +27,7 @@ function M.setup()
     M.lazy_file()
     table.insert(package.loaders, function(module)
         if M.deprecated_modules[module] then
-            Util.warn(
+            Utils.warn(
                 ("`%s` is no longer included by default in **LazyVim**.\nPlease install the `%s` extra if you still want to use it."):format(
                     module, M.deprecated_modules[module]), {title = "LazyVim"})
             return function() end
@@ -108,10 +108,10 @@ function M.lazy_file()
 end
 
 function M.fix_renames()
-    Plugin.Spec.add = Util.inject.args(Plugin.Spec.add, function(self, plugin)
+    Plugin.Spec.add = Utils.inject.args(Plugin.Spec.add, function(self, plugin)
         if type(plugin) == "table" then
             if M.renames[plugin[1]] then
-                Util.warn(
+                Utils.warn(
                     ("Plugin `%s` was renamed to `%s`.\nPlease update your config for `%s`"):format(
                         plugin[1], M.renames[plugin[1]],
                         self.importing or "LazyVim"), {title = "LazyVim"})

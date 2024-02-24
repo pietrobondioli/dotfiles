@@ -1,11 +1,10 @@
 local LazyUtil = require("lazy.core.util")
 
----@class utils: LazyUtilCore
+---@class Utils: LazyUtilCore
 ---@field ui utils.ui
 ---@field lsp utils.lsp
 ---@field root utils.root
 ---@field telescope utils.telescope
----@field terminal utils.terminal
 ---@field toggle utils.toggle
 ---@field format utils.format
 ---@field plugin utils.plugin

@@ -1,14 +1,16 @@
 return {
     {
+        "karb94/neoscroll.nvim",
+        config = function() require('neoscroll').setup {} end
+    }, {
         'nvimdev/dashboard-nvim',
         event = 'VimEnter',
-        config = function() require('dashboard').setup() end,
         dependencies = {{'nvim-tree/nvim-web-devicons'}},
         opts = function()
             local logo = [[
-                ┬  ┌─┐┌─┐┌─┐  ┬┌─┐  ┌┬┐┌─┐┬─┐┌─┐
-                │  ├┤ └─┐└─┐  │└─┐  ││││ │├┬┘├┤
-                ┴─┘└─┘└─┘└─┘  ┴└─┘  ┴ ┴└─┘┴└─└─┘
+┬  ┌─┐┌─┐┌─┐  ┬┌─┐  ┌┬┐┌─┐┬─┐┌─┐
+│  ├┤ └─┐└─┐  │└─┐  ││││ │├┬┘├┤
+┴─┘└─┘└─┘└─┘  ┴└─┘  ┴ ┴└─┘┴└─└─┘
             ]]
 
             logo = string.rep("\n", 8) .. logo .. "\n\n"
@@ -18,7 +20,7 @@ return {
                 hide = {
                     -- this is taken care of by lualine
                     -- enabling this messes up the actual laststatus setting after loading a file
-                    statusline = false
+                    statusline = true
                 },
                 config = {
                     header = vim.split(logo, "\n"),
@@ -264,57 +266,107 @@ return {
                 extensions = {"neo-tree", "lazy"}
             }
         end
-    },
+    }, -- better vim.ui
     {
         "stevearc/dressing.nvim",
-        config = function() require("dressing").setup() end
-    }, {
-        'akinsho/bufferline.nvim',
-        version = "*",
-        dependencies = 'nvim-tree/nvim-web-devicons'
-    }, {
-        "j-hui/fidget.nvim",
-        tag = "legacy",
-        event = {"BufEnter"},
-        config = function()
-            -- Turn on LSP, formatting, and linting status and progress information
-            require("fidget").setup({text = {spinner = "dots_negative"}})
+        lazy = true,
+        init = function()
+            ---@diagnostic disable-next-line: duplicate-set-field
+            vim.ui.select = function(...)
+                require("lazy").load({plugins = {"dressing.nvim"}})
+                return vim.ui.select(...)
+            end
+            ---@diagnostic disable-next-line: duplicate-set-field
+            vim.ui.input = function(...)
+                require("lazy").load({plugins = {"dressing.nvim"}})
+                return vim.ui.input(...)
+            end
+        end
+    }, -- This is what powers LazyVim's fancy-looking
+    -- tabs, which include filetype icons and close buttons.
+    {
+        "akinsho/bufferline.nvim",
+        event = "VeryLazy",
+        keys = {
+            {"<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin"},
+            {
+                "<leader>bP",
+                "<Cmd>BufferLineGroupClose ungrouped<CR>",
+                desc = "Delete non-pinned buffers"
+            },
+            {
+                "<leader>bo",
+                "<Cmd>BufferLineCloseOthers<CR>",
+                desc = "Delete other buffers"
+            }, {
+                "<leader>br",
+                "<Cmd>BufferLineCloseRight<CR>",
+                desc = "Delete buffers to the right"
+            }, {
+                "<leader>bl",
+                "<Cmd>BufferLineCloseLeft<CR>",
+                desc = "Delete buffers to the left"
+            }, {"<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer"},
+            {"<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer"},
+            {"[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer"},
+            {"]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer"}
+        },
+        opts = {
+            options = {
+                -- stylua: ignore
+                close_command = function(n)
+                    require("mini.bufremove").delete(n, false)
+                end,
+                -- stylua: ignore
+                right_mouse_command = function(n)
+                    require("mini.bufremove").delete(n, false)
+                end,
+                diagnostics = "nvim_lsp",
+                always_show_bufferline = false,
+                diagnostics_indicator = function(_, _, diag)
+                    local icons = require("config").icons.diagnostics
+                    local ret =
+                        (diag.error and icons.Error .. diag.error .. " " or "") ..
+                            (diag.warning and icons.Warn .. diag.warning or "")
+                    return vim.trim(ret)
+                end,
+                offsets = {
+                    {
+                        filetype = "neo-tree",
+                        text = "Neo-tree",
+                        highlight = "Directory",
+                        text_align = "left"
+                    }
+                }
+            }
+        },
+        config = function(_, opts)
+            require("bufferline").setup(opts)
+            -- Fix bufferline when restoring a session
+            vim.api.nvim_create_autocmd("BufAdd", {
+                callback = function()
+                    vim.schedule(function()
+                        pcall(nvim_bufferline)
+                    end)
+                end
+            })
         end
     }, {
         "lukas-reineke/indent-blankline.nvim",
         event = "BufEnter",
         main = "ibl",
-        opts = {
-            indent = {char = "│", tab_char = "│"},
-            scope = {enabled = false},
-            exclude = {
-                filetypes = {
-                    "help", "alpha", "dashboard", "neo-tree", "Trouble",
-                    "trouble", "lazy", "mason", "notify", "toggleterm",
-                    "lazyterm"
-                }
-            }
-        },
         config = function()
-            local highlight = {
-                "RainbowRed", "RainbowYellow", "RainbowBlue", "RainbowOrange",
-                "RainbowGreen", "RainbowViolet", "RainbowCyan"
-            }
-
-            local hooks = require "ibl.hooks"
-            -- create the highlight groups in the highlight setup hook, so they are reset
-            -- every time the colorscheme changes
-            hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-                vim.api.nvim_set_hl(0, "RainbowRed", {fg = "#E06C75"})
-                vim.api.nvim_set_hl(0, "RainbowYellow", {fg = "#E5C07B"})
-                vim.api.nvim_set_hl(0, "RainbowBlue", {fg = "#61AFEF"})
-                vim.api.nvim_set_hl(0, "RainbowOrange", {fg = "#D19A66"})
-                vim.api.nvim_set_hl(0, "RainbowGreen", {fg = "#98C379"})
-                vim.api.nvim_set_hl(0, "RainbowViolet", {fg = "#C678DD"})
-                vim.api.nvim_set_hl(0, "RainbowCyan", {fg = "#56B6C2"})
-            end)
-
-            require("ibl").setup({indent = {highlight = highlight}})
+            require("ibl").setup({
+                indent = {char = "│", tab_char = "│"},
+                scope = {enabled = false},
+                exclude = {
+                    filetypes = {
+                        "help", "alpha", "dashboard", "neo-tree", "Trouble",
+                        "trouble", "lazy", "mason", "notify", "toggleterm",
+                        "lazyterm"
+                    }
+                }
+            })
         end
     }, {
         "rcarriga/nvim-notify",
@@ -357,5 +409,28 @@ return {
         "folke/noice.nvim",
         event = "VeryLazy",
         dependencies = {"MunifTanjim/nui.nvim"}
+    }, -- Active indent guide and indent text objects. When you're browsing
+    -- code, this highlights the current level of indentation, and animates
+    -- the highlighting.
+    {
+        "echasnovski/mini.indentscope",
+        event = "LazyFile",
+        opts = {
+            -- symbol = "▏",
+            symbol = "│",
+            options = {try_as_border = true}
+        },
+        init = function()
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = {
+                    "help", "alpha", "dashboard", "neo-tree", "Trouble",
+                    "trouble", "lazy", "mason", "notify", "toggleterm",
+                    "lazyterm"
+                },
+                callback = function()
+                    vim.b.miniindentscope_disable = true
+                end
+            })
+        end
     }
 }

@@ -16,7 +16,9 @@ vim.api.nvim_create_user_command("ToggleESLint", function()
 end, {})
 
 vim.api.nvim_create_user_command("RotateWindows", function()
-    local ignored_filetypes = {"neo-tree", "fidget", "Outline", "toggleterm", "qf", "notify"}
+    local ignored_filetypes = {
+        "neo-tree", "fidget", "Outline", "toggleterm", "qf", "notify"
+    }
     local window_numbers = vim.api.nvim_tabpage_list_wins(0)
     local windows_to_rotate = {}
 
@@ -43,9 +45,12 @@ vim.api.nvim_create_user_command("RotateWindows", function()
         local firstWindow = windows_to_rotate[1]
         local secondWindow = windows_to_rotate[2]
 
-        vim.api.nvim_win_set_buf(firstWindow.window_number, secondWindow.buffer_number)
-        vim.api.nvim_win_set_buf(secondWindow.window_number, firstWindow.buffer_number)
+        vim.api.nvim_win_set_buf(firstWindow.window_number,
+                                 secondWindow.buffer_number)
+        vim.api.nvim_win_set_buf(secondWindow.window_number,
+                                 firstWindow.buffer_number)
     else
-        vim.api.nvim_err_writeln("You can only swap 2 open windows. Found " .. num_eligible_windows .. ".")
+        vim.api.nvim_err_writeln("You can only swap 2 open windows. Found " ..
+                                     num_eligible_windows .. ".")
     end
 end, {})

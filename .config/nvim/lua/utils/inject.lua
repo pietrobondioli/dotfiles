@@ -1,4 +1,4 @@
----@class lazyvim.util.inject
+---@class utils.inject
 local M = {}
 
 ---@generic A: any
@@ -9,26 +9,20 @@ local M = {}
 ---@param wrapper fun(a:A, b:B, c:C): boolean?
 ---@return F
 function M.args(fn, wrapper)
-  return function(...)
-    if wrapper(...) == false then
-      return
+    return function(...)
+        if wrapper(...) == false then return end
+        return fn(...)
     end
-    return fn(...)
-  end
 end
 
 function M.get_upvalue(func, name)
-  local i = 1
-  while true do
-    local n, v = debug.getupvalue(func, i)
-    if not n then
-      break
+    local i = 1
+    while true do
+        local n, v = debug.getupvalue(func, i)
+        if not n then break end
+        if n == name then return v end
+        i = i + 1
     end
-    if n == name then
-      return v
-    end
-    i = i + 1
-  end
 end
 
 return M
