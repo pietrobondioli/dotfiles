@@ -107,12 +107,12 @@ bindsym $mod+- split v
 bindsym $mod+f fullscreen toggle
 bindsym $mod+h focus left
 bindsym $mod+l focus right
-bindsym $mod+j focus up
-bindsym $mod+k focus down
-bindsym $mod+Shift+j move left
+bindsym $mod+k focus up
+bindsym $mod+j focus down
+bindsym $mod+Shift+h move left
 bindsym $mod+Shift+l move right
 bindsym $mod+Shift+k move up
-bindsym $mod+Shift+i move down
+bindsym $mod+Shift+j move down
 
 #-------
 # Screenshots
@@ -150,11 +150,11 @@ bindsym $mod+Shift+3 move container to workspace $ws3
 bindsym $mod+Shift+4 move container to workspace $ws4
 bindsym $mod+Shift+5 move container to workspace $ws5
 
-assign [class="firefox"] $ws1
-assign [class="kitty"] $ws2
-assign [class="discord"] $ws3
-assign [class="Spotify"] $ws3
-assign [class="Steam"] $ws4
+# assign [class="firefox"] $ws1
+# assign [class="kitty"] $ws2
+# assign [class="discord"] $ws3
+# assign [class="Spotify"] $ws3
+# assign [class="Steam"] $ws4
 
 exec --no-startup-id "firefox"
 
@@ -170,10 +170,10 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 #-------
 # Resizing
 #-------
-bindsym $mod+Ctrl+Right resize shrink width 1 px or 1 ppt
-bindsym $mod+Ctrl+Up resize grow height 1 px or 1 ppt
-bindsym $mod+Ctrl+Down resize shrink height 1 px or 1 ppt
-bindsym $mod+Ctrl+Left resize grow width 1 px or 1 ppt
+bindsym $mod+Ctrl+l resize shrink width 1 px or 1 ppt
+bindsym $mod+Ctrl+k resize grow height 1 px or 1 ppt
+bindsym $mod+Ctrl+j resize shrink height 1 px or 1 ppt
+bindsym $mod+Ctrl+h resize grow width 1 px or 1 ppt
 
 
 #######
