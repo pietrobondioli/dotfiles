@@ -30,10 +30,5 @@ return {
                 vim.api.nvim_set_hl(0, group, {})
             end
         end
-    }, {"folke/tokyonight.nvim", opts = {style = "storm"}},
-    {"joshdick/onedark.vim"}
-    -- {"shaunsingh/nord.nvim", lazy = false},
-    -- {"sainnhe/everforest", lazy = false},
-    -- {"sainnhe/gruvbox-material", lazy = false},
-    -- {"sainnhe/sonokai", lazy = false}, {"sainnhe/edge", lazy = false}
+    }, {"folke/tokyonight.nvim", opts = {style = "storm"}}
 }

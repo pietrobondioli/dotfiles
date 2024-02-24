@@ -311,80 +311,80 @@ map("n", "<leader>d",
 -- Telescope keybinds --
 -- -----
 
-map("n", "<leader>?", function() require("telescope.builtin").oldfiles() end,
-    {desc = "Find recently opened files"})
+-- map("n", "<leader>?", function() require("telescope.builtin").oldfiles() end,
+--     {desc = "Find recently opened files"})
 
-map("n", "<leader>sf",
-    function() require("telescope.builtin").find_files({hidden = true}) end,
-    {desc = "Search Files"})
+-- map("n", "<leader>sf",
+--     function() require("telescope.builtin").find_files({hidden = true}) end,
+--     {desc = "Search Files"})
 
-map("n", "<leader>sh", function() require("telescope.builtin").help_tags() end,
-    {desc = "Search Help"})
+-- map("n", "<leader>sh", function() require("telescope.builtin").help_tags() end,
+--     {desc = "Search Help"})
 
-map("n", "<leader>.", function()
-    require("telescope.builtin").current_buffer_fuzzy_find(require(
-                                                               "telescope.themes").get_dropdown(
-                                                               {
-            previewer = false
-        }))
-end, {desc = "Fuzzily search in current buffer"})
+-- map("n", "<leader>.", function()
+--     require("telescope.builtin").current_buffer_fuzzy_find(require(
+--                                                                "telescope.themes").get_dropdown(
+--                                                                {
+--             previewer = false
+--         }))
+-- end, {desc = "Fuzzily search in current buffer"})
 
-map("n", "<leader>ss", function()
-    require("telescope.builtin").spell_suggest(
-        require("telescope.themes").get_dropdown({previewer = false}))
-end, {desc = "Search Spelling suggestions"})
+-- map("n", "<leader>ss", function()
+--     require("telescope.builtin").spell_suggest(
+--         require("telescope.themes").get_dropdown({previewer = false}))
+-- end, {desc = "Search Spelling suggestions"})
 
-map("n", "<leader>:", "<cmd>Telescope command_history<cr>",
-    {desc = "Command History"})
-map("n", "<leader><space>", Utils.telescope("files"),
-    {desc = "Find Files (root dir)"})
-map("n", "<leader>fb",
-    "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>",
-    {desc = "Buffers"})
-map("n", "<leader>fc", Utils.telescope.config_files(),
-    {desc = "Find Config File"})
-map("n", "<leader>ff", Utils.telescope("files"),
-    {desc = "Find Files (root dir)"})
-map("n", "<leader>fF", Utils.telescope("files", {cwd = false}),
-    {desc = "Find Files (cwd)"})
-map("n", "<leader>fg", "<cmd>Telescope git_files<cr>",
-    {desc = "Find Files (git-files)"})
-map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", {desc = "Recent"})
-map("n", "<leader>fR", Utils.telescope("oldfiles", {cwd = vim.loop.cwd()}),
-    {desc = "Recent (cwd)"})
-map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", {desc = "commits"})
-map("n", "<leader>gs", "<cmd>Telescope git_status<CR>", {desc = "status"})
-map("n", '<leader>s"', "<cmd>Telescope registers<cr>", {desc = "Registers"})
-map("n", "<leader>sa", "<cmd>Telescope autocommands<cr>",
-    {desc = "Auto Commands"})
-map("n", "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>",
-    {desc = "Buffer"})
-map("n", "<leader>sc", "<cmd>Telescope command_history<cr>",
-    {desc = "Command History"})
-map("n", "<leader>sC", "<cmd>Telescope commands<cr>", {desc = "Commands"})
-map("n", "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>",
-    {desc = "Document diagnostics"})
-map("n", "<leader>sD", "<cmd>Telescope diagnostics<cr>",
-    {desc = "Workspace diagnostics"})
-map("n", "<leader>sg", Utils.telescope("live_grep"), {desc = "Grep (root dir)"})
-map("n", "<leader>sG", Utils.telescope("live_grep", {cwd = false}),
-    {desc = "Grep (cwd)"})
-map("n", "<leader>sh", "<cmd>Telescope help_tags<cr>", {desc = "Help Pages"})
-map("n", "<leader>sH", "<cmd>Telescope highlights<cr>",
-    {desc = "Search Highlight Groups"})
-map("n", "<leader>sk", "<cmd>Telescope keymaps<cr>", {desc = "Key Maps"})
-map("n", "<leader>sM", "<cmd>Telescope man_pages<cr>", {desc = "Man Pages"})
-map("n", "<leader>sm", "<cmd>Telescope marks<cr>", {desc = "Jump to Mark"})
-map("n", "<leader>so", "<cmd>Telescope vim_options<cr>", {desc = "Options"})
-map("n", "<leader>sR", "<cmd>Telescope resume<cr>", {desc = "Resume"})
-map("n", "<leader>sw", Utils.telescope("grep_string", {word_match = "-w"}),
-    {desc = "Word (root dir)"})
-map("n", "<leader>sW",
-    Utils.telescope("grep_string", {cwd = false, word_match = "-w"}),
-    {desc = "Word (cwd)"})
-map("v", "<leader>sw", Utils.telescope("grep_string"),
-    {desc = "Selection (root dir)"})
-map("v", "<leader>sW", Utils.telescope("grep_string", {cwd = false}),
-    {desc = "Selection (cwd)"})
-map("n", "<leader>uC", Utils.telescope("colorscheme", {enable_preview = true}),
-    {desc = "Colorscheme with preview"})
+-- map("n", "<leader>:", "<cmd>Telescope command_history<cr>",
+--     {desc = "Command History"})
+-- map("n", "<leader><space>", Utils.telescope("files"),
+--     {desc = "Find Files (root dir)"})
+-- map("n", "<leader>fb",
+--     "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>",
+--     {desc = "Buffers"})
+-- map("n", "<leader>fc", Utils.telescope.config_files(),
+--     {desc = "Find Config File"})
+-- map("n", "<leader>ff", Utils.telescope("files"),
+--     {desc = "Find Files (root dir)"})
+-- map("n", "<leader>fF", Utils.telescope("files", {cwd = false}),
+--     {desc = "Find Files (cwd)"})
+-- map("n", "<leader>fg", "<cmd>Telescope git_files<cr>",
+--     {desc = "Find Files (git-files)"})
+-- map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", {desc = "Recent"})
+-- map("n", "<leader>fR", Utils.telescope("oldfiles", {cwd = vim.loop.cwd()}),
+--     {desc = "Recent (cwd)"})
+-- map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", {desc = "commits"})
+-- map("n", "<leader>gs", "<cmd>Telescope git_status<CR>", {desc = "status"})
+-- map("n", '<leader>s"', "<cmd>Telescope registers<cr>", {desc = "Registers"})
+-- map("n", "<leader>sa", "<cmd>Telescope autocommands<cr>",
+--     {desc = "Auto Commands"})
+-- map("n", "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>",
+--     {desc = "Buffer"})
+-- map("n", "<leader>sc", "<cmd>Telescope command_history<cr>",
+--     {desc = "Command History"})
+-- map("n", "<leader>sC", "<cmd>Telescope commands<cr>", {desc = "Commands"})
+-- map("n", "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>",
+--     {desc = "Document diagnostics"})
+-- map("n", "<leader>sD", "<cmd>Telescope diagnostics<cr>",
+--     {desc = "Workspace diagnostics"})
+-- map("n", "<leader>sg", Utils.telescope("live_grep"), {desc = "Grep (root dir)"})
+-- map("n", "<leader>sG", Utils.telescope("live_grep", {cwd = false}),
+--     {desc = "Grep (cwd)"})
+-- map("n", "<leader>sh", "<cmd>Telescope help_tags<cr>", {desc = "Help Pages"})
+-- map("n", "<leader>sH", "<cmd>Telescope highlights<cr>",
+--     {desc = "Search Highlight Groups"})
+-- map("n", "<leader>sk", "<cmd>Telescope keymaps<cr>", {desc = "Key Maps"})
+-- map("n", "<leader>sM", "<cmd>Telescope man_pages<cr>", {desc = "Man Pages"})
+-- map("n", "<leader>sm", "<cmd>Telescope marks<cr>", {desc = "Jump to Mark"})
+-- map("n", "<leader>so", "<cmd>Telescope vim_options<cr>", {desc = "Options"})
+-- map("n", "<leader>sR", "<cmd>Telescope resume<cr>", {desc = "Resume"})
+-- map("n", "<leader>sw", Utils.telescope("grep_string", {word_match = "-w"}),
+--     {desc = "Word (root dir)"})
+-- map("n", "<leader>sW",
+--     Utils.telescope("grep_string", {cwd = false, word_match = "-w"}),
+--     {desc = "Word (cwd)"})
+-- map("v", "<leader>sw", Utils.telescope("grep_string"),
+--     {desc = "Selection (root dir)"})
+-- map("v", "<leader>sW", Utils.telescope("grep_string", {cwd = false}),
+--     {desc = "Selection (cwd)"})
+-- map("n", "<leader>uC", Utils.telescope("colorscheme", {enable_preview = true}),
+--     {desc = "Colorscheme with preview"})
