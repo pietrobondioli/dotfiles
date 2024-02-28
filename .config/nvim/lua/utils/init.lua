@@ -1,57 +1,35 @@
-local LazyUtil = require("lazy.core.util")
-
----@class Utils: LazyUtilCore
+---@class utils
 ---@field ui utils.ui
 ---@field lsp utils.lsp
 ---@field root utils.root
 ---@field telescope utils.telescope
 ---@field toggle utils.toggle
 ---@field format utils.format
----@field plugin utils.plugin
 ---@field inject utils.inject
----@field json utils.json
 ---@field lualine utils.lualine
 local M = {}
 
----@type table<string, string|string[]>
-local deprecated = {
-    get_clients = "lsp",
-    on_attach = "lsp",
-    on_rename = "lsp",
-    root_patterns = {"root", "patterns"},
-    get_root = {"root", "get"},
-    float_term = {"terminal", "open"},
-    toggle_diagnostics = {"toggle", "diagnostics"},
-    toggle_number = {"toggle", "number"},
-    fg = "ui"
-}
-
 setmetatable(M, {
     __index = function(t, k)
+        local LazyUtil = require("lazy.core.util")
+
         if LazyUtil[k] then return LazyUtil[k] end
-        local dep = deprecated[k]
-        if dep then
-            local mod = type(dep) == "table" and dep[1] or dep
-            local key = type(dep) == "table" and dep[2] or k
-            M.deprecate([[require("utils").]] .. k,
-                        [[require("utils").]] .. mod .. "." .. key)
-            ---@diagnostic disable-next-line: no-unknown
-            t[mod] = require("utils." .. mod) -- load here to prevent loops
-            return t[mod][key]
-        end
-        ---@diagnostic disable-next-line: no-unknown
+
         t[k] = require("utils." .. k)
         return t[k]
     end
 })
 
+-- Function to check if the current operating system is Windows
 function M.is_win() return vim.loop.os_uname().sysname:find("Windows") ~= nil end
 
+-- Function to check if a specific plugin is present in the configuration
 ---@param plugin string
 function M.has(plugin)
     return require("lazy.core.config").spec.plugins[plugin] ~= nil
 end
 
+-- Function to create an autocommand that triggers on the User event with the pattern "VeryLazy"
 ---@param fn fun()
 function M.on_very_lazy(fn)
     vim.api.nvim_create_autocmd("User", {
@@ -60,6 +38,7 @@ function M.on_very_lazy(fn)
     })
 end
 
+-- Function to get the options for a specific plugin
 ---@param name string
 function M.opts(name)
     local plugin = require("lazy.core.config").plugins[name]
@@ -68,12 +47,7 @@ function M.opts(name)
     return Plugin.values(plugin, "opts", false)
 end
 
-function M.deprecate(old, new)
-    M.warn(("`%s` is deprecated. Please use `%s` instead"):format(old, new),
-           {title = "LazyVim", once = true, stacktrace = true, stacklevel = 6})
-end
-
--- delay notifications till vim.notify was replaced or after 500ms
+-- Function to delay notifications until vim.notify was replaced or after 500ms
 function M.lazy_notify()
     local notifs = {}
     local function temp(...) table.insert(notifs, vim.F.pack_len(...)) end
@@ -104,6 +78,8 @@ function M.lazy_notify()
     timer:start(500, 0, replay)
 end
 
+-- Function to create an autocommand that triggers on the User event with the pattern "LazyLoad"
+-- The callback function is only called if the event data matches the provided name
 ---@param name string
 ---@param fn fun(name:string)
 function M.on_load(name, fn)
@@ -123,9 +99,9 @@ function M.on_load(name, fn)
     end
 end
 
--- Wrapper around vim.keymap.set that will
--- not create a keymap if a lazy key handler exists.
--- It will also set `silent` to true by default.
+-- Function to safely set a keymap
+-- Does not create a keymap if a lazy key handler exists
+-- Sets `silent` to true by default
 function M.safe_keymap_set(mode, lhs, rhs, opts)
     local keys = require("lazy.core.handler").handlers.keys
     ---@cast keys LazyKeysHandler

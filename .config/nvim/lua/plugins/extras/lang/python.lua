@@ -43,7 +43,6 @@ return {
         }
     }, {
         "nvim-neotest/neotest",
-        optional = true,
         dependencies = {"nvim-neotest/neotest-python"},
         opts = {
             adapters = {
@@ -56,7 +55,6 @@ return {
         }
     }, {
         "mfussenegger/nvim-dap",
-        optional = true,
         dependencies = {
             "mfussenegger/nvim-dap-python",
             -- stylua: ignore

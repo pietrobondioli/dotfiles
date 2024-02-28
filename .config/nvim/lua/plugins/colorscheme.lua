@@ -1,6 +1,7 @@
 return {
     {
         "catppuccin/nvim",
+        lazy = false,
         config = function()
             require("catppuccin").setup({
                 integrations = {
@@ -30,5 +31,5 @@ return {
                 vim.api.nvim_set_hl(0, group, {})
             end
         end
-    }, {"folke/tokyonight.nvim", opts = {style = "storm"}}
+    }, {"folke/tokyonight.nvim", lazy = false, opts = {style = "storm"}}
 }

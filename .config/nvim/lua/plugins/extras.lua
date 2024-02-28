@@ -6,7 +6,7 @@ return {
         },
         cmd = "SymbolsOutline",
         opts = function()
-            local Config = require("config")
+            local Config = require("config.defaults")
             local defaults = require("symbols-outline.config").defaults
             local opts = {symbols = {}, symbol_blacklist = {}}
             local filter = Config.kind_filter

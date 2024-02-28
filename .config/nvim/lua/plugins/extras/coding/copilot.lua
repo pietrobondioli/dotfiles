@@ -12,8 +12,6 @@ return {
         }
     }, {
         "nvim-lualine/lualine.nvim",
-        optional = true,
-        event = "VeryLazy",
         opts = function(_, opts)
             local Utils = require("utils")
             local colors = {
@@ -24,7 +22,7 @@ return {
             }
             table.insert(opts.sections.lualine_x, 2, {
                 function()
-                    local icon = require("config").icons.kinds.Copilot
+                    local icon = require("config.defaults").icons.kinds.Copilot
                     local status = require("copilot.api").status.data
                     return icon .. (status.message or "")
                 end,

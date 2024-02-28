@@ -3,6 +3,10 @@ local Utils = require("utils")
 ---@class utils.toggle
 local M = {}
 
+-- This function toggles a local option in Vim.
+-- If 'values' is provided, it will toggle between those two values.
+-- Otherwise, it will toggle between true and false.
+-- If 'silent' is not true, it will display a message about the new state of the option.
 ---@param silent boolean?
 ---@param values? {[1]:any, [2]:any}
 function M.option(option, silent, values)
@@ -28,6 +32,8 @@ function M.option(option, silent, values)
     end
 end
 
+-- This function toggles the 'number' and 'relativenumber' options in Vim.
+-- It keeps track of the previous state of these options so it can restore them when toggling off.
 local nu = {number = true, relativenumber = true}
 function M.number()
     if vim.opt_local.number:get() or vim.opt_local.relativenumber:get() then
@@ -45,6 +51,10 @@ function M.number()
     end
 end
 
+-- This function toggles the diagnostics in Vim.
+-- It checks if the current version of Neovim supports checking if diagnostics are enabled.
+-- If it does, it uses that to determine the current state of diagnostics.
+-- Otherwise, it keeps track of the state itself.
 local enabled = true
 function M.diagnostics()
     -- if this Neovim version supports checking if diagnostics are enabled
@@ -63,6 +73,10 @@ function M.diagnostics()
     end
 end
 
+-- This function toggles inlay hints in Vim.
+-- It checks if the current version of Neovim supports inlay hints.
+-- If it does, it uses that to toggle the inlay hints.
+-- Otherwise, it does nothing.
 ---@param buf? number
 ---@param value? boolean
 function M.inlay_hints(buf, value)

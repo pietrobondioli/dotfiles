@@ -46,28 +46,27 @@ return {
         },
         init = function()
             -- Install the conform formatter on VeryLazy
-            require("utils").on_very_lazy(function()
-                require("utils").format.register({
-                    name = "conform.nvim",
-                    priority = 100,
-                    primary = true,
-                    format = function(buf)
-                        local plugin =
-                            require("lazy.core.config").plugins["conform.nvim"]
-                        local Plugin = require("lazy.core.plugin")
-                        local opts = Plugin.values(plugin, "opts", false)
-                        require("conform").format(
-                            Utils.merge(opts.format, {bufnr = buf}))
-                    end,
-                    sources = function(buf)
-                        local ret = require("conform").list_formatters(buf)
-                        ---@param v conform.FormatterInfo
-                        return vim.tbl_map(function(v)
-                            return v.name
-                        end, ret)
-                    end
-                })
-            end)
+            -- require("utils").on_very_lazy(function()
+            require("utils").format.register({
+                name = "conform.nvim",
+                priority = 100,
+                primary = true,
+                format = function(buf)
+                    local plugin =
+                        require("lazy.core.config").plugins["conform.nvim"]
+                    local Plugin = require("lazy.core.plugin")
+                    local opts = Plugin.values(plugin, "opts", false)
+                    require("conform").format(
+                        Utils.merge(opts.format, {bufnr = buf}))
+                end,
+                sources = function(buf)
+                    local ret = require("conform").list_formatters(buf)
+                    ---@param v conform.FormatterInfo
+                    return vim.tbl_map(function(v)
+                        return v.name
+                    end, ret)
+                end
+            })
         end,
         opts = function()
             local plugin = require("lazy.core.config").plugins["conform.nvim"]

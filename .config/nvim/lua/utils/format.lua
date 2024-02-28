@@ -1,5 +1,6 @@
 local Utils = require("utils")
 
+-- Define a new class `utils.format` with a metatable that allows it to be called like a function
 ---@class utils.format
 ---@overload fun(opts?: {force?:boolean})
 local M = setmetatable({}, {__call = function(m, ...) return m.format(...) end})
@@ -13,17 +14,26 @@ local M = setmetatable({}, {__call = function(m, ...) return m.format(...) end})
 
 M.formatters = {} ---@type LazyFormatter[]
 
+-- Function to register a new formatter
+-- Adds the formatter to the list and sorts the list by priority
 ---@param formatter LazyFormatter
 function M.register(formatter)
     M.formatters[#M.formatters + 1] = formatter
     table.sort(M.formatters, function(a, b) return a.priority > b.priority end)
 end
 
+-- Function to format an expression
+-- If the `conform.nvim` plugin is installed, use its formatexpr function
+-- Otherwise, use the built-in LSP formatexpr function with a timeout of 3000ms
 function M.formatexpr()
     if Utils.has("conform.nvim") then return require("conform").formatexpr() end
     return vim.lsp.formatexpr({timeout_ms = 3000})
 end
 
+-- Function to resolve a buffer to a list of formatters
+-- If no buffer is provided, use the current buffer
+-- For each formatter, determine whether it is active and what sources it has
+-- A formatter is active if it has sources and either it is not the primary formatter or there is no primary formatter yet
 ---@param buf? number
 ---@return (LazyFormatter|{active:boolean,resolved:string[]})[]
 function M.resolve(buf)
@@ -40,6 +50,9 @@ function M.resolve(buf)
     end, M.formatters)
 end
 
+-- Function to display information about the formatters for a buffer
+-- If no buffer is provided, use the current buffer
+-- Displays whether autoformatting is enabled globally and for the buffer, and which formatters are active and what sources they have
 ---@param buf? number
 function M.info(buf)
     buf = buf or vim.api.nvim_get_current_buf()
@@ -74,6 +87,10 @@ function M.info(buf)
     })
 end
 
+-- Function to check whether autoformatting is enabled for a buffer
+-- If no buffer is provided, use the current buffer
+-- If the buffer has a local value for autoformatting, use that
+-- Otherwise, use the global value if set, or true by default
 ---@param buf? number
 function M.enabled(buf)
     buf = (buf == nil or buf == 0) and vim.api.nvim_get_current_buf() or buf
@@ -87,6 +104,9 @@ function M.enabled(buf)
     return gaf == nil or gaf
 end
 
+-- Function to toggle autoformatting for a buffer or globally
+-- If a buffer is provided, toggle autoformatting for that buffer
+-- Otherwise, toggle global autoformatting and unset the buffer value
 ---@param buf? boolean
 function M.toggle(buf)
     if buf then
@@ -98,6 +118,10 @@ function M.toggle(buf)
     M.info()
 end
 
+-- Function to format a buffer
+-- If no options are provided, use the current buffer and only format if autoformatting is enabled
+-- If `force` is true, format regardless of whether autoformatting is enabled
+-- If no formatters are active and `force` is true, display a warning
 ---@param opts? {force?:boolean, buf?:number}
 function M.format(opts)
     opts = opts or {}
@@ -118,25 +142,7 @@ function M.format(opts)
     end
 end
 
-function M.health()
-    local Config = require("lazy.core.config")
-    local has_plugin = Config.spec.plugins["none-ls.nvim"]
-    local has_extra = vim.tbl_contains(Config.spec.modules,
-                                       "plugins.extras.lsp.none-ls")
-    if has_plugin and not has_extra then
-        Utils.warn({
-            "`conform.nvim` and `nvim-lint` are now the default formatters and linters in LazyVim.",
-            "", "You can use those plugins together with `none-ls.nvim`,",
-            "but you need to enable the `plugins.extras.lsp.none-ls` extra,",
-            "for formatting to work correctly.", "",
-            "In case you no longer want to use `none-ls.nvim`, just remove the spec from your config."
-        })
-    end
-end
-
 function M.setup()
-    M.health()
-
     -- Autoformat autocmd
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = vim.api.nvim_create_augroup("LazyFormat", {}),

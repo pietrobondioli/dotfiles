@@ -31,14 +31,14 @@ return {
                 severity_sort = true,
                 signs = {
                     text = {
-                        [vim.diagnostic.severity.ERROR] = require("config").icons
-                            .diagnostics.Error,
-                        [vim.diagnostic.severity.WARN] = require("config").icons
-                            .diagnostics.Warn,
-                        [vim.diagnostic.severity.HINT] = require("config").icons
-                            .diagnostics.Hint,
-                        [vim.diagnostic.severity.INFO] = require("config").icons
-                            .diagnostics.Info
+                        [vim.diagnostic.severity.ERROR] = require(
+                            "config.defaults").icons.diagnostics.Error,
+                        [vim.diagnostic.severity.WARN] = require(
+                            "config.defaults").icons.diagnostics.Warn,
+                        [vim.diagnostic.severity.HINT] = require(
+                            "config.defaults").icons.diagnostics.Hint,
+                        [vim.diagnostic.severity.INFO] = require(
+                            "config.defaults").icons.diagnostics.Info
                     }
                 }
             },
@@ -120,7 +120,8 @@ return {
             end
 
             -- diagnostics
-            for name, icon in pairs(require("config").icons.diagnostics) do
+            for name, icon in
+                pairs(require("config.defaults").icons.diagnostics) do
                 name = "DiagnosticSign" .. name
                 vim.fn.sign_define(name,
                                    {text = icon, texthl = name, numhl = ""})
@@ -139,7 +140,8 @@ return {
                 opts.diagnostics.virtual_text.prefix =
                     vim.fn.has("nvim-0.10.0") == 0 and "●" or
                         function(diagnostic)
-                            local icons = require("config").icons.diagnostics
+                            local icons =
+                                require("config.defaults").icons.diagnostics
                             for d, icon in pairs(icons) do
                                 if diagnostic.severity ==
                                     vim.diagnostic.severity[d:upper()] then
@@ -220,7 +222,7 @@ return {
     }, {
 
         "williamboman/mason.nvim",
-        cmd = "Mason",
+        cmd = {"Mason", "MasonInstall", "MasonUpdate"},
         keys = {{"<leader>cm", "<cmd>Mason<cr>", desc = "Mason"}},
         build = ":MasonUpdate",
         opts = {
@@ -232,6 +234,7 @@ return {
         ---@param opts MasonSettings | {ensure_installed: string[]}
         config = function(_, opts)
             require("mason").setup(opts)
+
             local mr = require("mason-registry")
             mr:on("package:install:success", function()
                 vim.defer_fn(function()

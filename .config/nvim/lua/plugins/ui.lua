@@ -110,7 +110,6 @@ return {
         end
     }, {
         "nvim-lualine/lualine.nvim",
-        event = "VeryLazy",
         init = function()
             vim.g.lualine_laststatus = vim.o.laststatus
             if vim.fn.argc(-1) > 0 then
@@ -126,7 +125,7 @@ return {
             local lualine_require = require("lualine_require")
             lualine_require.require = require
 
-            local icons = require("config").icons
+            local icons = require("config.defaults").icons
 
             vim.o.laststatus = vim.g.lualine_laststatus
 
@@ -181,7 +180,8 @@ return {
                         {
                             function()
                                 local icon =
-                                    require("config").icons.kinds.Copilot
+                                    require("config.defaults").icons.kinds
+                                        .Copilot
                                 local status =
                                     require("copilot.api").status.data
                                 return icon .. (status.message or "")
@@ -286,7 +286,6 @@ return {
     -- tabs, which include filetype icons and close buttons.
     {
         "akinsho/bufferline.nvim",
-        event = "VeryLazy",
         keys = {
             {"<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin"},
             {
@@ -324,7 +323,7 @@ return {
                 diagnostics = "nvim_lsp",
                 always_show_bufferline = false,
                 diagnostics_indicator = function(_, _, diag)
-                    local icons = require("config").icons.diagnostics
+                    local icons = require("config.defaults").icons.diagnostics
                     local ret =
                         (diag.error and icons.Error .. diag.error .. " " or "") ..
                             (diag.warning and icons.Warn .. diag.warning or "")
@@ -370,7 +369,6 @@ return {
         end
     }, {
         "rcarriga/nvim-notify",
-        event = "VeryLazy",
         config = function()
             local notify = require("notify")
 
@@ -405,16 +403,11 @@ return {
         highlight NotifyWARNTitle guifg=#f5a97f
         ]])
         end
-    }, {
-        "folke/noice.nvim",
-        event = "VeryLazy",
-        dependencies = {"MunifTanjim/nui.nvim"}
-    }, -- Active indent guide and indent text objects. When you're browsing
+    }, {"folke/noice.nvim", dependencies = {"MunifTanjim/nui.nvim"}}, -- Active indent guide and indent text objects. When you're browsing
     -- code, this highlights the current level of indentation, and animates
     -- the highlighting.
     {
         "echasnovski/mini.indentscope",
-        event = "LazyFile",
         opts = {
             -- symbol = "▏",
             symbol = "│",

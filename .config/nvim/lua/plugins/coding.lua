@@ -41,7 +41,7 @@ return {
                 }, {{name = "buffer"}}),
                 formatting = {
                     format = function(_, item)
-                        local icons = require("config").icons.kinds
+                        local icons = require("config.defaults").icons.kinds
                         if icons[item.kind] then
                             item.kind = icons[item.kind] .. item.kind
                         end
@@ -73,7 +73,6 @@ return {
         --   { "a", mode = { "x", "o" } },
         --   { "i", mode = { "x", "o" } },
         -- },
-        event = "VeryLazy",
         opts = function()
             local ai = require("mini.ai")
             return {
@@ -151,7 +150,6 @@ return {
     }, -- auto pairs
     {
         "echasnovski/mini.pairs",
-        event = "VeryLazy",
         opts = {},
         keys = {
             {
@@ -215,7 +213,6 @@ return {
         opts = {enable_autocmd = false}
     }, {
         "echasnovski/mini.comment",
-        event = "VeryLazy",
         opts = {
             options = {
                 custom_commentstring = function()

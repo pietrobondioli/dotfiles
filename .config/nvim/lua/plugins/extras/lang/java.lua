@@ -28,7 +28,6 @@ return {
     }, -- Ensure java debugger and test packages are installed.
     {
         "mfussenegger/nvim-dap",
-        optional = true,
         dependencies = {
             {
                 "williamboman/mason.nvim",

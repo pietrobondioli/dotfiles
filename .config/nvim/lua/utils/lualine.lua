@@ -3,6 +3,11 @@ local Utils = require("utils")
 ---@class utils.lualine
 local M = {}
 
+-- Function to create a source for the cmp completion plugin
+-- The source is represented by a table with three functions:
+-- - The first function returns the icon for the source
+-- - The second function (cond) checks if the source is available
+-- - The third function (color) returns the color for the source based on its status
 function M.cmp_source(name, icon)
     local started = false
     local function status()
@@ -31,14 +36,17 @@ function M.cmp_source(name, icon)
     return {
         function()
             return icon or
-                       require("config").icons.kinds[name:sub(1, 1):upper() ..
-                           name:sub(2)]
+                       require("config.defaults").icons.kinds[name:sub(1, 1)
+                           :upper() .. name:sub(2)]
         end,
         cond = function() return status() ~= nil end,
         color = function() return colors[status()] or colors.ok end
     }
 end
 
+-- Function to format a component of the lualine status line
+-- It applies a highlight group to the text of the component
+-- The highlight group is created if it doesn't exist yet
 ---@param component any
 ---@param text string
 ---@param hl_group? string
@@ -59,6 +67,10 @@ function M.format(component, text, hl_group)
                component:get_default_hl()
 end
 
+-- Function to create a pretty path for the lualine status line
+-- The path is relative to the current working directory or the root directory
+-- The path is shortened if it has more than three parts
+-- The last part of the path is highlighted if the buffer is modified
 ---@param opts? {relative: "cwd"|"root", modified_hl: string?}
 function M.pretty_path(opts)
     opts = vim.tbl_extend("force", {relative = "cwd", modified_hl = "Constant"},
@@ -91,6 +103,13 @@ function M.pretty_path(opts)
     end
 end
 
+-- Function to create a root directory component for the lualine status line
+-- The component shows the name of the root directory
+-- The root directory is the current working directory, a subdirectory of the current working directory, a parent directory of the current working directory, or another directory
+-- The component is represented by a table with three functions:
+-- - The first function returns the text for the component
+-- - The second function (cond) checks if the root directory exists
+-- - The third function (color) returns the color for the component
 ---@param opts? {cwd:false, subdirectory: true, parent: true, other: true, icon?:string}
 function M.root_dir(opts)
     opts = vim.tbl_extend("force", {

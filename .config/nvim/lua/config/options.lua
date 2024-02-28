@@ -2,10 +2,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- LazyVim Configurations
-vim.g.root_spec = {"lsp", {".git", "lua"}, "cwd"}
-vim.g.autoformat = true
-
 -- Editor Behavior
 local opt = vim.opt
 opt.autowrite = true -- Auto-save before commands like :next and :make
@@ -50,5 +46,8 @@ vim.opt.foldtext = "v:lua.require'util'.ui.foldtext()"
 -- Backup and Undo
 opt.undofile = true -- Persistent undo
 
-opt.guicursor = {"n-v-c:block", "i-ci-ve:ver25", "r-cr:hor20", "o:hor50", "a:blinkwait700-blinkoff400-blinkon250",
-                 "sm:block-blinkwait175-blinkoff150-blinkon175"}
+opt.guicursor = {
+    "n-v-c:block", "i-ci-ve:ver25", "r-cr:hor20", "o:hor50",
+    "a:blinkwait700-blinkoff400-blinkon250",
+    "sm:block-blinkwait175-blinkoff150-blinkon175"
+}

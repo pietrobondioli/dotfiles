@@ -9,9 +9,9 @@ local Utils = require("utils")
 local M = setmetatable({},
                        {__call = function(m, ...) return m.telescope(...) end})
 
--- this will return a function that calls telescope.
--- cwd will default to utils.get_root
--- for `files`, git_files or find_files will be chosen depending on .git
+-- This function returns a function that calls telescope.
+-- The 'cwd' option will default to the root directory found by the 'Utils.root()' function.
+-- For the 'files' builtin, it will choose between 'git_files' or 'find_files' depending on the presence of a '.git' directory.
 ---@param builtin string
 ---@param opts? utils.telescope.opts
 function M.telescope(builtin, opts)
@@ -49,6 +49,7 @@ function M.telescope(builtin, opts)
     end
 end
 
+-- This function returns a function that calls telescope with the 'find_files' builtin and the 'cwd' option set to the user's config directory.
 function M.config_files()
     return Utils.telescope("find_files", {cwd = vim.fn.stdpath("config")})
 end
