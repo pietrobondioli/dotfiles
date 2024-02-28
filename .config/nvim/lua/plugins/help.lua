@@ -3,18 +3,19 @@ return {
         "folke/which-key.nvim",
         opts = {
             defaults = {
-                ["<leader>d"] = "Debug",
-                ["<leader>h"] = "Help",
-                ["<leader>q"] = "Quit",
-                ["<leader>w"] = "Windows",
-                ["<leader>g"] = "Git",
-                ["<leader><tab>"] = "Tabs",
-                ["<leader>s"] = "Search",
-                ["<leader>f"] = "Files",
-                ["<leader>b"] = "Buffers",
-                ["<leader>c"] = "Code",
-                ["<leader>u"] = "Toggle",
-                ["<leader>x"] = "Trouble"
+                ["<leader>d"] = "+[d]ebug",
+                ["<leader>h"] = "+[h]elp",
+                ["<leader>q"] = "+[q]uit",
+                ["<leader>w"] = "+[w]indows",
+                ["<leader>g"] = "+[g]it",
+                ["<leader><tab>"] = "+[t]abs",
+                ["<leader>s"] = "+[s]earch",
+                ["<leader>f"] = "+[f]iles",
+                ["<leader>b"] = "+[b]uffers",
+                ["<leader>c"] = "+[c]ode",
+                ["<leader>u"] = "+[t]oggle",
+                ["<leader>x"] = "+[t]rouble",
+                ["<leader>a"] = "+h[a]rpoon"
             }
         },
         init = function()
