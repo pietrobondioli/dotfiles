@@ -75,11 +75,11 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 #-------
 # Floating Windows
 #-------
-for_window [class="^.*"] border pixel 2
+for_window [class="^.*"] border normal
 
 floating_modifier $mod
-gaps inner 15px
-gaps outer 4px
+gaps inner 12px
+gaps outer 6px
 for_window [class="firefox" title="Library"] floating enable
 for_window [window_type="dialog"] floating enable
 for_window [class="Steam" title="^Steam - Update News$"] floating enable
@@ -105,15 +105,27 @@ bindsym $mod+q kill
 bindsym $mod+| split h
 bindsym $mod+- split v
 bindsym $mod+f fullscreen toggle
+
 bindsym $mod+h focus left
 bindsym $mod+l focus right
 bindsym $mod+k focus up
 bindsym $mod+j focus down
+bindsym $mod+Left focus left
+bindsym $mod+Right focus right
+bindsym $mod+Up focus up
+bindsym $mod+Down focus down
+
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+l move right
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+j move down
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Down move down
+
 bindsym $mod+Tab focus next
+bindsym $mod+Shift+Tab workspace next
 
 #-------
 # Screenshots
@@ -154,12 +166,6 @@ bindsym $mod+Shift+5 move container to workspace $ws5
 bindsym $mod+Prior workspace prev
 bindsym $mod+Next workspace next
 
-# assign [class="firefox"] $ws1
-# assign [class="kitty"] $ws2
-# assign [class="discord"] $ws3
-# assign [class="Spotify"] $ws3
-# assign [class="Steam"] $ws4
-
 exec --no-startup-id "firefox"
 
 for_window [urgent=latest] focus
@@ -174,16 +180,31 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 #-------
 # Resizing
 #-------
-bindsym $mod+Ctrl+l resize shrink width 1 px or 1 ppt
-bindsym $mod+Ctrl+k resize grow height 1 px or 1 ppt
-bindsym $mod+Ctrl+j resize shrink height 1 px or 1 ppt
-bindsym $mod+Ctrl+h resize grow width 1 px or 1 ppt
 
+set $resize_unit 2
+
+bindsym $mod+Ctrl+l resize shrink width $resize_unit px or $resize_unit ppt
+bindsym $mod+Ctrl+k resize grow height $resize_unit px or $resize_unit ppt
+bindsym $mod+Ctrl+j resize shrink height $resize_unit px or $resize_unit ppt
+bindsym $mod+Ctrl+h resize grow width $resize_unit px or $resize_unit ppt
+
+# byndsym $mod+Ctrl+Left resize shrink width $resize_unit px or $resize_unit ppt
+# bindsym $mod+Ctrl+Up resize grow height $resize_unit px or $resize_unit ppt
+# bindsym $mod+Ctrl+Down resize shrink height $resize_unit px or $resize_unit ppt
+# bindsym $mod+Ctrl+Right resize grow width $resize_unit px or $resize_unit ppt
 
 #######
 # Bar Configuration
 #######
 bar {
-    status_command bumblebee-status -m caffeine datetime pasink pasource \
-        xrandr arch_update nic cpu memory battery -p time.format="%H:%M" -t dracula-powerline
+    status_command bumblebee-status -m indicator datetime pulseout pulsein \
+        xrandr arch_update speedtest nic bluetooth2 cpu memory battery todo \
+        -p nic.states=up \
+        -p indicator.include='capslock' \
+        -p time.format="%H:%M" -p pulsectl.autostart=true \
+        -p pulsectl.left-click=select_default_device_popup \
+        -p pulsectl.showdevicename=true \
+        -p datetime.format="%a %b %d %H:%M:%S (%d/%m/%Y)" \
+        -p todo.file="$HOME/personal/todo/todo.txt" \
+        -t dracula-powerline
 }
