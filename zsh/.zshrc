@@ -1,4 +1,3 @@
-
 NODE_PATHS=$(find /home/pietro/.nvm/versions/node -maxdepth 1 -mindepth 1 -type d)
 export PATH=/usr/local/bin:$HOME/bin:$HOME/.local/bin:$NODE_PATHS:$PATH
 
@@ -52,7 +51,7 @@ alias rr='ranger'
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
-  export EDITOR='mvim'
+  export EDITOR='nvim'
 fi
 
 # Dirs
@@ -73,13 +72,10 @@ alias l="ls -CF"
 # Navigation
 
 cx() { cd "$@" && l; }
-fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
-f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
-fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
+fcd() { cd "$(find ~/personal ~/work ~/mack-ads ~/ -type d -maxdepth 3 -mindepth 1 -print 2>/dev/null | fzf)" && l; }
 
 neofetch
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
