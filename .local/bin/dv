@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ -n "$1" ]; then
+	path="$1"
+else
+	path=(~/work ~/personal/projects ~/personal/sandbox ~/)
+fi
+
+dir=$(find "${path[@]}" -type d -maxdepth 4 -mindepth 1 -print 2>/dev/null | fzf +m) || {
+	echo "No directories found"
+	exit 1
+}
+if [ -n "$dir" ]; then
+	cd "$dir" || {
+		echo "Unable to change directory"
+		exit 1
+	}
+else
+	echo "No selection made"
+	exit 1
+fi
+
+nvim .
