@@ -33,13 +33,11 @@ exec_always --no-startup-id redshift -O 3000 -P
 # Disable screen saving and power management
 exec_always --no-startup-id xset s off -dpms
 
-
-
 #-------
 # Visual Autostart
 #-------
 exec_always --no-startup-id picom &
-exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/sea_watchtower.png
+exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/ship.jpg
 
 #-------
 # Utility Autostart
@@ -53,6 +51,16 @@ exec_always --no-startup-id battery &
 #-------
 exec --no-startup-id xss-lock --transfer-sleep-lock -- $HOME/.config/scripts/lock
 exec --no-startup-id nm-applet
+
+#-------
+# Clipboard Manager
+#-------
+
+bindsym $mod+v exec --no-startup-id copyq show
+
+for_window [class="copyq"] floating enable, resize set 400 300, border pixel 5, move position center
+
+exec --no-startup-id copyq
 
 #######
 # Keybindings
@@ -71,6 +79,8 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+bindsym $mod+Shift+v exec --no-startup-id "pavucontrol"
 
 #-------
 # Floating Windows
@@ -95,15 +105,18 @@ for_window [class="Gufw.py"] floating enable
 #-------
 # exec on the correct workspace
 bindsym $mod+BackSpace exec --no-startup-id "firefox"
-bindsym $mod+Return exec --no-startup-id "kitty -e tmux"
-bindsym $mod+space exec --no-startup-id rofi -show drun
+bindsym $mod+Return exec --no-startup-id "kitty"
+bindsym $mod+space exec --no-startup-id "rofi -show drun"
+bindsym $mod+t exec --no-startup-id "kitty -e nvim $HOME/personal/todo/todo.md"
+bindsym $mod+n exec --no-startup-id "kitty -e nvim $HOME/personal/notes"
+bindsym $mod+Shift+n exec --no-startup-id "kitty -e fv $HOME/personal/notes"
+bindsym $mod+Shift+Return exec --no-startup-id "kitty -e dv"
+bindsym $mod+Shift+slash exec --no-startup-id "thunar"
 
 #-------
 # Window Management
 #-------
 bindsym $mod+q kill
-bindsym $mod+| split h
-bindsym $mod+- split v
 bindsym $mod+f fullscreen toggle
 
 bindsym $mod+h focus left
@@ -163,6 +176,7 @@ bindsym $mod+Shift+3 move container to workspace $ws3
 bindsym $mod+Shift+4 move container to workspace $ws4
 bindsym $mod+Shift+5 move container to workspace $ws5
 
+# leader + pageup/pagedown to switch to next/previous workspace
 bindsym $mod+Prior workspace prev
 bindsym $mod+Next workspace next
 
@@ -198,13 +212,14 @@ bindsym $mod+Ctrl+h resize grow width $resize_unit px or $resize_unit ppt
 #######
 bar {
     status_command bumblebee-status -m indicator datetime pulseout pulsein \
-        xrandr arch_update speedtest nic bluetooth2 cpu memory battery todo \
+        xrandr arch_update speedtest nic cpu memory battery \
         -p nic.states=up \
         -p indicator.include='capslock' \
         -p time.format="%H:%M" -p pulsectl.autostart=true \
-        -p pulsectl.left-click=select_default_device_popup \
-        -p pulsectl.showdevicename=true \
+        -p pulseout.left-click=select_default_device_popup \
+        -p pulseout.showbars=true \
+        -p pulsein.left-click=select_default_device_popup \
+        -p pulsein.showbars=true \
         -p datetime.format="%a %b %d %H:%M:%S (%d/%m/%Y)" \
-        -p todo.file="$HOME/personal/todo/todo.txt" \
         -t dracula-powerline
 }
