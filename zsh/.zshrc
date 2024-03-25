@@ -1,24 +1,15 @@
 NODE_PATHS=$(find /home/pietro/.nvm/versions/node -maxdepth 1 -mindepth 1 -type d)
-export PATH=/usr/local/bin:$HOME/bin:$HOME/.local/bin:$NODE_PATHS:$PATH
+GO_PATH=/usr/local/go/bin:$HOME/go/bin
+export PATH=/usr/local/bin:$HOME/bin:$HOME/.local/bin:$NODE_PATHS:$GO_PATH:$PATH
 
 # Set default terminal to kitty
 export TERMINAL="/usr/bin/kitty"
 
-# Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="xxf"
 
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting common-aliases command-not-found dotnet kubectl urltools encode64 themes jsontools history)
+plugins=(git fzf-tab zsh-autosuggestions zsh-syntax-highlighting common-aliases command-not-found kubectl urltools encode64 themes jsontools history)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -45,7 +36,7 @@ function ranger {
 	fi
 	command rm -f -- "$tempfile" 2>/dev/null
 }
-alias rr='ranger'
+alias ra='ranger'
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -55,27 +46,64 @@ else
 fi
 
 # Dirs
+alias cd="z"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ......="cd ../../../../.."
+alias zz="zi"
 
 # User aliases
+alias ..="nvim ."
+alias v="nvim"
 alias vim="nvim"
 alias c="clear"
-alias ls="ls --color=auto"
-alias ll="ls -alF"
-alias la="ls -A"
-alias l="ls -CF"
+alias ls="eza --icons --git"
+alias l='eza -alg --color=always --group-directories-first --git'
+alias ll='eza -aliSgh --color=always --group-directories-first --icons --header --long --git'
+alias lt='eza -@alT --color=always --git'
+alias llt="eza --oneline --tree --icons --git-ignore"
+alias lr='eza -alg --sort=modified --color=always --group-directories-first --git'
+alias cat="bat"
+alias lg="lazygit"
+alias cwd="pwd | tr -d '\n' | xclip -selection clipboard"
+alias rr="rm -rf"
+alias md="mkdir -p"
+alias update="yay -Syu"
+alias copy="xclip -selection clipboard"
+alias paste="xclip -selection clipboard -o"
+
+alias grep="rg"
+
+alias zshrc="nvim ~/.zshrc && source ~/.zshrc"
+alias nvimrc="nvim ~/.config/nvim"
+alias i3rc="nvim ~/.config/i3/config"
+
+alias gbl="git branch --format='%(refname:short)'"
+alias gbr="git branch -r --format='%(refname:lstrip=3)'"
+alias gswl="gbl | fzf | xargs git switch"
+alias gswr="gbr | fzf | xargs git switch"
 
 # Navigation
 
+take() {
+  mkdir -p "$1"
+  cd "$1"
+}
 cx() { cd "$@" && l; }
-fcd() { cd "$(find ~/personal ~/work ~/mack-ads ~/ -type d -maxdepth 3 -mindepth 1 -print 2>/dev/null | fzf)" && l; }
+ffd() {
+  if [ -z "$1" ]; then
+    cd "$(find ~/personal ~/work ~/mack-ads ~/ -type d -maxdepth 3 -mindepth 1 -print 2>/dev/null | fzf)" && l;
+  else
+    cd "$(find "$1" -type d -maxdepth 3 -mindepth 1 -print 2>/dev/null | fzf)" && l;
+  fi
+}
 
 neofetch
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+eval "$(zoxide init zsh)"
