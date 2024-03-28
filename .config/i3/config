@@ -88,8 +88,8 @@ bindsym $mod+Shift+v exec --no-startup-id "pavucontrol"
 for_window [class="^.*"] border normal
 
 floating_modifier $mod
-gaps inner 12px
-gaps outer 6px
+gaps inner 6px
+gaps outer 3px
 for_window [class="firefox" title="Library"] floating enable
 for_window [window_type="dialog"] floating enable
 for_window [class="Steam" title="^Steam - Update News$"] floating enable
@@ -180,6 +180,9 @@ bindsym $mod+Shift+5 move container to workspace $ws5
 bindsym $mod+Prior workspace prev
 bindsym $mod+Next workspace next
 
+bindsym $mod+Shift+Prior move container to workspace prev
+bindsym $mod+Shift+Next move container to workspace next
+
 exec --no-startup-id "firefox"
 
 for_window [urgent=latest] focus
@@ -195,7 +198,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # Resizing
 #-------
 
-set $resize_unit 2
+set $resize_unit 8
 
 bindsym $mod+Ctrl+l resize shrink width $resize_unit px or $resize_unit ppt
 bindsym $mod+Ctrl+k resize grow height $resize_unit px or $resize_unit ppt
@@ -211,15 +214,10 @@ bindsym $mod+Ctrl+h resize grow width $resize_unit px or $resize_unit ppt
 # Bar Configuration
 #######
 bar {
-    status_command bumblebee-status -m indicator datetime pulseout pulsein \
-        xrandr arch_update speedtest nic cpu memory battery \
+    status_command bumblebee-status -m indicator layout datetime pasink pasource \
+        xrandr nic cpu nvidiagpu memory battery \
         -p nic.states=up \
         -p indicator.include='capslock' \
-        -p time.format="%H:%M" -p pulsectl.autostart=true \
-        -p pulseout.left-click=select_default_device_popup \
-        -p pulseout.showbars=true \
-        -p pulsein.left-click=select_default_device_popup \
-        -p pulsein.showbars=true \
         -p datetime.format="%a %b %d %H:%M:%S (%d/%m/%Y)" \
         -t dracula-powerline
 }
