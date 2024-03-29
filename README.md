@@ -104,12 +104,12 @@ yay -S xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance mate
 
 ```bash
 # Utilities and system tools
-yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn zsh thunar thunar-archive-plugin xarchiver lm_sensors htop onlyoffice-bin obs-studio obs-backgroundremoval droidcam-obs-plugin gnome-disk-utility dosfstools ntfs-3g rclone rclone-browser obsidian feh qbittorrent popsicle unrar pwgen
+yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn zsh thunar thunar-archive-plugin xarchiver lm_sensors htop onlyoffice-bin obs-studio obs-backgroundremoval droidcam-obs-plugin gnome-disk-utility dosfstools ntfs-3g rclone rclone-browser feh qbittorrent popsicle unrar pwgen zoxide bat eza fd ripgrep dust fzf copyq
 ```
 
 ```bash
 # Font essentials
-yay -S otf-font-awesome ttf-jetbrains-mono-nerd ttf-jetbrains-mono otf-font-awesome-4 ttf-droid ttf-fantasque-sans-mono adobe-source-code-pro-fonts noto-fonts-emoji ttf-ms-fonts
+yay -S otf-font-awesome ttf-jetbrains-mono-nerd ttf-jetbrains-mono otf-font-awesome-4 ttf-droid ttf-fantasque-sans-mono adobe-source-code-pro-fonts noto-fonts-emoji ttf-ms-fonts ttf-agave-nerd
 ```
 
 ```bash
@@ -369,7 +369,7 @@ nvm install lts
 yay -S dotnet-targeting-pack-6.0 dotnet-runtime-6.0 dotnet-sdk-6.0 dotnet-runtime dotnet-host dotnet-sdk
 
 # Optional: Install preview versions of .NET packages
-yay -S dotnet-targeting-pack-bin dotnet-runtime-bin dotnet-sdk-bin dotnet-host-bin aspnet-targeting-pack-bin aspnet-runtime-bin aspnet-targeting-pack-6.0 aspnet-targeting-pack aspnet-runtime-6.0 aspnet-runtime
+yay -S dotnet-targeting-pack dotnet-runtime dotnet-sdk dotnet-host aspnet-targeting-pack aspnet-runtime aspnet-targeting-pack-6.0 aspnet-targeting-pack aspnet-runtime-6.0 aspnet-runtime
 ```
 
 ### Java Development
@@ -384,6 +384,13 @@ yay -S jdk-openjdk jdk8-openjdk maven
 ```bash
 # Install IntelliJ IDEA
 yay -S intellij-idea-community-edition
+```
+
+### Go Development
+
+```bash
+# Install Go
+yay -S go gopls
 ```
 
 ### Docker && Kubernetes
