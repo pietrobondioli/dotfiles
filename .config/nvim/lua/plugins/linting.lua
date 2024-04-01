@@ -4,9 +4,7 @@ return {
 		opts = {
 			-- Event to trigger linters
 			events = { "BufWritePost", "BufReadPost", "InsertLeave" },
-			linters_by_ft = {
-				xml = { "xmllint" },
-			},
+			linters_by_ft = {},
 			-- LazyVim extension to easily override linter options
 			-- or add custom linters.
 			---@type table<string,table>

@@ -106,32 +106,32 @@ return {
 			})
 
 			-- Load Telescope extensions
-			local extensions_to_load = { "fzf", "dap", "smart_history", "live_grep_args" }
+			local extensions_to_load = { "fzf", "dap", "smart_history", "live_grep_args", "harpoon" }
 			for _, extension in ipairs(extensions_to_load) do
 				pcall(telescope.load_extension, extension)
 			end
 
-			map("n", "<leader>?", function()
-				Utils.telescope("oldfiles")
-			end, { desc = "Find recently opened files" })
-			map("n", "<leader>:", function()
-				Utils.telescope("command_history")
-			end, { desc = "Command History" })
+			map("n", "<leader>?", Utils.telescope("oldfiles"), { desc = "Find recently opened files" })
+			map("n", "<leader>:", Utils.telescope("command_history"), { desc = "Command History" })
 			map("n", "<leader>/", "<Cmd>Telescope live_grep_args<CR>", { desc = "Grep (root dir)" })
 			map("n", "<leader><space>", Utils.telescope("files"), { desc = "Find File" })
-			map("n", "<leader>.", function()
-				require("telescope.builtin").current_buffer_fuzzy_find({ previewer = false })
-			end, { desc = "Fuzzily search in current buffer" })
+			map(
+				"n",
+				"<leader>.",
+				-- require("telescope.builtin").current_buffer_fuzzy_find({ previewer = false }),
+				Utils.telescope("current_buffer_fuzzy_find", { previewer = false }),
+				{ desc = "Fuzzily search in current buffer" }
+			)
+			map("n", "<leader>;", Utils.telescope("resume"), { desc = "Resume last search" })
 
-			map("n", "<leader>sf", function()
-				Utils.telescope("find_files", { hidden = true })
-			end, { desc = "Search Files" })
-			map("n", "<leader>sh", function()
-				Utils.telescope("help_tags")
-			end, { desc = "Search Help" })
-			map("n", "<leader>ss", function()
-				Utils.telescope("spell_suggest", { previewer = false })
-			end, { desc = "Search Spelling suggestions" })
+			map("n", "<leader>sf", Utils.telescope("find_files", { hidden = true }), { desc = "Search Files" })
+			map("n", "<leader>sh", Utils.telescope("help_tags"), { desc = "Search Help" })
+			map(
+				"n",
+				"<leader>ss",
+				Utils.telescope("spell_suggest", { previewer = false }),
+				{ desc = "Search Spelling suggestions" }
+			)
 			map(
 				"n",
 				"<leader>sb",
@@ -196,6 +196,11 @@ return {
 			end, {
 				desc = "Append to Harpoon",
 			})
+			map("n", "<leader>ad", function()
+				harpoon:list():delete()
+			end, {
+				desc = "Delete from Harpoon",
+			})
 
 			map("n", "<leader>a1", function()
 				harpoon:list():select(1)
@@ -232,35 +237,23 @@ return {
 				harpoon:list():next()
 			end, { desc = "Next Harpoon" })
 
-			-- basic telescope configuration
-			local conf = require("telescope.config").values
-			local function toggle_telescope(harpoon_files)
-				local file_paths = {}
-				for _, item in ipairs(harpoon_files.items) do
-					table.insert(file_paths, item.value)
-				end
-
-				require("telescope.pickers")
-					.new({}, {
-						prompt_title = "Harpoon",
-						finder = require("telescope.finders").new_table({
-							results = file_paths,
-						}),
-						sorter = conf.generic_sorter({}),
-					})
-					:find()
-			end
-
-			map("n", "<C-e>", function()
-				toggle_telescope(harpoon:list())
-			end, { desc = "Open harpoon window" })
-			map("n", "<leader>,", function()
-				toggle_telescope(harpoon:list())
-			end, { desc = "Open harpoon window" })
-			map("n", "<leader>a,", function()
-				toggle_telescope(harpoon:list())
-			end, { desc = "Open harpoon window" })
+			map("n", "<leader>,", "<Cmd>Telescope harpoon marks<CR>", { desc = "Harpoon" })
+			map("n", "<leader>a,", "<Cmd>Telescope harpoon marks<CR>", { desc = "Harpoon" })
+			map("n", "C-o", "<Cmd>Telescope harpoon marks<CR>", { desc = "Harpoon" })
 		end,
+	},
+
+	{
+		"sindrets/winshift.nvim",
+		config = function()
+			require("winshift").setup()
+		end,
+		keys = {
+			{ "C-S-j>", "<cmd>WinShift down<CR>", desc = "Move window down" },
+			{ "C-S-k>", "<cmd>WinShift up<CR>", desc = "Move window up" },
+			{ "C-S-h>", "<cmd>WinShift left<CR>", desc = "Move window left" },
+			{ "C-S-l>", "<cmd>WinShift right<CR>", desc = "Move window right" },
+		},
 	},
 
 	{
@@ -268,43 +261,57 @@ return {
 		event = "VeryLazy",
 		---@type Flash.Config
 		opts = {},
-        -- stylua: ignore
-        keys = {
-            {
-                "s",
-                mode = {"n", "x", "o"},
-                function() require("flash").jump() end,
-                desc = "Flash"
-            }, {
-                "S",
-                mode = {"n", "x", "o"},
-                function() require("flash").treesitter() end,
-                desc = "Flash Treesitter"
-            }, {
-                "r",
-                mode = "o",
-                function() require("flash").remote() end,
-                desc = "Remote Flash"
-            }, {
-                "R",
-                mode = {"o", "x"},
-                function() require("flash").treesitter_search() end,
-                desc = "Treesitter Search"
-            }, {
-                "<c-s>",
-                mode = {"c"},
-                function() require("flash").toggle() end,
-                desc = "Toggle Flash Search"
-            }
-        }
-,
+		keys = {
+			{
+				"s",
+				mode = { "n", "x", "o" },
+				function()
+					require("flash").jump()
+				end,
+				desc = "Flash",
+			},
+			{
+				"S",
+				mode = { "n", "x", "o" },
+				function()
+					require("flash").treesitter()
+				end,
+				desc = "Flash Treesitter",
+			},
+			{
+				"r",
+				mode = "o",
+				function()
+					require("flash").remote()
+				end,
+				desc = "Remote Flash",
+			},
+			{
+				"R",
+				mode = { "o", "x" },
+				function()
+					require("flash").treesitter_search()
+				end,
+				desc = "Treesitter Search",
+			},
+			{
+				"<c-s>",
+				mode = { "c" },
+				function()
+					require("flash").toggle()
+				end,
+				desc = "Toggle Flash Search",
+			},
+		},
 	},
+
 	{
 		"lewis6991/gitsigns.nvim",
 		config = function()
 			require("gitsigns").setup()
 		end,
 	},
+
 	{
 		"stevearc/oil.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -353,12 +360,29 @@ return {
 		"folke/persistence.nvim",
 		event = "BufReadPre", -- this will only start session saving when an actual file was opened
 		opts = { options = vim.opt.sessionoptions:get() },
-    -- stylua: ignore
-    keys = {
-      { "<leader>qs", function() require("persistence").load() end, desc = "Restore Session" },
-      { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
-      { "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
-    },
+		keys = {
+			{
+				"<leader>qs",
+				function()
+					require("persistence").load()
+				end,
+				desc = "Restore Session",
+			},
+			{
+				"<leader>ql",
+				function()
+					require("persistence").load({ last = true })
+				end,
+				desc = "Restore Last Session",
+			},
+			{
+				"<leader>qd",
+				function()
+					require("persistence").stop()
+				end,
+				desc = "Don't Save Current Session",
+			},
+		},
 	},
 
 	{
@@ -488,7 +512,7 @@ return {
 					end
 				end,
 				desc = "Delete Buffer",
-			}, -- stylua: ignore
+			},
 			{
 				"<leader>bD",
 				function()

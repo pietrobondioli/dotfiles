@@ -5,6 +5,7 @@ return {
 			vim.list_extend(opts.ensure_installed, { "go", "gomod", "gowork", "gosum" })
 		end,
 	},
+
 	{
 		"neovim/nvim-lspconfig",
 		opts = {
@@ -86,6 +87,7 @@ return {
 			},
 		},
 	}, -- Ensure Go tools are installed
+
 	{
 		"williamboman/mason.nvim",
 		opts = function(_, opts)
@@ -93,10 +95,12 @@ return {
 			vim.list_extend(opts.ensure_installed, { "goimports", "gofumpt" })
 		end,
 	},
+
 	{
 		"stevearc/conform.nvim",
 		opts = { formatters_by_ft = { go = { "goimports", "gofumpt" } } },
 	},
+
 	{
 		"mfussenegger/nvim-dap",
 		dependencies = {
@@ -110,6 +114,7 @@ return {
 			{ "leoluz/nvim-dap-go", config = true },
 		},
 	},
+
 	{
 		"nvim-neotest/neotest",
 		dependencies = { "nvim-neotest/neotest-go" },

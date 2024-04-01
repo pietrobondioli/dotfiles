@@ -69,22 +69,6 @@ return {
 		end,
 	},
 
-	{
-		"dmmulroy/tsc.nvim",
-		lazy = true,
-		ft = { "typescript", "typescriptreact" },
-		config = function()
-			require("tsc").setup({
-				flags = {
-					build = true,
-				},
-				use_trouble_qflist = true,
-				auto_open_qflist = true,
-				pretty_errors = true,
-			})
-		end,
-	},
-
 	-- Better text-objects
 	{
 		"echasnovski/mini.ai",
@@ -203,18 +187,31 @@ return {
 			history = true,
 			delete_check_events = "TextChanged",
 		},
-    -- stylua: ignore
-    keys = {
-      {
-        "<tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-        end,
-        expr = true, silent = true, mode = "i",
-      },
-      { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
-    },
+		keys = {
+			{
+				"<tab>",
+				function()
+					return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+				end,
+				expr = true,
+				silent = true,
+				mode = "i",
+			},
+			{
+				"<tab>",
+				function()
+					require("luasnip").jump(1)
+				end,
+				mode = "s",
+			},
+			{
+				"<s-tab>",
+				function()
+					require("luasnip").jump(-1)
+				end,
+				mode = { "i", "s" },
+			},
+		},
 	},
 
 	-- auto pairs
@@ -277,13 +274,6 @@ return {
 				update_n_lines = "gsn", -- Update `n_lines`
 			},
 		},
-	},
-
-	-- comments
-	{
-		"JoosepAlviste/nvim-ts-context-commentstring",
-		lazy = true,
-		opts = { enable_autocmd = false },
 	},
 
 	{

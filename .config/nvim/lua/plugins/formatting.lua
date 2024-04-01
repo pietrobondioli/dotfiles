@@ -89,12 +89,7 @@ return {
 					quiet = false, -- not recommended to change
 				},
 				---@type table<string, conform.FormatterUnit[]>
-				formatters_by_ft = {
-					lua = { "stylua" },
-					fish = { "fish_indent" },
-					sh = { "shfmt" },
-					xml = { "xmllint" },
-				},
+				formatters_by_ft = {},
 				-- The options you set here will be merged with the builtin formatters.
 				-- You can also define any custom formatters here.
 				---@type table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>

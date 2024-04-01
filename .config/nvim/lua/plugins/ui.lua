@@ -1,3 +1,7 @@
+local Utils = require("utils")
+
+local map = Utils.safe_keymap_set
+
 return {
 	{
 		"nvimdev/dashboard-nvim",
@@ -171,16 +175,7 @@ return {
 						},
 						{ Utils.lualine.pretty_path() },
 					},
-					lualine_x = { -- stylua: ignore
-						-- {
-						-- 	function()
-						-- 		return require("noice").api.status.command.get()
-						-- 	end,
-						-- 	cond = function()
-						-- 		return package.loaded["noice"] and require("noice").api.status.command.has()
-						-- 	end,
-						-- 	color = Utils.ui.fg("Statement"),
-						-- }, -- stylua: ignore
+					lualine_x = {
 						{
 							function()
 								local icon = require("config.defaults").icons.kinds.Copilot
@@ -216,7 +211,7 @@ return {
 								return package.loaded["noice"] and require("noice").api.status.mode.has()
 							end,
 							color = Utils.ui.fg("Constant"),
-						}, -- stylua: ignore
+						},
 						{
 							function()
 								return "  " .. require("dap").status()
@@ -366,6 +361,28 @@ return {
 	},
 
 	{
+		"shortcuts/no-neck-pain.nvim",
+		version = "*",
+		config = function()
+			require("no-neck-pain").setup()
+
+			map("n", "<leader>un", "<cmd>NoNeckPain<cr>", { desc = "Toggle No neck pain" })
+		end,
+	},
+
+	{
+		"petertriho/nvim-scrollbar",
+		config = function()
+			require("scrollbar").setup({
+				handle = {
+					blend = 0,
+				},
+			})
+			map("n", "<leader>u|", "<cmd>ScrollbarToggle<cr>", { desc = "Toggle scrollbar" })
+		end,
+	},
+
+	{
 		"rcarriga/nvim-notify",
 		config = function()
 			local notify = require("notify")
@@ -437,4 +454,6 @@ return {
 			})
 		end,
 	},
+
+	{ "kosayoda/nvim-lightbulb" },
 }

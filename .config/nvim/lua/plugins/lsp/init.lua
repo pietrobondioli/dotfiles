@@ -205,17 +205,12 @@ return {
 	},
 
 	{
-
 		"williamboman/mason.nvim",
-		cmd = { "Mason", "MasonInstall", "MasonUpdate" },
+		cmd = "Mason",
 		keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
 		build = ":MasonUpdate",
 		opts = {
-			ensure_installed = {
-				"stylua",
-				"shfmt",
-				-- "flake8",
-			},
+			ensure_installed = {},
 		},
 		---@param opts MasonSettings | {ensure_installed: string[]}
 		config = function(_, opts)

@@ -109,4 +109,34 @@ return {
 			end
 		end,
 	},
+
+	{
+		"dmmulroy/ts-error-translator.nvim",
+		config = function()
+			require("ts-error-translator").setup()
+		end,
+	},
+
+	{
+		"dmmulroy/tsc.nvim",
+		lazy = true,
+		ft = { "typescript", "typescriptreact" },
+		config = function()
+			require("tsc").setup({
+				flags = {
+					build = true,
+				},
+				use_trouble_qflist = true,
+				auto_open_qflist = true,
+				pretty_errors = true,
+			})
+		end,
+	},
+
+	-- comments
+	{
+		"JoosepAlviste/nvim-ts-context-commentstring",
+		lazy = true,
+		opts = { enable_autocmd = false },
+	},
 }
