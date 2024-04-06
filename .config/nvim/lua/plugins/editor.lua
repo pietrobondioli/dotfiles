@@ -1,18 +1,5 @@
 return {
   {
-    "sindrets/winshift.nvim",
-    config = function()
-      require("winshift").setup()
-    end,
-    keys = {
-      { "C-S-j>", "<cmd>WinShift down<CR>", desc = "Move window down" },
-      { "C-S-k>", "<cmd>WinShift up<CR>", desc = "Move window up" },
-      { "C-S-h>", "<cmd>WinShift left<CR>", desc = "Move window left" },
-      { "C-S-l>", "<cmd>WinShift right<CR>", desc = "Move window right" },
-    },
-  },
-
-  {
     "stevearc/oil.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
