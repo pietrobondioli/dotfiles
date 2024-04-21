@@ -1,15 +1,31 @@
 return {
   {
+    "chrishrb/gx.nvim",
+    keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" } } },
+    cmd = { "Browse" },
+    init = function()
+      vim.g.netrw_nogx = 1 -- disable netrw gx
+    end,
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = true, -- default settings
+    submodules = false, -- not needed, submodules are required only for tests
+  },
+
+  {
     "stevearc/oil.nvim",
+    opts = {},
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      local oil = require("oil")
-      oil.setup({
-        columns = {
-          "icon",
-        },
+      require("oil").setup({
         default_file_explorer = true,
         experimental_watch_for_changes = true,
+        view_options = {
+          show_hidden = true,
+        },
+        columns = {
+          "icon",
+          "mtime",
+        },
         use_default_keymaps = false,
         keymaps = {
           ["g?"] = "actions.show_help",
@@ -29,17 +45,11 @@ return {
           ["gx"] = "actions.open_external",
           ["g."] = "actions.toggle_hidden",
         },
-        view_options = { show_hidden = true },
-        preview = {
-          max_width = 0.6,
-        },
-        float = {
-          max_width = 100,
-        },
       })
-    end,
 
-    vim.keymap.set("n", "<leader>o", "<cmd>lua require('oil').toggle_float()<cr>", { desc = "Toggle float" }),
+      vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+      vim.keymap.set("n", "<leader>o", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+    end,
   },
 
   {

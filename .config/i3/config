@@ -37,7 +37,7 @@ exec_always --no-startup-id xset s off -dpms
 # Visual Autostart
 #-------
 exec_always --no-startup-id picom &
-exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/ship.jpg
+exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/sea_watchtower.png
 
 #-------
 # Utility Autostart
@@ -67,6 +67,11 @@ exec --no-startup-id copyq
 #######
 
 #-------
+# Bluetooth
+#-------
+bindsym $mod+b exec --no-startup-id "blueman-manager"
+
+#-------
 # Lock
 #-------
 bindsym $mod+Shift+BackSpace exec $HOME/.config/scripts/lock
@@ -80,7 +85,7 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-bindsym $mod+Shift+v exec --no-startup-id "pavucontrol"
+bindsym $mod+m exec --no-startup-id "pavucontrol"
 
 #-------
 # Floating Windows
