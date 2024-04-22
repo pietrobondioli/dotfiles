@@ -1,3 +1,7 @@
+export ZELLIJ_AUTO_ATTACH=true
+export ZELLIJ_AUTO_EXIT=true
+eval "$(zellij setup --generate-auto-start zsh)"
+
 NODE_PATHS=$(find /home/pietro/.nvm/versions/node -maxdepth 1 -mindepth 1 -type d)
 GO_PATH=/usr/local/go/bin:$HOME/go/bin
 export PATH=/usr/local/bin:$HOME/bin:$HOME/.local/bin:$NODE_PATHS:$GO_PATH:$PATH
@@ -55,7 +59,7 @@ alias ......="cd ../../../../.."
 alias zz="zi"
 
 # User aliases
-alias ..="nvim ."
+alias .="nvim ."
 alias v="nvim"
 alias vim="nvim"
 alias c="clear"
@@ -79,6 +83,7 @@ alias grep="rg"
 alias zshrc="nvim ~/.zshrc && source ~/.zshrc"
 alias nvimrc="nvim ~/.config/nvim"
 alias i3rc="nvim ~/.config/i3/config"
+alias kittyrc="nvim ~/.config/kitty/kitty.conf"
 
 alias gbl="git branch --format='%(refname:short)'"
 alias gbr="git branch -r --format='%(refname:lstrip=3)'"
