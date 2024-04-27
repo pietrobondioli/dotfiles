@@ -1,54 +1,10 @@
-# Check if we're inside a Zellij session, Neovim, or VS Code
-if [[ ! -n $ZELLIJ ]]; then
-  logger "Checking if the current environment is inside Zellij, Neovim, or VS Code..."
-
-  environment_check=$(pstree -s $$ | grep -E 'nvim|vim|code|jetbrains')
-
-  if [[ -n $environment_check ]]; then
-      logger "Running inside an IDE (VS Code, JetBrains) or a terminal editor (Neovim/Vim). Not starting Zellij."
-  else
-    logger "Environment not detected as Neovim or VS Code. Proceeding with Zellij."
-    # Get the session names, stripping ANSI color codes
-    session_names="$(zellij list-sessions | grep -o '^\S*' | sed 's/\x1b\[[0-9;]*m//g')"
-    logger "Checking existing Zellij sessions..."
-    # Create new session if no sessions exist
-    if [[ -z "$session_names" ]]; then
-      logger "No existing Zellij sessions found. Creating a new session..."
-      session_name=$(coolname)  # Ensure `coolname` command is installed and accessible
-      zellij attach -c "$session_name"
-      logger "New session created and attached with name: $session_name"
-    else
-      logger "Existing sessions found. Preparing choice menu for Zellij sessions..."
-      # Select from following choices
-      create_new_session="Create new session"
-      start_without_zellij="Start without Zellij"
-      choices="$session_names\n${create_new_session}\n${start_without_zellij}"
-      # Include --print-query to capture user input
-      choice="$(echo -e "$choices" | fzf --print-query | tail -1)"
-      
-      if echo "$session_names" | grep -qx "$choice"; then
-        logger "Attaching to existing Zellij session with name: $choice"
-        # Attach to existing session
-        zellij attach -c "$choice"
-      else
-        # Handle non-existing session
-        logger "No existing session selected. Checking if new session name was entered..."
-        if [[ -n "$choice" && "$choice" != "$create_new_session" && "$choice" != "$start_without_zellij" ]]; then
-          logger "Creating and attaching to a new Zellij session with the custom name: $choice"
-          zellij attach -c "$choice"
-        elif [[ "$choice" = "$start_without_zellij" ]]; then
-          logger "Starting without Zellij as selected."
-          # Start without Zellij
-          :
-        fi
-      fi
-    fi
-  fi
-fi
+source $HOME/.config/scripts/zellij_autostart_config.sh
 
 NODE_PATHS=$(find /home/pietro/.nvm/versions/node -maxdepth 1 -mindepth 1 -type d)
 GO_PATH=/usr/local/go/bin:$HOME/go/bin
 export PATH=/usr/local/bin:$HOME/bin:$HOME/.local/bin:$NODE_PATHS:$GO_PATH:$PATH
+
+zellij_autostart_config
 
 neofetch --ascii "$(fortune | cowsay -W 40)" | lolcat
 
@@ -134,6 +90,7 @@ alias kittyrc="nvim ~/.config/kitty/kitty.conf"
 alias tmuxrc="nvim ~/.config/tmux/tmux.conf"
 alias scriptsrc="nvim ~/.local/bin"
 alias zellijrc="nvim ~/.config/zellij"
+alias cscriptsrc="nvim ~/.config/scripts"
 
 alias gbl="git branch --format='%(refname:short)'"
 alias gbr="git branch -r --format='%(refname:lstrip=3)'"

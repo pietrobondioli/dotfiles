@@ -71,6 +71,19 @@ return {
   },
 
   {
+    "https://git.sr.ht/~swaits/zellij-nav.nvim",
+    lazy = true,
+    event = "VeryLazy",
+    keys = {
+      { "<c-h>", "<cmd>ZellijNavigateLeft<cr>", { silent = true, desc = "navigate left" } },
+      { "<c-j>", "<cmd>ZellijNavigateDown<cr>", { silent = true, desc = "navigate down" } },
+      { "<c-k>", "<cmd>ZellijNavigateUp<cr>", { silent = true, desc = "navigate up" } },
+      { "<c-l>", "<cmd>ZellijNavigateRight<cr>", { silent = true, desc = "navigate right" } },
+    },
+    opts = {},
+  },
+
+  {
     "hrsh7th/cmp-cmdline",
     config = function()
       local cmp = require("cmp")
@@ -100,6 +113,14 @@ return {
   },
 
   {
+    "tpope/vim-unimpaired",
+  },
+
+  {
+    "tpope/vim-repeat",
+  },
+
+  {
     "telescope.nvim",
     opts = {
       defaults = {
@@ -122,7 +143,12 @@ return {
         end
 
         -- fuzzy find on current buffer leader + .
-        vim.keymap.set("n", "<leader>.", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { silent = true })
+        vim.keymap.set(
+          "n",
+          "<leader>.",
+          "<cmd>Telescope current_buffer_fuzzy_find<cr>",
+          { silent = true, desc = "Find in current buffer" }
+        )
       end,
     },
   },
