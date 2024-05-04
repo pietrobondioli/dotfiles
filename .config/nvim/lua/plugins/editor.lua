@@ -1,4 +1,19 @@
 return {
+  -- - {
+  --   "nvim-neo-tree/neo-tree.nvim",
+  --   opts = {
+  --     window = { position = "right" },
+  --     update_focused_file = { enable = true },
+  --   },
+  --   keys = {
+  --     {
+  --       "<leader>fn",
+  --       "<cmd>Neotree focus<cr>",
+  --       { silent = true, desc = "Focus on current file" },
+  --     },
+  --   },
+  -- },
+
   {
     "chrishrb/gx.nvim",
     keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" } } },
@@ -17,7 +32,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("oil").setup({
-        default_file_explorer = true,
+        -- default_file_explorer = true,
         experimental_watch_for_changes = true,
         view_options = {
           show_hidden = true,
