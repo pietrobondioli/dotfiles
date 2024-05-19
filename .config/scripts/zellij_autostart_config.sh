@@ -29,6 +29,12 @@ is_valid_session_name() {
 
 # Main function to control flow
 zellij_autostart_config() {
+	# Check if script already ran in the current shell
+	if [[ -n "$ZELLIJ_AUTOSTART_CONFIG_RAN" ]]; then
+		log "Script already ran in the current shell. Exiting script."
+		return
+	fi
+
 	# Check if running within a Zellij session
 	if [[ -n "$ZELLIJ" ]]; then
 		log "Already in a Zellij session. Exiting script."
@@ -56,6 +62,8 @@ zellij_autostart_config() {
 
 	if [[ "$choice" == "Start without Zellij" ]]; then
 		log "Starting without Zellij as selected."
+		# set the environment variable to prevent running the script again in the current shell
+		export ZELLIJ_AUTOSTART_CONFIG_RAN=true
 		return
 	fi
 
