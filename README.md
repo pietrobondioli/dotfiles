@@ -104,7 +104,13 @@ yay -S xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance mate
 
 ```bash
 # Utilities and system tools
-yay -S kitty gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn zsh thunar thunar-archive-plugin xarchiver lm_sensors htop onlyoffice-bin obs-studio obs-backgroundremoval droidcam-obs-plugin gnome-disk-utility dosfstools ntfs-3g rclone rclone-browser feh qbittorrent unrar pwgen zoxide bat eza fd ripgrep dust fzf copyq lolcat cowsay fortune-mod python-coolname zellij qbittorrent lazygit
+yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn zsh thunar thunar-archive-plugin xarchiver lm_sensors htop onlyoffice-bin obs-studio obs-backgroundremoval droidcam-obs-plugin gnome-disk-utility dosfstools ntfs-3g rclone rclone-browser feh qbittorrent popsicle unrar pwgen zoxide bat eza fd ripgrep dust fzf copyq unzip gedit dos2unix unix2dos google-chrome firefox speech-dispatcher lolcat cowsay fortune-mod python-coolname zellij qbittorrent lazygit
+```
+
+```bash
+# Util Languages
+yay -S rust go nodejs npm yarn python python-pip python2 python2-pip ruby rubygems
+>>>>>>> b5ced21 (feat: update packages on readme)
 ```
 
 ```bash
@@ -331,19 +337,27 @@ These are packages and utilities related to software development.
 
 ```bash
 # Install Visual Studio Code and Rider
-yay -S visual-studio-code-bin rider
+yay -S visual-studio-code-bin rider intellije-idea-ultimate-edition
 ```
+
+````
 
 Change vscode desktop to exec from shell to fix PATH issues:
 
 ```bash
 # Open vscode desktop file
 sudo vim /usr/share/applications/code.desktop
-```
+````
 
 ```bash
 # Change the exec line to
 Exec=zsh -i -c "code"
+```
+
+### Tools
+
+```bash
+yay -S mysql-workbench postman-bin lazygit lazydocker bfg goreleaser
 ```
 
 ### Node.js with Nvm
@@ -390,7 +404,7 @@ yay -S intellij-idea-community-edition
 
 ```bash
 # Install Go
-yay -S go gopls
+yay -S go gopls goland
 ```
 
 ### Docker && Kubernetes
