@@ -1,12 +1,3 @@
 return {
-    {
-        "iamcco/markdown-preview.nvim",
-        ft = "markdown",
-        build = function() vim.fn["mkdp#util#install"]() end,
-        cmd = {
-            "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop"
-        }
-    },
-
-    {"folke/todo-comments.nvim", dependencies = {"nvim-lua/plenary.nvim"}}
+  { "folke/todo-comments.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
 }
