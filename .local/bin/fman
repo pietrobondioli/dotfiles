@@ -1,3 +1,0 @@
-#!/bin/bash
-
-manpage=$(man -k . | awk '{print $1}' | sort | uniq | fzf --exit-0) && man $manpage

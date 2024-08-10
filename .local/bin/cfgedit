@@ -1,3 +1,0 @@
-#!/bin/bash
-
-file=$(find ~/.* -maxdepth 2 -type f | fzf --exit-0) && vim "$file"

@@ -1,3 +1,0 @@
-#!/bin/bash
-
-files=$(git status --short | fzf --multi --preview 'git diff --color=always -- {}' --preview-window=down:70%:wrap | awk '{print $2}') && git add $files
