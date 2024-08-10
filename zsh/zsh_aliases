@@ -31,6 +31,88 @@ alias lg="lazygit"
 alias gg="lazygit"
 alias ld="lazydocker"
 
+function secretuuid() {
+    echo -n "$1" | openssl enc -e -aes-256-cbc -a -salt | base64
+}
+
+# Determine size of a file or total size of a directory
+function fs() {
+    if du -b /dev/null >/dev/null 2>&1; then
+        local arg=-sbh
+    else
+        local arg=-sh
+    fi
+    if [[ -n "$@" ]]; then
+        du $arg -- "$@"
+    else
+        du $arg .[^.]* ./*
+    fi
+}
+
+function dotenv() {
+    if [[ -f "$1" ]]; then
+        set -o allexport
+        source "$1"
+        set +o allexport
+    fi
+}
+
+function memory() {
+    ps -eo size,pid,user,command --sort -size | awk '{ hr=$1/1024 ; printf("%13.2f MB ",hr) } { for ( x=4 ; x<=NF ; x++ ) { printf("%s ",$x) } print "" }'
+}
+
+function cdm() {
+    mkdir -p "$1"
+    cd "$1" || return
+}
+
+function cpv() {
+    rsync -pogbr -hhh --backup-dir="$HOME/.tmp" -e /dev/null --progress "$@"
+}
+
+function anon() {
+    ZSH_AUTOSUGGEST_STRATEGY=()
+  }
+
+  function extract() {
+    FILE="$1"
+    if [ -f "$FILE" ]; then
+        case $FILE in
+        *.tar.bz2) tar xjf "$FILE" ;;
+        *.tar.gz) tar xzf "$FILE" ;;
+        *.bz2) bunzip2 "$FILE" ;;
+        *.rar) unrar x "$FILE" ;;
+        *.gz) gunzip "$FILE" ;;
+        *.tar) tar xf "$FILE" ;;
+        *.tbz2) tar xjf "$FILE" ;;
+        *.tgz) tar xzf "$FILE" ;;
+        *.zip) unzip "$FILE" ;;
+        *.Z) uncompress "$FILE" ;;
+        *.7z) 7z x "$FILE" ;;
+        *) echo "'$FILE' cannot be extracted via ex()" ;;
+        esac
+    else
+        echo "'$FILE' is not a valid file"
+    fi
+}
+
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias localip="ipconfig getifaddr en0"
+alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+
+alias docker-compose="docker compose"
+function docker-prune-volumes() {
+    docker volume rm "$(docker volume ls -q --filter dangling=true)"
+}
+
+function dockerkill() {
+    docker kill "$(docker ps -q)"
+}
+
+function fdocker() {
+    docker ps -a | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $1 }' | xargs -r docker rm
+}
+
 # Clipboard Management
 alias cwd="pwd | tr -d '\n' | xclip -selection clipboard"
 alias copy="xclip -selection clipboard"
@@ -57,4 +139,15 @@ alias cscriptsrc="cd $XDG_CONFIG_HOME/scripts && nvim ."
 alias gbl="git branch --format='%(refname:short)'"
 alias gbr="git branch -r --format='%(refname:lstrip=3)'"
 alias gswl="gbl | fzf | xargs git switch"
+
+alias secrets="ripsecrets"
+# Intuitive map function
+# For example, to list all directories that contain a certain file:
+# find . -name .gitattributes | map dirname
+alias map="xargs -n1"
+# Reload the shell (i.e. invoke as a login shell)
+alias reload="exec ${SHELL} -l"
+# Print each PATH entry on a separate line
+alias path='echo -e ${PATH//:/\\n}'
+
 alias gswr="gbr | fzf | xargs git switch"

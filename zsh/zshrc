@@ -1,60 +1,140 @@
-# Alias for Ranger
-alias ra='ranger'
+##############################################################################################################
+## Exports and PATH Configuration
+##############################################################################################################
 
-# Directory Navigation
-alias cd="z"
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias ......="cd ../../../../.."
-alias zz="zi"
+# Essential environment variables
+export UID=$(id -u)
+export GID=$(id -g)
+export USER_LOG_DIR="$HOME/logs"
+export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gcr/ssh"
+export TERMINAL="/usr/bin/kitty"
 
-# User Aliases
-alias .="nvim ."
-alias v="nvim"
-alias c="clear"
+# PATH configuration
+local -a PATH_EXPORTS=(
+  "$HOME/.local/bin"
+  "/usr/local/bin"
+  "$HOME/bin"
+  "$HOME/.nvm/versions/node"
+  "/usr/local/go/bin"
+  "$HOME/go/bin"
+  "$HOME/.dotnet/tools"
+  "$HOME/tools"
+  "$HOME/tools/google-cloud-sdk/bin"
+  "$HOME/.local/share/JetBrains/scripts"
+  "$HOME/.config/yarn/global/node_modules/.bin"
+  "$BUN_INSTALL/bin"
+)
 
-# Enhanced ls Aliases using eza
-alias ls="eza --icons --git"
-alias l='eza -alg --color=always --group-directories-first --git'
-alias ll='eza -aliSgh --color=always --group-directories-first --icons --header --long --git'
-alias lt='eza -@alT --color=always --git'
-alias llt="eza --oneline --tree --icons --git-ignore"
-alias lr='eza -alg --sort=modified --color=always --group-directories-first --git'
+PATH_RESULT="$PATH"
+for path in $PATH_EXPORTS; do
+  if [[ -d "$path" ]]; then 
+    PATH_RESULT="$PATH_RESULT:$path"
+  fi
+done
+export PATH="$PATH_RESULT"
 
-# Replace cat with bat for syntax highlighting
-alias cat="bat"
+# Load environment-specific configurations
+source $HOME/scripts/vars.sh
+source $HOME/scripts/utils.sh
 
-# Lazygit and Lazydocker
-alias lg="lazygit"
-alias gg="lazygit"
-alias ld="lazydocker"
+##############################################################################################################
+## Znap Plugin Manager Configuration
+##############################################################################################################
 
-# Clipboard Management
-alias cwd="pwd | tr -d '\n' | xclip -selection clipboard"
-alias copy="xclip -selection clipboard"
-alias paste="xclip -selection clipboard -o"
+# Set up Znap if not already installed
+[[ -r "$SNAP_DIR/znap.zsh" ]] ||
+    git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git $SNAP_DIR
+source "$SNAP_DIR/znap.zsh"
+zstyle ':znap:*' repos-dir $PLUGINS_DIR
+zstyle ':znap:*:*' git-maintenance off
 
-# Miscellaneous
-alias rr="rm -rf"
-alias md="mkdir -p"
-alias update="yay -Syu"
-alias grep="rg"
+# Define plugins to be loaded with Znap
+local -a PLUGINS=(
+  "MichaelAquilina/zsh-auto-notify"
+  "MichaelAquilina/zsh-you-should-use"
+  "wfxr/forgit"
+  "hlissner/zsh-autopair"
+  "zsh-users/zsh-autosuggestions"
+  "zsh-users/zsh-completions"
+  "zsh-users/zsh-history-substring-search"
+  "zsh-users/zsh-syntax-highlighting"
+)
 
-# Dotfiles and Configuration Management
-alias dotfiles="cd $HOME/dotfiles"
-alias zshrc="cd $HOME && nvim .zshrc"
-alias nvimrc="cd $XDG_CONFIG_HOME/nvim && nvim ."
-alias i3rc="cd $XDG_CONFIG_HOME/i3 && nvim config"
-alias kittyrc="cd $XDG_CONFIG_HOME/kitty && nvim kitty.conf"
-alias tmuxrc="cd $XDG_CONFIG_HOME/tmux && nvim tmux.conf"
-alias scriptsrc="cd $HOME/.local/bin && nvim ."
-alias zellijrc="cd $XDG_CONFIG_HOME/zellij && nvim config.kdl"
-alias cscriptsrc="cd $XDG_CONFIG_HOME/scripts && nvim ."
+# Load plugins using Znap
+for plugin in $PLUGINS; do
+  if [[ -d "$PLUGINS_DIR/$plugin" ]]; then
+    znap source $plugin || echo "Failed to load $plugin"
+  else
+    znap clone $plugin
+  fi
+done
 
-# Git Aliases
-alias gbl="git branch --format='%(refname:short)'"
-alias gbr="git branch -r --format='%(refname:lstrip=3)'"
-alias gswl="gbl | fzf | xargs git switch"
-alias gswr="gbr | fzf | xargs git switch"
+# Load additional Oh My Zsh components and plugins via Znap
+zstyle ':omz:update' mode auto
+zstyle ':omz:update' frequency 1
+znap source ohmyzsh/ohmyzsh lib/{git,bzr,cli,clipboard,compfix,completion,correction,directories,functions,git,grep,history,key-bindings,misc,termsupport}
+znap source ohmyzsh/ohmyzsh plugins/{git,fzf,brew,aws}
+znap eval starship "starship init zsh --print-full-init"
+znap prompt
+
+##############################################################################################################
+## Fpath Hooks and Completions
+##############################################################################################################
+
+znap fpath _cargo    "rustup completions zsh cargo"
+znap fpath _fx       "source <(fx --comp zsh)"
+znap fpath _gitleaks "gitleaks completion zsh"
+znap fpath _kubectl  "kubectl completion zsh"
+znap fpath _npm      "npm completion"
+znap fpath _rustup   "rustup completions zsh"
+znap fpath _typeid   "typeid completion zsh"
+znap fpath _zellij   "zellij setup --generate-completion zsh;echo"
+
+##############################################################################################################
+## Source Files
+##############################################################################################################
+
+# Source environment-specific configurations
+eval "$(zoxide init zsh)"
+
+local -a SOURCE_FILES=(
+  # "$HOME/.fzf/shell/key-bindings.zsh"
+  # "$HOME/.ghcup/env"
+  # "$HOME/.bun/_bun"
+  "$PLUGINS_DIR/hlissner/zsh-autopair/autopair.plugin.zsh"
+  "$SCRIPTS/alias.sh"
+  "$SCRIPTS/fzf.sh"
+  "$SCRIPTS/git"
+  "$SCRIPTS/history.sh"
+  "$SCRIPTS/mix.sh"
+  "$SCRIPTS/nav.sh"
+  "$SCRIPTS/tmux.sh"
+  "$SCRIPTS/zellij.sh"
+)
+
+# Load all source files
+for config in $SOURCE_FILES; do
+  if [[ -f "$config" ]]; then 
+    source "$config"
+  fi
+done
+
+source $HOME/.config/scripts/zellij_autostart_config.sh
+zellij_autostart_config
+
+# Additional custom configuration or function hooks can be placed here
+
+##############################################################################################################
+## Additional User Settings
+##############################################################################################################
+
+# Set preferred editor
+export EDITOR='vim'
+
+# Display system info at terminal startup
+neofetch --ascii "$(fortune | cowsay -W 40)" | lolcat
+
+# NVM (Node Version Manager) setup
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # Load NVM
+[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # Load NVM bash_completion
