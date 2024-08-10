@@ -1,14 +1,35 @@
-source $HOME/.config/scripts/zellij_autostart_config.sh
-
-NODE_PATHS=$(find /home/pietro/.nvm/versions/node -maxdepth 1 -mindepth 1 -type d)
+NODE_PATHS=$(find $HOME/.nvm/versions/node -maxdepth 1 -mindepth 1 -type d)
 GO_PATH=/usr/local/go/bin:$HOME/go/bin
-export PATH=/usr/local/bin:$HOME/bin:$HOME/.local/bin:$NODE_PATHS:$GO_PATH:$PATH
+DOTNET_TOOLS_PATH=$HOME/.dotnet/tools
+LOCAL_BIN_PATH=$HOME/.local/bin:/usr/local/bin:$HOME/bin
+export PATH=$LOCAL_BIN_PATH:$NODE_PATHS:$GO_PATH:$DOTNET_TOOLS_PATH:$PATH
+
+export USER_LOG_DIR="$HOME/logs"
+
+log() {
+  local message="$1"
+  local log_file_name="${2:-default.log}"
+  local log_file="$USER_LOG_DIR/$log_file_name"
+
+  # Ensure the log directory exists
+  mkdir -p "$USER_LOG_DIR"
+
+  # Log to syslog
+  logger "$message"
+
+  # Log to the specified log file with a timestamp
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - $message" >>"$log_file"
+}
+
+source $HOME/.config/scripts/zellij_autostart_config.sh
 
 zellij_autostart_config
 
 neofetch --ascii "$(fortune | cowsay -W 40)" | lolcat
 
 eval "$(zoxide init zsh)"
+
+export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gcr/ssh"
 
 # Set default terminal to kitty
 export TERMINAL="/usr/bin/kitty"
@@ -27,89 +48,16 @@ source $ZSH/oh-my-zsh.sh
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# Ranger
-
-function ranger {
-	local IFS=$'\t\n'
-	local tempfile="$(mktemp -t tmp.XXXXXX)"
-	local ranger_cmd=(
-		command
-		ranger
-		--cmd="map Q chain shell echo %d > "$tempfile"; quitall"
-	)
-
-	${ranger_cmd[@]} "$@"
-	if [[ -f "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]]; then
-		cd -- "$(cat "$tempfile")" || return
-	fi
-	command rm -f -- "$tempfile" 2>/dev/null
-}
-alias ra='ranger'
-
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
+export EDITOR='vim'
 
-# Dirs
-alias cd="z"
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias ......="cd ../../../../.."
-alias zz="zi"
+# Source Aliases
+source $HOME/.zsh_aliases
 
-# User aliases
-alias .="nvim ."
-alias v="nvim"
-alias c="clear"
-alias ls="eza --icons --git"
-alias l='eza -alg --color=always --group-directories-first --git'
-alias ll='eza -aliSgh --color=always --group-directories-first --icons --header --long --git'
-alias lt='eza -@alT --color=always --git'
-alias llt="eza --oneline --tree --icons --git-ignore"
-alias lr='eza -alg --sort=modified --color=always --group-directories-first --git'
-alias cat="bat"
-alias lg="lazygit"
-alias cwd="pwd | tr -d '\n' | xclip -selection clipboard"
-alias rr="rm -rf"
-alias md="mkdir -p"
-alias update="yay -Syu"
-alias copy="xclip -selection clipboard"
-alias paste="xclip -selection clipboard -o"
-
-alias grep="rg"
-
-alias zshrc="nvim ~/.zshrc && source ~/.zshrc"
-alias nvimrc="nvim ~/.config/nvim"
-alias i3rc="nvim ~/.config/i3/config"
-alias kittyrc="nvim ~/.config/kitty/kitty.conf"
-alias tmuxrc="nvim ~/.config/tmux/tmux.conf"
-alias scriptsrc="nvim ~/.local/bin"
-alias zellijrc="nvim ~/.config/zellij"
-alias cscriptsrc="nvim ~/.config/scripts"
-
-alias gbl="git branch --format='%(refname:short)'"
-alias gbr="git branch -r --format='%(refname:lstrip=3)'"
-alias gswl="gbl | fzf | xargs git switch"
-alias gswr="gbr | fzf | xargs git switch"
-
-# Navigation
-
-take() {
-  mkdir -p "$1"
-  cd "$1"
-}
-ffd() {
-  if [ -z "$1" ]; then
-    cd "$(find ~/personal ~/work ~/mack-ads ~/ -type d -maxdepth 4 -mindepth 1 -print 2>/dev/null | fzf)" && l;
-  else
-    cd "$(find "$1" -type d -maxdepth 4 -mindepth 1 -print 2>/dev/null | fzf)" && l;
-  fi
-}
+# Source Scripts
+for file in ~/scripts/*; do
+  [ -r "$file" ] && [ -f "$file" ] && source "$file"
+done
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

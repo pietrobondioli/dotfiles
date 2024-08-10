@@ -1,0 +1,48 @@
+alias ra='ranger'
+
+# Dirs
+alias cd="z"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+alias zz="zi"
+
+# User aliases
+alias .="nvim ."
+alias v="nvim"
+alias c="clear"
+alias ls="eza --icons --git"
+alias l='eza -alg --color=always --group-directories-first --git'
+alias ll='eza -aliSgh --color=always --group-directories-first --icons --header --long --git'
+alias lt='eza -@alT --color=always --git'
+alias llt="eza --oneline --tree --icons --git-ignore"
+alias lr='eza -alg --sort=modified --color=always --group-directories-first --git'
+alias cat="bat"
+alias lg="lazygit"
+alias gg="lazygit"
+alias ld="lazydocker"
+alias cwd="pwd | tr -d '\n' | xclip -selection clipboard"
+alias rr="rm -rf"
+alias md="mkdir -p"
+alias update="yay -Syu"
+alias copy="xclip -selection clipboard"
+alias paste="xclip -selection clipboard -o"
+
+alias grep="rg"
+
+alias zshrc="cd ~/ && nvim .zshrc"
+alias nvimrc="cd ~/.config/nvim && nvim ."
+alias i3rc="cd ~/.config/i3 && nvim config"
+alias kittyrc="cd ~/.config/kitty && nvim kitty.conf"
+alias tmuxrc="cd ~/.config/tmux && nvim tmux.conf"
+alias scriptsrc="cd ~/.local/bin && nvim ."
+alias zellijrc="cd ~/.config/zellij && nvim config.kdl"
+alias cscriptsrc="cd ~/.config/scripts && nvim ."
+
+alias gbl="git branch --format='%(refname:short)'"
+alias gbr="git branch -r --format='%(refname:lstrip=3)'"
+alias gswl="gbl | fzf | xargs git switch"
+alias gswr="gbr | fzf | xargs git switch"
+
