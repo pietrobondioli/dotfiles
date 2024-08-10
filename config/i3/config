@@ -4,17 +4,14 @@
 # For complete reference: https://i3wm.org/docs/userguide.html
 
 #######
-# Variables
+# Set mod key (Mod1=<Alt>, Mod4=<Super>)
 #######
 set $mod Mod4
+set $alt Mod1
 
 #-------
 # Fonts
-#-------
 font pango: Droid Sans Mono 12
-
-# This font is scalable on retina/hidpi displays (thanks to pango)
-#font pango:DejaVu Sans Mono 8
 
 #######
 # Autostarts
@@ -28,10 +25,12 @@ exec --no-startup-id dex --autostart --environment i3
 exec_always --no-startup-id xrandr --output DP-4 --primary --pos 0x1081 --mode 2560x1080 --rate 60
 exec_always --no-startup-id setxkbmap -layout us -variant intl
 exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec_always --no-startup-id redshift -O 3000 -P
 # exec --no-startup-id screenkey -s small -t 2 --position fixed --geometry 191x29+2355+35 --mouse --opacity 0.4 --font "Jetbrains Mono Nerd Font"
 # Disable screen saving and power management
 exec_always --no-startup-id xset s off -dpms
+exec_always --no-startup-id xset s off -dpms 3600 3600 3600
+exec_always --no-startup-id xautolock -time 360 -locker "systemctl suspend" -detectsleep
+exec_always --no-startup-id autotiling
 
 #-------
 # Visual Autostart
@@ -49,7 +48,7 @@ exec_always --no-startup-id battery &
 #-------
 # Lock and Network
 #-------
-exec --no-startup-id xss-lock --transfer-sleep-lock -- $HOME/.config/scripts/lock
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -c 04090e --nofork
 exec --no-startup-id nm-applet
 
 #-------
@@ -74,6 +73,8 @@ bindsym $mod+b exec --no-startup-id "blueman-manager"
 #-------
 # Lock
 #-------
+bindsym $mod+0 exec --no-startup-id rofi -show p -modi p:'rofi-power-menu'
+bindsym $mod+9 exec --no-startup-id i3lock -c 000000
 bindsym $mod+Shift+BackSpace exec $HOME/.config/scripts/lock
 
 #-------
@@ -84,6 +85,10 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioStop exec playerctl stop
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
 
 bindsym $mod+m exec --no-startup-id "pavucontrol"
 
@@ -95,15 +100,45 @@ for_window [class="^.*"] border normal
 floating_modifier $mod
 gaps inner 6px
 gaps outer 3px
-for_window [class="firefox" title="Library"] floating enable
-for_window [window_type="dialog"] floating enable
-for_window [class="Steam" title="^Steam - Update News$"] floating enable
-for_window [class="Blueman-manager"] floating enable
-for_window [class="Nm-connection-editor"] floating enable
-for_window [class="Pavucontrol"] floating enable
-for_window [class="Seahorse"] floating enable
-for_window [class="Gparted"] floating enable
-for_window [class="Gufw.py"] floating enable
+for_window [class="firefox" title="Library"] floating enable border normal
+for_window [window_type="dialog"] floating enable border normal
+for_window [class="Steam" title="^Steam - Update News$"] floating enable border normal
+for_window [class="Blueman-manager"] floating enable border normal
+for_window [class="Nm-connection-editor"] floating enable border normal
+for_window [class="(P|p)avucontrol"] floating enable border normal
+for_window [class="Seahorse"] floating enable border normal
+for_window [class="Gparted"] floating enable border normal
+for_window [class="Gufw.py"] floating enable border normal
+for_window [class="1(P|p)assword"] floating enable border normal
+for_window [title="alsamixer"] floating enable border pixel 1
+for_window [class="calamares"] floating enable border normal
+for_window [class="Clipgrab"] floating enable border normal
+for_window [title="File Transfer*"] floating enable border normal
+for_window [class="fpakman"] floating enable border normal
+for_window [class="Galculator"] floating enable border pixel 1
+for_window [class="GParted"] floating enable border normal
+for_window [title="i3_help"] floating enable sticky enable border normal
+for_window [class="Lightdm-settings"] floating enable
+for_window [class="Lxappearance"] floating enable sticky enable border normal
+for_window [class="Manjaro-hello"] floating enable
+for_window [class="Manjaro Settings Manager"] floating enable border normal
+for_window [title="MuseScore: Play Panel"] floating enable
+for_window [class="Nitrogen"] floating enable sticky enable border normal
+for_window [class="Oblogout"] fullscreen enable border normal
+for_window [class="octopi"] floating enable border normal
+for_window [title="About Pale Moon"] floating enable border normal
+for_window [class="Pamac-manager"] floating enable border normal
+for_window [class="Pavucontrol"] floating enable border normal
+for_window [class="qt5ct"] floating enable sticky enable border normal
+for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
+for_window [class="Simple-scan"] floating enable border normal
+for_window [class="(?i)System-config-printer.py"] floating enable border normal
+for_window [class="Skype"] floating enable border normal
+for_window [class="Timeset-gui"] floating enable border normal
+for_window [class="(?i)virtualbox"] floating enable border normal
+for_window [class="Xfburn"] floating enable border normal
+for_window [title="(?i)Network Connections"] floating enable border normal
+for_window [title="(?i)SimpleScreenRecorder"] floating enable border normal
 
 #-------
 # Default Programs
@@ -119,13 +154,20 @@ bindsym $mod+Shift+Return exec --no-startup-id "kitty -e dv"
 bindsym $mod+Shift+slash exec --no-startup-id "thunar"
 
 #-------
-# Window Management
+# Window
 #-------
+default_border none
+default_floating_border none
+workspace_layout tabbed
+title_align left
+popup_during_fullscreen smart
+hide_edge_borders none
+
 bindsym $mod+q kill
+bindsym $alt+F4 kill
 bindsym $mod+f fullscreen toggle
 
 bindsym $mod+h focus left
-bindsym $mod+l focus right
 bindsym $mod+k focus up
 bindsym $mod+j focus down
 bindsym $mod+Left focus left
@@ -191,6 +233,7 @@ bindsym $mod+Shift+Next move container to workspace next
 exec --no-startup-id "firefox"
 
 for_window [urgent=latest] focus
+bindsym $mod+Ctrl+a [urgent=latest] focus
 
 #-------
 # i3 Commands
@@ -209,11 +252,6 @@ bindsym $mod+Ctrl+l resize shrink width $resize_unit px or $resize_unit ppt
 bindsym $mod+Ctrl+k resize grow height $resize_unit px or $resize_unit ppt
 bindsym $mod+Ctrl+j resize shrink height $resize_unit px or $resize_unit ppt
 bindsym $mod+Ctrl+h resize grow width $resize_unit px or $resize_unit ppt
-
-# byndsym $mod+Ctrl+Left resize shrink width $resize_unit px or $resize_unit ppt
-# bindsym $mod+Ctrl+Up resize grow height $resize_unit px or $resize_unit ppt
-# bindsym $mod+Ctrl+Down resize shrink height $resize_unit px or $resize_unit ppt
-# bindsym $mod+Ctrl+Right resize grow width $resize_unit px or $resize_unit ppt
 
 #######
 # Bar Configuration
