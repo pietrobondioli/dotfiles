@@ -1,0 +1,60 @@
+# Alias for Ranger
+alias ra='ranger'
+
+# Directory Navigation
+alias cd="z"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+alias zz="zi"
+
+# User Aliases
+alias .="nvim ."
+alias v="nvim"
+alias c="clear"
+
+# Enhanced ls Aliases using eza
+alias ls="eza --icons --git"
+alias l='eza -alg --color=always --group-directories-first --git'
+alias ll='eza -aliSgh --color=always --group-directories-first --icons --header --long --git'
+alias lt='eza -@alT --color=always --git'
+alias llt="eza --oneline --tree --icons --git-ignore"
+alias lr='eza -alg --sort=modified --color=always --group-directories-first --git'
+
+# Replace cat with bat for syntax highlighting
+alias cat="bat"
+
+# Lazygit and Lazydocker
+alias lg="lazygit"
+alias gg="lazygit"
+alias ld="lazydocker"
+
+# Clipboard Management
+alias cwd="pwd | tr -d '\n' | xclip -selection clipboard"
+alias copy="xclip -selection clipboard"
+alias paste="xclip -selection clipboard -o"
+
+# Miscellaneous
+alias rr="rm -rf"
+alias md="mkdir -p"
+alias update="yay -Syu"
+alias grep="rg"
+
+# Dotfiles and Configuration Management
+alias dotfiles="cd $HOME/dotfiles"
+alias zshrc="cd $HOME && nvim .zshrc"
+alias nvimrc="cd $XDG_CONFIG_HOME/nvim && nvim ."
+alias i3rc="cd $XDG_CONFIG_HOME/i3 && nvim config"
+alias kittyrc="cd $XDG_CONFIG_HOME/kitty && nvim kitty.conf"
+alias tmuxrc="cd $XDG_CONFIG_HOME/tmux && nvim tmux.conf"
+alias scriptsrc="cd $HOME/.local/bin && nvim ."
+alias zellijrc="cd $XDG_CONFIG_HOME/zellij && nvim config.kdl"
+alias cscriptsrc="cd $XDG_CONFIG_HOME/scripts && nvim ."
+
+# Git Aliases
+alias gbl="git branch --format='%(refname:short)'"
+alias gbr="git branch -r --format='%(refname:lstrip=3)'"
+alias gswl="gbl | fzf | xargs git switch"
+alias gswr="gbr | fzf | xargs git switch"
