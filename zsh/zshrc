@@ -18,11 +18,8 @@ local -a PATH_EXPORTS=(
   "/usr/local/go/bin"
   "$HOME/go/bin"
   "$HOME/.dotnet/tools"
-  "$HOME/tools"
-  "$HOME/tools/google-cloud-sdk/bin"
   "$HOME/.local/share/JetBrains/scripts"
   "$HOME/.config/yarn/global/node_modules/.bin"
-  "$BUN_INSTALL/bin"
 )
 
 PATH_RESULT="$PATH"
@@ -41,7 +38,14 @@ source $HOME/scripts/utils.sh
 ## Znap Plugin Manager Configuration
 ##############################################################################################################
 
-# Set up Znap if not already installed
+# Minimal .zshrc
+export ZSH_THEME="xxf"  # Change to your desired theme
+source $HOME/.zsh/plugins/ohmyzsh/ohmyzsh/oh-my-zsh.sh
+
+# Minimal configuration for Znap
+
+
+# # Set up Znap if not already installed
 [[ -r "$SNAP_DIR/znap.zsh" ]] ||
     git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git $SNAP_DIR
 source "$SNAP_DIR/znap.zsh"
@@ -73,21 +77,20 @@ done
 zstyle ':omz:update' mode auto
 zstyle ':omz:update' frequency 1
 znap source ohmyzsh/ohmyzsh lib/{git,bzr,cli,clipboard,compfix,completion,correction,directories,functions,git,grep,history,key-bindings,misc,termsupport}
-znap source ohmyzsh/ohmyzsh plugins/{git,fzf,brew,aws}
+znap source ohmyzsh/ohmyzsh plugins/{git,fzf}
+
+# Initialize Starship prompt
 znap eval starship "starship init zsh --print-full-init"
-znap prompt
+
 
 ##############################################################################################################
 ## Fpath Hooks and Completions
 ##############################################################################################################
 
-znap fpath _cargo    "rustup completions zsh cargo"
 znap fpath _fx       "source <(fx --comp zsh)"
 znap fpath _gitleaks "gitleaks completion zsh"
 znap fpath _kubectl  "kubectl completion zsh"
 znap fpath _npm      "npm completion"
-znap fpath _rustup   "rustup completions zsh"
-znap fpath _typeid   "typeid completion zsh"
 znap fpath _zellij   "zellij setup --generate-completion zsh;echo"
 
 ##############################################################################################################
@@ -98,13 +101,10 @@ znap fpath _zellij   "zellij setup --generate-completion zsh;echo"
 eval "$(zoxide init zsh)"
 
 local -a SOURCE_FILES=(
-  # "$HOME/.fzf/shell/key-bindings.zsh"
-  # "$HOME/.ghcup/env"
-  # "$HOME/.bun/_bun"
   "$PLUGINS_DIR/hlissner/zsh-autopair/autopair.plugin.zsh"
-  "$SCRIPTS/alias.sh"
+  "$SCRIPTS/aliases.sh"
   "$SCRIPTS/fzf.sh"
-  "$SCRIPTS/git"
+  "$SCRIPTS/git.sh"
   "$SCRIPTS/history.sh"
   "$SCRIPTS/mix.sh"
   "$SCRIPTS/nav.sh"
@@ -134,7 +134,8 @@ export EDITOR='vim'
 # Display system info at terminal startup
 neofetch --ascii "$(fortune | cowsay -W 40)" | lolcat
 
+znap prompt
+
 # NVM (Node Version Manager) setup
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # Load NVM
-[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # Load NVM bash_completion

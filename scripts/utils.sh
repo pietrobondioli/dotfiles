@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# Logging function
+log() {
+  local message="$1"
+  local log_file_name="${2:-default.log}"
+  local log_file="$USER_LOG_DIR/$log_file_name"
+
+  # Ensure the log directory exists
+  mkdir -p "$USER_LOG_DIR"
+
+  # Log to syslog
+  logger "$message"
+
+  # Log to the specified log file with a timestamp
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - $message" >>"$log_file"
+}
+
 # Define the log file name
 log_file_name="utils.log"
 
@@ -25,18 +41,6 @@ function checkcommand() {
     log "Command $1 not found, executing fallback" "$log_file_name"
     $2
   fi
-}
-
-# Load environment variables from .env files after changing directory
-function _postcd() {
-  dotenv ".env"
-  log "Loaded .env" "$log_file_name"
-
-  dotenv ".env.local"
-  log "Loaded .env.local" "$log_file_name"
-
-  dotenv "./src/.env"
-  log "Loaded ./src/.env" "$log_file_name"
 }
 
 # Check if the directory is a Git repository
@@ -76,14 +80,6 @@ function basename2() {
   result=$(basename "$(dirname "$path")")/$(basename "$path")
   log "Basename for $path is $result" "$log_file_name"
   echo "$result"
-}
-
-# Update the Zellij tab name based on the current directory
-function _zellij_tab_name_update() {
-  if [[ -n $ZELLIJ ]]; then
-    bash "$DOTFILES/bin/zellij-sessionx-rename" "" "$(pwd)"
-    log "Zellij tab name updated to $(pwd)" "$log_file_name"
-  fi
 }
 
 # Execute a command for each item in a space-separated list

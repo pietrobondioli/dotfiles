@@ -1,4 +1,6 @@
+#######
 # Alias for Ranger
+#######
 alias ra='ranger'
 
 #######
@@ -21,7 +23,7 @@ function cdm() {
 #######
 # User Aliases
 #######
-alias .="nvim ."
+alias v.="nvim ."
 alias v="nvim"
 alias c="clear"
 
@@ -127,7 +129,6 @@ function secretuuid() {
   echo -n "$1" | openssl enc -e -aes-256-cbc -a -salt | base64
 }
 
-# Determine size of a file or directory
 function fs() {
   local arg
   if du -b /dev/null >/dev/null 2>&1; then
@@ -135,10 +136,11 @@ function fs() {
   else
     arg=-sh
   fi
-  if [[ -n "$@" ]]; then
-    du $arg -- "$@"
+
+  if [[ $# -gt 0 ]]; then
+    du "$arg" -- "$@"
   else
-    du $arg .[^.]* ./*
+    du "$arg" .[^.]* ./*
   fi
 }
 
@@ -164,7 +166,7 @@ function anon() {
 # Extract various archive formats
 function extract() {
   local FILE="$1"
-  if [ -f "$FILE" ]; then
+  if [[ -f "$FILE" ]]; then
     case $FILE in
     *.tar.bz2) tar xjf "$FILE" ;;
     *.tar.gz) tar xzf "$FILE" ;;
