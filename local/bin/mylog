@@ -1,0 +1,14 @@
+#!/bin/bash
+
+message="$1"
+log_file_name="${2:-default.log}"
+log_file="$USER_LOG_DIR/$log_file_name"
+
+# Ensure the log directory exists
+mkdir -p "$USER_LOG_DIR"
+
+# Log to syslog
+logger "$message"
+
+# Log to the specified log file with a timestamp
+echo "$(date '+%Y-%m-%d %H:%M:%S') - $message" >>"$log_file"

@@ -4,7 +4,7 @@
 
 # Start or switch to a tmux session
 tmo() {
-  log "Starting tmux session" "tmo.log"
+  mylog "Starting tmux session" "tmo.log"
   local selected
 
   if [[ $# -eq 1 ]]; then
@@ -34,21 +34,21 @@ tmo() {
 
 # Switch to an existing tmux session
 tms() {
-  log "Switching to tmux session" "tms.log"
+  mylog "Switching to tmux session" "tms.log"
   local session=$(tmux list-sessions -F "#S" 2>/dev/null | fzf --exit-0)
   [ -n "$session" ] && tmux switch -t "$session"
 }
 
 # Kill a tmux session
 tmd() {
-  log "Killing tmux session" "tmd.log"
+  mylog "Killing tmux session" "tmd.log"
   local session=$(tmux list-sessions -F "#S" 2>/dev/null | fzf --exit-0)
   [ -n "$session" ] && tmux kill-session -t "$session"
 }
 
 # Kill all tmux sessions except the current one
 tmdall() {
-  log "Killing all tmux sessions except current" "tmdall.log"
+  mylog "Killing all tmux sessions except current" "tmdall.log"
   local current_session=$(tmux display-message -p '#S')
 
   tmux list-sessions -F "#S" | while read session_name; do

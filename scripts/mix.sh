@@ -22,7 +22,7 @@ clc() {
 
 # Finding and opening file with nvim
 fv() {
-  log "Finding and opening file with nvim" "fv.log"
+  mylog "Finding and opening file with nvim" "fv.log"
   local path
 
   if [ -n "$1" ]; then
@@ -54,51 +54,51 @@ fv() {
 
 # Open configuration file with vim
 cfgedit() {
-  log "Opening configuration file with vim" "cfgedit.log"
+  mylog "Opening configuration file with vim" "cfgedit.log"
   local file=$(find ~/.* -maxdepth 2 -type f | fzf --exit-0)
   [ -n "$file" ] && vim "$file"
 }
 
 # Enter Docker container shell
 dshell() {
-  log "Entering Docker container shell" "dshell.log"
+  mylog "Entering Docker container shell" "dshell.log"
   local container=$(docker ps --format '{{.Names}}' | fzf --exit-0)
   [ -n "$container" ] && docker exec -it "$container" /bin/sh
 }
 
 # Find and kill process
 fkill() {
-  log "Finding and killing process" "fkill.log"
+  mylog "Finding and killing process" "fkill.log"
   local pid=$(ps aux | sed 1d | fzf -m | awk '{print $2}')
   [ -n "$pid" ] && kill -9 "$pid" && echo "Killed $pid"
 }
 
 # Find and display man page
 fman() {
-  log "Finding and displaying man page" "fman.log"
+  mylog "Finding and displaying man page" "fman.log"
   local manpage=$(man -k . | awk '{print $1}' | sort | uniq | fzf --exit-0)
   [ -n "$manpage" ] && man "$manpage"
 }
 
 # Fetch and display command history
 fhistory() {
-  log "Fetching and displaying command history" "fhistory.log"
+  mylog "Fetching and displaying command history" "fhistory.log"
   fc -R
 
   local command=$(fc -l -n 1 | fzf --tac)
 
   if [ -n "$command" ]; then
-    log "Selected command: $command" "fhistory.log"
+    mylog "Selected command: $command" "fhistory.log"
     echo "$command" | copy
     echo "$command"
   else
-    log "No command selected" "fhistory.log"
+    mylog "No command selected" "fhistory.log"
   fi
 }
 
 # Open cheat sheet
 chsheet() {
-  log "Opening cheat sheet for $selected" "chsheet.log"
+  mylog "Opening cheat sheet for $selected" "chsheet.log"
   local languages=("csharp" "css" "go" "java" "dotnet" "html" "http" "javascript" "linux" "lua" "mysql" "nodejs" "python" "rust" "sql" "vim")
   local commands=("curl" "date" "docker" "find" "mv" "rm" "ssh" "tar" "unzip" "wget" "zip" "awk" "cat" "chmod" "chown" "cp" "curl" "diff" "du" "grep" "tail" "touch" "wc" "tee")
 
@@ -138,16 +138,16 @@ pfc() {
     esac
   done
 
-  log "Searching in directory: $dir with depth: $depth and pattern: $pattern" "$log_file"
+  mylog "Searching in directory: $dir with depth: $depth and pattern: $pattern" "$log_file"
 
   find "$dir" -maxdepth "$depth" -type f -name "$pattern" -exec echo -e "\n--- {} ---\n" \; -exec cat {} \; 2>>"$USER_LOG_DIR/$log_file"
 
-  log "Completed searching in directory: $dir" "$log_file"
+  mylog "Completed searching in directory: $dir" "$log_file"
 }
 
 # Connect to SSH host
 fssh() {
-  log "Connecting to SSH host" "fssh.log"
+  mylog "Connecting to SSH host" "fssh.log"
   local host=$(grep "Host " ~/.ssh/config | awk '{print $2}' | fzf --exit-0)
   [ -n "$host" ] && ssh "$host"
 }

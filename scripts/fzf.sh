@@ -12,7 +12,7 @@ export FZF_DEFAULT_COMMAND="fd --type f --strip-cwd-prefix"
 export FZF_ALT_C_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -type d -printf '%P\n' 2>/dev/null"
 export FZF_ALT_C_OPTS="--preview 'tree -C {}'"
 export FZF_CTRL_T_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -printf '%P\n' 2>/dev/null"
-export FORGIT_FZF_DEFAULT_OPTS="--ansi --exact --border --cycle --reverse --height '80%' --preview-window right,50%"
+export FORGIT_FZF_DEFAULT_OPTS="--ansi --exact --border --cycle --height '80%' --preview-window right,50%"
 
 # FZF default options
 export FZF_DEFAULT_OPTS="
@@ -21,11 +21,9 @@ export FZF_DEFAULT_OPTS="
 --bind 'ctrl-y:execute-silent(printf {} | cut -f 2- | pbcopy)'
 --border
 $FZF_COLORS
---height 95%
 --info=inline
---layout=reverse
---preview '~/dotfiles/bin/lessfilter.sh {}'
---preview-window right,75%
+--preview '~/.local/bin/lessfilter {}'
+--preview-window right,60%
 -i
 "
 
@@ -47,19 +45,19 @@ function _fzf_comprun() {
   shift
   case "$command" in
   cd)
-    log "Running FZF with directory preview using tree for command: cd" "$log_file_name"
+    mylog "Running FZF with directory preview using tree for command: cd" "$log_file_name"
     fzf "$@" --preview 'tree -C {} | head -200'
     ;;
   *)
-    log "Running FZF with custom preview script for command: $command" "$log_file_name"
-    fzf "$@" --preview '~/dotfiles/bin/lessfilter.sh {}'
+    mylog "Running FZF with custom preview script for command: $command" "$log_file_name"
+    fzf "$@" --preview '~/.local/bin/lessfilter {}'
     ;;
   esac
 }
 
 # Custom FZF Git Integration
 function _fzf_git_fzf() {
-  log "Running FZF Git Integration" "$log_file_name"
+  mylog "Running FZF Git Integration" "$log_file_name"
   fzf-tmux \
     --ansi \
     --bind 'ctrl-/:toggle-preview' \
@@ -70,7 +68,7 @@ function _fzf_git_fzf() {
     --info=inline \
     -l "90%" \
     --layout=reverse --multi --height=90% --min-height=30 \
-    --preview '~/dotfiles/bin/lessfilter.sh {}' \
+    --preview '~/.local/bin/lessfilter {}' \
     --preview-window 'right,75%' \
     -i \
     -p90%,90% \
@@ -79,25 +77,25 @@ function _fzf_git_fzf() {
 
 # Change Directory Using FZF
 function fcd() {
-  log "Changing directory using FZF" "$log_file_name"
+  mylog "Changing directory using FZF" "$log_file_name"
   cd "$(find . -type d -print | fzf)"
 }
 
 # Evaluate Command Using FZF
 function fzf-eval() {
-  log "Evaluating command using FZF" "$log_file_name"
+  mylog "Evaluating command using FZF" "$log_file_name"
   echo | fzf -q "$*" --preview-window=up:99% --preview="eval {q}"
 }
 
 # View Files Using FZF
 function view() {
-  log "Viewing files using FZF" "$log_file_name"
+  mylog "Viewing files using FZF" "$log_file_name"
   fd --type f --strip-cwd-prefix | fzf
 }
 
 # Change Directory Using FZF with Hidden Files
 function cdf() {
-  log "Changing directory to hidden directories using FZF" "$log_file_name"
+  mylog "Changing directory to hidden directories using FZF" "$log_file_name"
   local dir
   dir="$(fd --type directory --hidden --exclude .git | fzf)"
   cd "$PWD/$dir"
@@ -105,7 +103,7 @@ function cdf() {
 
 # Run NPM Scripts Using FZF
 function fns() {
-  log "Running NPM scripts using FZF" "$log_file_name"
+  mylog "Running NPM scripts using FZF" "$log_file_name"
   if [[ -f package.json ]]; then
     local content script
     content="$(jq -r '.scripts' package.json)"
@@ -118,7 +116,7 @@ function fns() {
 
 # Update FZF from Source
 function fzf-update() {
-  log "Updating FZF from source" "$log_file_name"
+  mylog "Updating FZF from source" "$log_file_name"
   local dir
   dir="$(pwd)"
   cd ~/.fzf && git pull && ./install --no-bash --no-zsh --no-fish --no-key-bindings --no-completion --no-update-rc
@@ -128,7 +126,7 @@ function fzf-update() {
 
 # Open Files Using FZF
 function files() {
-  log "Opening files using FZF" "$log_file_name"
+  mylog "Opening files using FZF" "$log_file_name"
   local file
   file="$(fzf --multi --reverse)"
   if [[ "$file" ]]; then
@@ -137,14 +135,14 @@ function files() {
     done
   else
     echo "Cancelled FZF"
-    log "FZF file selection cancelled" "$log_file_name"
+    mylog "FZF file selection cancelled" "$log_file_name"
   fi
 }
 
 # Git Status Using FZF
 function st() {
   git rev-parse --git-dir >/dev/null 2>&1 || {
-    log "Not in a git repository" "$log_file_name"
+    mylog "Not in a git repository" "$log_file_name"
     echo "You are not in a git repository"
     return
   }
@@ -158,7 +156,7 @@ function st() {
       $EDITOR "$prog"
     done
   fi
-  log "Selected files for editing using FZF and git status: $selected" "$log_file_name"
+  mylog "Selected files for editing using FZF and git status: $selected" "$log_file_name"
 }
 
 #############################################################################################################################
@@ -173,12 +171,12 @@ bindkey '^I' $fzf_default_completion
 
 # FZF Path Completion Generator
 function _fzf_compgen_path() {
-  log "Generating FZF path completion" "$log_file_name"
+  mylog "Generating FZF path completion" "$log_file_name"
   bfs -H "$1" -color -exclude \( -name .git \) 2>/dev/null
 }
 
 # FZF Directory Completion Generator
 function _fzf_compgen_dir() {
-  log "Generating FZF directory completion" "$log_file_name"
+  mylog "Generating FZF directory completion" "$log_file_name"
   bfs -H "$1" -color -exclude \( -name .git \) -type d 2>/dev/null
 }

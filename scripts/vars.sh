@@ -24,8 +24,7 @@ export MANPATH="/usr/local/man:$MANPATH"
 ## ZSH_PLUGINS
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 export ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor line regexp)
-# export ZSH_THEME="xxf"
-export ZSH_THEME="robbyrussell"
+export ZSH_THEME="xxf"
 
 #####################################################################################
 ## Auto notify plugin

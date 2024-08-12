@@ -2,6 +2,8 @@
 # Navigation Functions
 #######
 
+log_file_name="nav.log"
+
 # Change directory to the root of the git repository
 cdtoroot() {
   cd "$(git rev-parse --show-toplevel)"
@@ -9,18 +11,18 @@ cdtoroot() {
 
 # Creating and moving to directory
 take() {
-  log "Creating and moving to directory: $1" "take.log"
+  mylog "Creating and moving to directory: $1" "$log_file_name"
   mkdir -p "$1"
   if cd "$1"; then
-    log "Changed directory to $1" "take.log"
+    mylog "Changed directory to $1" "$log_file_name"
   else
-    log "Failed to change directory to $1" "take.log"
+    mylog "Failed to change directory to $1" "$log_file_name"
   fi
 }
 
 # Finding and navigating to directory
 ffd() {
-  log "Finding and navigating to directory" "ffd.log"
+  mylog "Finding and navigating to directory" "$log_file_name"
   local dir
   if [ -z "$1" ]; then
     dir="$(find ~/personal ~/work ~/mack-ads ~/ -type d -maxdepth 5 -mindepth 1 -print 2>/dev/null | fzf)"

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+log_file_name="update_repos.log"
+
+REPO_PATH="$1"
+
+if [ -z "$REPO_PATH" ]; then
+  mylog "No repository path provided. Usage: update_repos /path/to/repos" "$log_file_name"
+  return 1
+fi
+
+if [ -z "$USER_LOG_DIR" ]; then
+  mylog "Error: USER_LOG_DIR is not set. Please define it in your zshrc or bashrc." "$log_file_name"
+  return 1
+fi
+
+mkdir -p "$USER_LOG_DIR"
+LOG_FILE="$USER_LOG_DIR/git_fetch_log_$(date +%Y%m%d_%H%M%S).log"
+
+mylog "Updating repositories in $REPO_PATH" "$log_file_name"
+find "$REPO_PATH" -maxdepth 4 -name ".git" -prune -type d -printf "%h\n" |
+  parallel --eta "echo {} >> $LOG_FILE && git -C {} fetch --verbose >> $LOG_FILE 2>&1 || echo 'Failed to fetch for repo: {}' >> $LOG_FILE" --timeout 300
+
+mylog "Fetch operations completed. Log file saved as $LOG_FILE" "$log_file_name"

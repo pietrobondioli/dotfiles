@@ -38,14 +38,9 @@ source $HOME/scripts/utils.sh
 ## Znap Plugin Manager Configuration
 ##############################################################################################################
 
-# Minimal .zshrc
-export ZSH_THEME="xxf"  # Change to your desired theme
 source $HOME/.zsh/plugins/ohmyzsh/ohmyzsh/oh-my-zsh.sh
 
-# Minimal configuration for Znap
-
-
-# # Set up Znap if not already installed
+# Set up Znap if not already installed
 [[ -r "$SNAP_DIR/znap.zsh" ]] ||
     git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git $SNAP_DIR
 source "$SNAP_DIR/znap.zsh"
@@ -110,6 +105,7 @@ local -a SOURCE_FILES=(
   "$SCRIPTS/nav.sh"
   "$SCRIPTS/tmux.sh"
   "$SCRIPTS/zellij.sh"
+  "$SCRIPTS/zellij_autostart_config.sh"
 )
 
 # Load all source files
@@ -119,7 +115,6 @@ for config in $SOURCE_FILES; do
   fi
 done
 
-source $HOME/.config/scripts/zellij_autostart_config.sh
 zellij_autostart_config
 
 # Additional custom configuration or function hooks can be placed here

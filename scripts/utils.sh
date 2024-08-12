@@ -1,21 +1,5 @@
 #!/bin/bash
 
-# Logging function
-log() {
-  local message="$1"
-  local log_file_name="${2:-default.log}"
-  local log_file="$USER_LOG_DIR/$log_file_name"
-
-  # Ensure the log directory exists
-  mkdir -p "$USER_LOG_DIR"
-
-  # Log to syslog
-  logger "$message"
-
-  # Log to the specified log file with a timestamp
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - $message" >>"$log_file"
-}
-
 # Define the log file name
 log_file_name="utils.log"
 
@@ -24,9 +8,9 @@ log_file_name="utils.log"
 #######
 export FZF_COLORS="
 --color=dark
---color='bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8'
---color='fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc'
---color='marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8'"
+--color='bg+:#292c3c,bg:#232634,spinner:#f2d5cf,hl:#f4b8e4'
+--color='fg:#c6d0f5,header:#ca9ee6,info:#99d1db,pointer:#f2d5cf'
+--color='marker:#e78284,fg+:#b5bfe2,prompt:#8caaee,hl+:#f4b8e4'"
 
 #######
 # Utility Functions
@@ -35,10 +19,10 @@ export FZF_COLORS="
 # Check if a command exists, otherwise execute a fallback command
 function checkcommand() {
   if command -v "$1" &>/dev/null; then
-    log "Command $1 found" "$log_file_name"
+    mylog "Command $1 found" "$log_file_name"
     return 0
   else
-    log "Command $1 not found, executing fallback" "$log_file_name"
+    mylog "Command $1 not found, executing fallback" "$log_file_name"
     $2
   fi
 }
@@ -47,10 +31,10 @@ function checkcommand() {
 function isGitDir() {
   local dir="$1"
   if git -C "$dir" rev-parse --is-inside-work-tree &>/dev/null; then
-    log "Directory $dir is a Git repository" "$log_file_name"
+    mylog "Directory $dir is a Git repository" "$log_file_name"
     echo "true"
   else
-    log "Directory $dir is not a Git repository" "$log_file_name"
+    mylog "Directory $dir is not a Git repository" "$log_file_name"
     echo "false"
   fi
 }
@@ -60,7 +44,7 @@ function getCurrentBranch() {
   local dir="$1"
   local branch
   branch=$(git -C "$dir" rev-parse --abbrev-ref HEAD 2>/dev/null)
-  log "Current branch for $dir is $branch" "$log_file_name"
+  mylog "Current branch for $dir is $branch" "$log_file_name"
   echo "$branch"
 }
 
@@ -69,7 +53,7 @@ function getRepositoryName() {
   local dir="$1"
   local repo_name
   repo_name=$(git -C "$dir" config --get remote.origin.url 2>/dev/null | cut -d ':' -f2- | sed 's/\.git$//g')
-  log "Repository name for $dir is $repo_name" "$log_file_name"
+  mylog "Repository name for $dir is $repo_name" "$log_file_name"
   echo "$repo_name"
 }
 
@@ -78,7 +62,7 @@ function basename2() {
   local path="$1"
   local result
   result=$(basename "$(dirname "$path")")/$(basename "$path")
-  log "Basename for $path is $result" "$log_file_name"
+  mylog "Basename for $path is $result" "$log_file_name"
   echo "$result"
 }
 
@@ -88,10 +72,10 @@ function forEach() {
   local command="$2"
   local item
 
-  log "Executing $command for each item in list: $items" "$log_file_name"
+  mylog "Executing $command for each item in list: $items" "$log_file_name"
 
   for item in $(echo "$items" | tr ' ' '\n'); do
     "$command" "$item"
-    log "Executed $command for item: $item" "$log_file_name"
+    mylog "Executed $command for item: $item" "$log_file_name"
   done
 }
