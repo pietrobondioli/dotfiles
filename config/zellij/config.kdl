@@ -106,8 +106,6 @@ keybinds clear-defaults=true {
     }
 }
 
-theme "catppuccin-mocha"
-
 // Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
 // eg. when terminal window with an active zellij session is closed
 // Options:
@@ -168,7 +166,7 @@ scrollback_lines_to_serialize 100000
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-// theme "default"
+theme "onedark"
 
 // The name of the default layout to load on startup
 // Default: "default"
@@ -239,7 +237,7 @@ layout_dir "/home/pietro/.config/zellij/layouts"
 
 // The folder in which Zellij will look for themes
 //
-// theme_dir "/path/to/my/theme_dir"
+theme_dir "/home/pietro/.config/zellij/themes"
 
 // Enable or disable the rendering of styled and colored underlines (undercurl).
 // May need to be disabled for certain unsupported terminals

@@ -108,9 +108,12 @@ alias nvimrc="cd $XDG_CONFIG_HOME/nvim && nvim ."
 alias i3rc="cd $XDG_CONFIG_HOME/i3 && nvim config"
 alias kittyrc="cd $XDG_CONFIG_HOME/kitty && nvim kitty.conf"
 alias tmuxrc="cd $XDG_CONFIG_HOME/tmux && nvim tmux.conf"
-alias scriptsrc="cd $HOME/.local/bin && nvim ."
+alias binrc="cd $HOME/.local/bin && nvim ."
+alias scriptsrc="cd $HOME/scripts && nvim ."
 alias zellijrc="cd $XDG_CONFIG_HOME/zellij && nvim config.kdl"
 alias cscriptsrc="cd $XDG_CONFIG_HOME/scripts && nvim ."
+alias lazygitrc="cd $XDG_CONFIG_HOME/lazygit && nvim config.yml"
+alias lazydockerrc="cd $XDG_CONFIG_HOME/lazydocker && nvim config.yml"
 
 #######
 # Git Aliases

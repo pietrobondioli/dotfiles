@@ -6,11 +6,21 @@ log_file_name="utils.log"
 #######
 # FZF Configuration
 #######
+# One Dark
 export FZF_COLORS="
 --color=dark
---color='bg+:#292c3c,bg:#232634,spinner:#f2d5cf,hl:#f4b8e4'
---color='fg:#c6d0f5,header:#ca9ee6,info:#99d1db,pointer:#f2d5cf'
---color='marker:#e78284,fg+:#b5bfe2,prompt:#8caaee,hl+:#f4b8e4'"
+--color='bg+:#3A3F4B,bg:#282C34,spinner:#E5C07B,hl:#C678DD'
+--color='fg:#ABB2BF,header:#C678DD,info:#56B6C2,pointer:#E06C75'
+--color='marker:#98C379,fg+:#ABB2BF,prompt:#61AFEF,hl+:#C678DD'
+"
+
+# Catppuccin Frappe
+# export FZF_COLORS="
+# --color=dark
+# --color='bg+:#292c3c,bg:#232634,spinner:#f2d5cf,hl:#f4b8e4'
+# --color='fg:#c6d0f5,header:#ca9ee6,info:#99d1db,pointer:#f4b8e4'
+# --color='marker:#e78284,fg+:#b5bfe2,prompt:#8caaee,hl+:#f4b8e4'
+# "
 
 #######
 # Utility Functions

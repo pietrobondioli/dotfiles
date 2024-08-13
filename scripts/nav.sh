@@ -31,3 +31,15 @@ ffd() {
   fi
   [ -n "$dir" ] && cd "$dir" && l
 }
+
+# Finding and opening file in editor
+ffv() {
+  mylog "Finding and opening file in editor" "$log_file_name"
+  local file
+  if [ -z "$1" ]; then
+    file="$(find ~/personal ~/work ~/mack-ads ~/ -type f -print 2>/dev/null | fzf)"
+  else
+    file="$(find "$1" -type f -print 2>/dev/null | fzf)"
+  fi
+  [ -n "$file" ] && nvim "$file"
+}
