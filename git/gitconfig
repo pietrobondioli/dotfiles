@@ -2,9 +2,6 @@
 	gpgsign = true
 	template = ~/dotfiles/git/gitmessage
 
-[tag]
-  gpgsign = true
-
 [user]
 	email = email@pietrobondioli.com.br
 	name = Pietro Bondioli
@@ -14,6 +11,9 @@
   pager = delta --side-by-side -w ${FZF_PREVIEW_COLUMNS:-$COLUMNS}
   excludesFile = ~/dotfiles/git/global_gitignore
   ignoreCase = false
+
+[url "git@github.com:"]
+	insteadOf = https://github.com/
 
 [apply]
   whitespace = fix
@@ -75,7 +75,7 @@
   hunk-header-style = file line-number syntax
 
 [gpg]
-    program = /usr/local/bin/gpg
+    program = /usr/bin/gpg
 
 [diff]
 	colorMoved = default
