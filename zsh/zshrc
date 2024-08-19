@@ -33,6 +33,7 @@ export PATH="$PATH_RESULT"
 # Load environment-specific configurations
 source $HOME/scripts/vars.sh
 source $HOME/scripts/utils.sh
+source $HOME/scripts/aliases.sh
 
 ##############################################################################################################
 ## Znap Plugin Manager Configuration
@@ -97,7 +98,6 @@ eval "$(zoxide init zsh)"
 
 local -a SOURCE_FILES=(
   "$PLUGINS_DIR/hlissner/zsh-autopair/autopair.plugin.zsh"
-  "$SCRIPTS/aliases.sh"
   "$SCRIPTS/fzf.sh"
   "$SCRIPTS/git.sh"
   "$SCRIPTS/history.sh"
