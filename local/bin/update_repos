@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/zsh
 
 log_file_name="update_repos.log"
 

@@ -31,9 +31,9 @@ done
 export PATH="$PATH_RESULT"
 
 # Load environment-specific configurations
-source $HOME/scripts/vars.sh
-source $HOME/scripts/utils.sh
-source $HOME/scripts/aliases.sh
+source $HOME/scripts/vars
+source $HOME/scripts/utils
+source $HOME/scripts/aliases
 
 ##############################################################################################################
 ## Znap Plugin Manager Configuration
@@ -98,14 +98,14 @@ eval "$(zoxide init zsh)"
 
 local -a SOURCE_FILES=(
   "$PLUGINS_DIR/hlissner/zsh-autopair/autopair.plugin.zsh"
-  "$SCRIPTS/fzf.sh"
-  "$SCRIPTS/git.sh"
-  "$SCRIPTS/history.sh"
-  "$SCRIPTS/mix.sh"
-  "$SCRIPTS/nav.sh"
-  "$SCRIPTS/tmux.sh"
-  "$SCRIPTS/zellij.sh"
-  "$SCRIPTS/zellij_autostart_config.sh"
+  "$SCRIPTS/fzf"
+  "$SCRIPTS/git"
+  "$SCRIPTS/history"
+  "$SCRIPTS/mix"
+  "$SCRIPTS/nav"
+  "$SCRIPTS/tmux"
+  "$SCRIPTS/zellij"
+  "$SCRIPTS/zellij_autostart_config"
 )
 
 # Load all source files

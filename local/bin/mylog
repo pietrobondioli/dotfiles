@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/zsh
 
 message="$1"
 log_file_name="${2:-default.log}"
