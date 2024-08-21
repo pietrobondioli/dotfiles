@@ -4,60 +4,82 @@
 # For complete reference: https://i3wm.org/docs/userguide.html
 
 #######
-# Set Mod Keys
+# Set mod key (Mod1=<Alt>, Mod4=<Super>)
 #######
-set $mod Mod4  # Super key
-set $alt Mod1  # Alt key
+set $mod Mod4
+set $alt Mod1
 
-#######
+#-------
 # Fonts
-#######
 font pango: Droid Sans Mono 12
 
 #######
 # Autostarts
 #######
 
+#-------
 # General Autostart
+#-------
+# Start XDG autostart .desktop files using dex
 exec --no-startup-id dex --autostart --environment i3
 exec_always --no-startup-id xrandr --output DP-4 --primary --pos 0x1081 --mode 2560x1080 --rate 60
 exec_always --no-startup-id setxkbmap -layout us -variant intl
 exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+# exec --no-startup-id screenkey -s small -t 2 --position fixed --geometry 191x29+2355+35 --mouse --opacity 0.4 --font "Jetbrains Mono Nerd Font"
+# Disable screen saving and power management
 exec_always --no-startup-id xset s off -dpms
+exec_always --no-startup-id xset s off -dpms 3600 3600 3600
 exec_always --no-startup-id xautolock -time 360 -locker "systemctl suspend" -detectsleep
 exec_always --no-startup-id autotiling
 
+#-------
 # Visual Autostart
+#-------
 exec_always --no-startup-id picom &
 exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/sea_watchtower.png
 
+#-------
 # Utility Autostart
+#-------
 exec_always --no-startup-id mpd &
 exec_always --no-startup-id dunst &
 exec_always --no-startup-id battery &
 
+#-------
 # Lock and Network
+#-------
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -c 04090e --nofork
 exec --no-startup-id nm-applet
 
+#-------
 # Clipboard Manager
-exec --no-startup-id copyq
+#-------
+
 bindsym $mod+v exec --no-startup-id copyq show
+
 for_window [class="copyq"] floating enable, resize set 400 300, border pixel 5, move position center
+
+exec --no-startup-id copyq
 
 #######
 # Keybindings
 #######
 
-# Bluetooth Manager
+#-------
+# Bluetooth
+#-------
 bindsym $mod+b exec --no-startup-id "blueman-manager"
 
+#-------
 # Lock
+#-------
 bindsym $mod+0 exec --no-startup-id rofi -show p -modi p:'rofi-power-menu'
 bindsym $mod+9 exec --no-startup-id i3lock -c 000000
 bindsym $mod+Shift+BackSpace exec $HOME/.config/scripts/lock
 
+#-------
 # Audio Controls
+#-------
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
@@ -67,24 +89,61 @@ bindsym XF86AudioStop exec playerctl stop
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
+
 bindsym $mod+m exec --no-startup-id "pavucontrol"
 
+#-------
 # Floating Windows
+#-------
+for_window [class="^.*"] border normal
+
 floating_modifier $mod
 gaps inner 6px
 gaps outer 3px
-for_window [class="^.*"] border normal
-
-# Specific Floating Windows
 for_window [class="firefox" title="Library"] floating enable border normal
 for_window [window_type="dialog"] floating enable border normal
 for_window [class="Steam" title="^Steam - Update News$"] floating enable border normal
 for_window [class="Blueman-manager"] floating enable border normal
 for_window [class="Nm-connection-editor"] floating enable border normal
+for_window [class="(P|p)avucontrol"] floating enable border normal
+for_window [class="Seahorse"] floating enable border normal
+for_window [class="Gparted"] floating enable border normal
+for_window [class="Gufw.py"] floating enable border normal
+for_window [class="1(P|p)assword"] floating enable border normal
+for_window [title="alsamixer"] floating enable border pixel 1
+for_window [class="calamares"] floating enable border normal
+for_window [class="Clipgrab"] floating enable border normal
+for_window [title="File Transfer*"] floating enable border normal
+for_window [class="fpakman"] floating enable border normal
+for_window [class="Galculator"] floating enable border pixel 1
+for_window [class="GParted"] floating enable border normal
+for_window [title="i3_help"] floating enable sticky enable border normal
+for_window [class="Lightdm-settings"] floating enable
+for_window [class="Lxappearance"] floating enable sticky enable border normal
+for_window [class="Manjaro-hello"] floating enable
+for_window [class="Manjaro Settings Manager"] floating enable border normal
+for_window [title="MuseScore: Play Panel"] floating enable
+for_window [class="Nitrogen"] floating enable sticky enable border normal
+for_window [class="Oblogout"] fullscreen enable border normal
+for_window [class="octopi"] floating enable border normal
+for_window [title="About Pale Moon"] floating enable border normal
+for_window [class="Pamac-manager"] floating enable border normal
 for_window [class="Pavucontrol"] floating enable border normal
-# (Add more as needed)
+for_window [class="qt5ct"] floating enable sticky enable border normal
+for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
+for_window [class="Simple-scan"] floating enable border normal
+for_window [class="(?i)System-config-printer.py"] floating enable border normal
+for_window [class="Skype"] floating enable border normal
+for_window [class="Timeset-gui"] floating enable border normal
+for_window [class="(?i)virtualbox"] floating enable border normal
+for_window [class="Xfburn"] floating enable border normal
+for_window [title="(?i)Network Connections"] floating enable border normal
+for_window [title="(?i)SimpleScreenRecorder"] floating enable border normal
 
+#-------
 # Default Programs
+#-------
+# exec on the correct workspace
 bindsym $mod+BackSpace exec --no-startup-id "firefox"
 bindsym $mod+Return exec --no-startup-id "kitty"
 bindsym $mod+space exec --no-startup-id "rofi -show drun"
@@ -94,16 +153,20 @@ bindsym $mod+Shift+n exec --no-startup-id "kitty -e fv $HOME/personal/notes"
 bindsym $mod+Shift+Return exec --no-startup-id "kitty -e dv"
 bindsym $mod+Shift+slash exec --no-startup-id "thunar"
 
-# Window Management
-default_border none
-default_floating_border none
+#-------
+# Window
+#-------
+new_window pixel 1
 workspace_layout tabbed
-title_align left
+default_border pixel 1
+default_floating_border pixel 1
+for_window [class="^.*"] border pixel 1
 popup_during_fullscreen smart
-hide_edge_borders none
+
 bindsym $mod+q kill
 bindsym $alt+F4 kill
 bindsym $mod+f fullscreen toggle
+
 bindsym $mod+h focus left
 bindsym $mod+k focus up
 bindsym $mod+j focus down
@@ -111,6 +174,7 @@ bindsym $mod+Left focus left
 bindsym $mod+Right focus right
 bindsym $mod+Up focus up
 bindsym $mod+Down focus down
+
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+l move right
 bindsym $mod+Shift+k move up
@@ -119,53 +183,120 @@ bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Right move right
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Down move down
+
 bindsym $mod+Tab focus next
 bindsym $mod+Shift+Tab workspace next
 
+#-------
 # Screenshots
+#-------
 bindsym Print exec "flameshot gui"
 
+#-------
 # Layouts and Focus
+#-------
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+a focus parent
 
+#-------
 # Workspaces
+#-------
 workspace_auto_back_and_forth yes
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
+
+# terminal/programming stuff
+set $ws1 "1:👨‍💻"
+set $ws2 "2:🌐"
+set $ws3 "3:💬"
+set $ws4 "4:🎧"
+set $ws5 "5:📂"
+set $ws6 "6:🎮"
+
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
 bindsym $mod+3 workspace $ws3
 bindsym $mod+4 workspace $ws4
 bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+
 bindsym $mod+Shift+1 move container to workspace $ws1
 bindsym $mod+Shift+2 move container to workspace $ws2
 bindsym $mod+Shift+3 move container to workspace $ws3
 bindsym $mod+Shift+4 move container to workspace $ws4
 bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+
+# bind program to workspace and focus to them on startup:
+assign [class="kitty"] $ws1
+assign [class="(?i)firefox"] $ws2
+assign [class="Thunar"] $ws5
+assign [class="discord"] $ws3
+assign [class="Slack"] $ws3
+assign [class="teams"] $ws3
+assign [class="Spotify"] $ws4
+assign [class="Steam"] $ws6
+
+# automatic set focus new window if it opens on another workspace than the current:
+for_window [class=kitty] focus
+for_window [class=(?i)firefox] focus
+for_window [class=Thunar] focus
+for_window [class=spotify] focus
+
+# leader + pageup/pagedown to switch to next/previous workspace
 bindsym $mod+Prior workspace prev
 bindsym $mod+Next workspace next
+
 bindsym $mod+Shift+Prior move container to workspace prev
 bindsym $mod+Shift+Next move container to workspace next
+
+exec --no-startup-id sleep 5 && firefox
+exec --no-startup-id sleep 3 && kitty
+
 for_window [urgent=latest] focus
 bindsym $mod+Ctrl+a [urgent=latest] focus
 
+#-------
 # i3 Commands
+#-------
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
+#-------
 # Resizing
+#-------
+
 set $resize_unit 8
+
 bindsym $mod+Ctrl+l resize shrink width $resize_unit px or $resize_unit ppt
 bindsym $mod+Ctrl+k resize grow height $resize_unit px or $resize_unit ppt
 bindsym $mod+Ctrl+j resize shrink height $resize_unit px or $resize_unit ppt
 bindsym $mod+Ctrl+h resize grow width $resize_unit px or $resize_unit ppt
+
+######################################
+# color settings for bar and windows #
+######################################
+
+# Define colors variables:
+set $darkbluetrans #08052be6
+set $darkblue #08052b
+set $lightblue #5294e2
+set $urgentred #e53935
+set $white #ffffff
+set $black #000000
+set $purple #e345ff
+set $darkgrey #383c4a
+set $grey #b0b5bd
+set $mediumgrey #8b8b8b
+set $yellowbrown #e1b700
+
+# define colors for windows:
+# class border background text indicator child_border
+client.focused $lightblue $darkblue $white $mediumgrey $mediumgrey
+client.unfocused $darkblue $darkblue $grey $darkgrey $darkgrey
+client.focused_inactive $darkblue $darkblue $grey $black $black
+client.urgent $urgentred $urgentred $white $yellowbrown $yellowbrown
 
 #######
 # Bar Configuration
@@ -176,5 +307,7 @@ bar {
         -p nic.states=up \
         -p indicator.include='capslock' \
         -p datetime.format="%a %b %d %H:%M:%S (%d/%m/%Y)" \
-        -t dracula-powerline
+        -t moonlight-powerline
+        # -t greyish-powerline
+        # -t dracula-powerline
 }
