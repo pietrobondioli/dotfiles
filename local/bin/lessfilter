@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/bash
 
 mime=$(file -bL --mime-type "$1")
 category=${mime%%/*}

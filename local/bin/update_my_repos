@@ -1,5 +1,6 @@
-#!/usr/bin/zsh
+#!/usr/bin/bash
 
+echo $PATH
 log_file_name="update_repos.log"
 
 paths=(
@@ -13,3 +14,4 @@ for path in "${paths[@]}"; do
   mylog "Updating repositories in $path" "$log_file_name"
   update_repos "$path"
 done
+
