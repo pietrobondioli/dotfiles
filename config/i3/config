@@ -168,6 +168,7 @@ bindsym $alt+F4 kill
 bindsym $mod+f fullscreen toggle
 
 bindsym $mod+h focus left
+bindsym $mod+l focus right
 bindsym $mod+k focus up
 bindsym $mod+j focus down
 bindsym $mod+Left focus left
