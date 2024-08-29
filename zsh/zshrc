@@ -106,6 +106,7 @@ local -a SOURCE_FILES=(
   "$SCRIPTS/tmux"
   "$SCRIPTS/zellij"
   "$SCRIPTS/zellij_autostart_config"
+  "$SCRIPTS/secrets"
 )
 
 # Load all source files

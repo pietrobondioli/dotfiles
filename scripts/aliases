@@ -104,10 +104,11 @@ alias reload="exec ${SHELL} -l"
 #######
 # Dotfiles and Configuration Management
 #######
-alias dotfiles="cd $HOME/dotfiles"
+alias dotfilesrc="cd $HOME/dotfiles && nvim ."
 alias zshrc="cd $HOME && nvim .zshrc"
 alias nvimrc="cd $XDG_CONFIG_HOME/nvim && nvim ."
 alias i3rc="cd $XDG_CONFIG_HOME/i3 && nvim config"
+alias picomrc="cd $XDG_CONFIG_HOME/picom && nvim picom.conf"
 alias kittyrc="cd $XDG_CONFIG_HOME/kitty && nvim kitty.conf"
 alias tmuxrc="cd $XDG_CONFIG_HOME/tmux && nvim tmux.conf"
 alias binrc="cd $HOME/.local/bin && nvim ."
