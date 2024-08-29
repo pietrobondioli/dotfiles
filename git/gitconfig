@@ -5,7 +5,8 @@
 [user]
 	email = email@pietrobondioli.com.br
 	name = Pietro Bondioli
-  signingkey = 7970E1D3985B8476
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIBkYROpWTR4k2G7mzsT9I3SFhlL9A3wRPKHepcHmpIU
+  ; signingkey = 7970E1D3985B8476
 
 [core]
   pager = delta --side-by-side -w ${FZF_PREVIEW_COLUMNS:-$COLUMNS}
@@ -14,6 +15,28 @@
 
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+
+[gpg]
+  format = ssh
+  ; program = /usr/bin/gpg
+
+[diff]
+	colorMoved = default
+	tool = delta
+
+[gpg "ssh"]
+  program = "/opt/1Password/op-ssh-sign"
+	allowedSignersFile = ~/.ssh/allowed_signers
+
+[push]
+  autoSetupRemove = true
+	autoSetupRemote = true
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
 
 [apply]
   whitespace = fix
@@ -73,26 +96,6 @@
 [delta "decorations"]
   file-style = omit
   hunk-header-style = file line-number syntax
-
-[gpg]
-    program = /usr/bin/gpg
-
-[diff]
-	colorMoved = default
-	tool = delta
-
-[gpg "ssh"]
-	allowedSignersFile = ~/.ssh/allowed_signers
-
-[push]
-  autoSetupRemove = true
-	autoSetupRemote = true
-
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
 
 [alias]
 	s = status
