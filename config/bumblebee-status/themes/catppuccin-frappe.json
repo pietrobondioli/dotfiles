@@ -1,0 +1,75 @@
+{
+  "icons": ["awesome-fonts"],
+  "defaults": {
+    "separator-block-width": 0,
+    "warning": {
+      "fg": "#303446",
+      "bg": "#e5c890"
+    },
+    "critical": {
+      "fg": "#303446",
+      "bg": "#e78284"
+    },
+    "default-separators": false
+  },
+  "cycle": [
+    { "fg": "#c6d0f5", "bg": "#303446" },
+    { "fg": "#303446", "bg": "#8caaee" },
+    { "fg": "#303446", "bg": "#a6d189" },
+    { "fg": "#303446", "bg": "#ca9ee6" },
+    { "fg": "#303446", "bg": "#81c8be" }
+  ],
+  "dnf": {
+    "good": {
+      "fg": "#303446",
+      "bg": "#a6d189"
+    }
+  },
+  "apt": {
+    "good": {
+      "fg": "#303446",
+      "bg": "#a6d189"
+    }
+  },
+  "pacman": {
+    "good": {
+      "fg": "#303446",
+      "bg": "#a6d189"
+    }
+  },
+  "battery": {
+    "charged": {
+      "fg": "#303446",
+      "bg": "#a6d189"
+    },
+    "AC": {
+      "fg": "#303446",
+      "bg": "#99d1db"
+    }
+  },
+  "bluetooth": {
+    "ON": {
+      "fg": "#303446",
+      "bg": "#8caaee"
+    }
+  },
+  "git": {
+    "modified": { "bg": "#e5c890" },
+    "deleted": { "bg": "#e78284" },
+    "new": { "bg": "#a6d189" }
+  },
+  "pomodoro": {
+    "paused": {
+      "fg": "#303446",
+      "bg": "#ef9f76"
+    },
+    "work": {
+      "fg": "#303446",
+      "bg": "#8caaee"
+    },
+    "break": {
+      "fg": "#303446",
+      "bg": "#a6d189"
+    }
+  }
+}

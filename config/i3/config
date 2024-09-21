@@ -27,10 +27,11 @@ exec_always --no-startup-id setxkbmap -layout us -variant intl
 exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 # exec --no-startup-id screenkey -s small -t 2 --position fixed --geometry 191x29+2355+35 --mouse --opacity 0.4 --font "Jetbrains Mono Nerd Font"
 # Disable screen saving and power management
-exec_always --no-startup-id xset s off -dpms
-exec_always --no-startup-id xset s off -dpms 3600 3600 3600
-exec_always --no-startup-id xautolock -time 360 -locker "systemctl suspend" -detectsleep
-exec_always --no-startup-id autotiling
+exec --no-startup-id xset s off -dpms
+exec --no-startup-id xset s off -dpms 3600 3600 3600
+exec --no-startup-id xautolock -time 360 -locker "systemctl suspend" -detectsleep
+exec --no-startup-id autotiling
+exec --no-startup-id redshift
 
 #-------
 # Visual Autostart
@@ -41,9 +42,9 @@ exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/s
 #-------
 # Utility Autostart
 #-------
-exec_always --no-startup-id mpd &
-exec_always --no-startup-id dunst &
-exec_always --no-startup-id battery &
+exec --no-startup-id mpd &
+exec --no-startup-id dunst &
+exec --no-startup-id battery &
 
 #-------
 # Lock and Network
@@ -55,9 +56,7 @@ exec --no-startup-id nm-applet
 # Clipboard Manager
 #-------
 
-bindsym $mod+v exec --no-startup-id copyq show
-
-for_window [class="copyq"] floating enable, resize set 400 300, border pixel 5, move position center
+bindsym $mod+v exec_always --no-startup-id copyq show
 
 exec --no-startup-id copyq
 
@@ -75,7 +74,6 @@ bindsym $mod+b exec --no-startup-id "blueman-manager"
 #-------
 bindsym $mod+0 exec --no-startup-id rofi -show p -modi p:'rofi-power-menu'
 bindsym $mod+9 exec --no-startup-id i3lock -c 000000
-bindsym $mod+Shift+BackSpace exec $HOME/.config/scripts/lock
 
 #-------
 # Audio Controls
@@ -96,49 +94,56 @@ bindsym $mod+m exec --no-startup-id "pavucontrol"
 # Floating Windows
 #-------
 for_window [class="^.*"] floating disable border normal
-
 floating_modifier $mod
 gaps inner 6px
 gaps outer 3px
-for_window [class="firefox" title="Library"] floating enable border normal
+
+for_window [class="(?i)firefox" title="(?i)Library"] floating enable border normal
 for_window [window_type="dialog"] floating enable border normal
-for_window [class="Steam" title="^Steam - Update News$"] floating enable border normal
-for_window [class="Blueman-manager"] floating enable border normal
-for_window [class="Nm-connection-editor"] floating enable border normal
-for_window [class="(P|p)avucontrol"] floating enable border normal
-for_window [class="Seahorse"] floating enable border normal
-for_window [class="Gparted"] floating enable border normal
-for_window [class="Gufw.py"] floating enable border normal
-for_window [class="1(P|p)assword"] floating enable border normal
-for_window [title="alsamixer"] floating enable border pixel 1
-for_window [class="calamares"] floating enable border normal
-for_window [class="Clipgrab"] floating enable border normal
-for_window [title="File Transfer*"] floating enable border normal
-for_window [class="fpakman"] floating enable border normal
-for_window [class="Galculator"] floating enable border pixel 1
-for_window [class="GParted"] floating enable border normal
-for_window [title="i3_help"] floating enable sticky enable border normal
-for_window [class="Lightdm-settings"] floating enable
-for_window [class="Lxappearance"] floating enable sticky enable border normal
-for_window [class="Manjaro-hello"] floating enable
-for_window [class="Manjaro Settings Manager"] floating enable border normal
-for_window [title="MuseScore: Play Panel"] floating enable
-for_window [class="Nitrogen"] floating enable sticky enable border normal
-for_window [class="Oblogout"] fullscreen enable border normal
-for_window [class="octopi"] floating enable border normal
-for_window [title="About Pale Moon"] floating enable border normal
-for_window [class="Pamac-manager"] floating enable border normal
-for_window [class="Pavucontrol"] floating enable border normal
-for_window [class="qt5ct"] floating enable sticky enable border normal
-for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
-for_window [class="Simple-scan"] floating enable border normal
-for_window [class="(?i)System-config-printer.py"] floating enable border normal
-for_window [class="Skype"] floating enable border normal
-for_window [class="Timeset-gui"] floating enable border normal
+for_window [class="(?i)steam" title="(?i)^Steam - Update News$"] floating enable border normal
+for_window [class="(?i)blueman-manager"] floating enable border normal
+for_window [class="(?i)nm-connection-editor"] floating enable border normal
+for_window [class="(?i)pavucontrol"] floating enable border normal
+for_window [class="(?i)seahorse"] floating enable border normal
+for_window [class="(?i)gparted"] floating enable border normal
+for_window [class="(?i)gufw.py"] floating enable border normal
+for_window [class="(?i).*1password.*"] floating enable border normal
+for_window [title="(?i)alsamixer"] floating enable border pixel 1
+for_window [class="(?i)calamares"] floating enable border normal
+for_window [class="(?i)clipgrab"] floating enable border normal
+for_window [title="(?i).*file transfer.*"] floating enable border normal
+for_window [class="(?i)fpakman"] floating enable border normal
+for_window [class="(?i)galculator"] floating enable border pixel 1
+for_window [class="(?i)gparted"] floating enable border normal
+for_window [title="(?i)i3_help"] floating enable sticky enable border normal
+for_window [class="(?i)lightdm-settings"] floating enable
+for_window [class="(?i)lxappearance"] floating enable sticky enable border normal
+for_window [class="(?i)manjaro-hello"] floating enable
+for_window [class="(?i)manjaro Settings Manager"] floating enable border normal
+for_window [title="(?i)museScore: Play Panel"] floating enable
+for_window [class="(?i)nitrogen"] floating enable sticky enable border normal
+for_window [class="(?i)Oblogout"] fullscreen enable border normal
+for_window [class="(?i)octopi"] floating enable border normal
+for_window [title="(?i)about Pale Moon"] floating enable border normal
+for_window [class="(?i)pamac-manager"] floating enable border normal
+for_window [class="(?i)pavucontrol"] floating enable border normal
+for_window [class="(?i)qt5ct"] floating enable sticky enable border normal
+for_window [class="(?i)qtconfig-qt4"] floating enable sticky enable border normal
+for_window [class="(?i)simple-scan"] floating enable border normal
+for_window [class="(?i)system-config-printer.py"] floating enable border normal
+for_window [class="(?i)skype"] floating enable border normal
+for_window [class="(?i)timeset-gui"] floating enable border normal
 for_window [class="(?i)virtualbox"] floating enable border normal
-for_window [class="Xfburn"] floating enable border normal
-for_window [title="(?i)Network Connections"] floating enable border normal
-for_window [title="(?i)SimpleScreenRecorder"] floating enable border normal
+for_window [class="(?i)xfburn"] floating enable border normal
+for_window [title="(?i)network Connections"] floating enable border normal
+for_window [title="(?i)simpleScreenRecorder"] floating enable border normal
+for_window [title="(?i)exit.*"] floating enable border normal
+for_window [class="(?i).*notification.*"] floating enable border normal
+for_window [class="(?i).*proton.*"] floating enable border normal
+for_window [class="(?i)steamwebhelper"] floating enable border normal
+for_window [class="(?i).*polkit.*"] floating enable border normal
+for_window [class="(?i).*prompter.*"] floating enable border normal
+for_window [class="(?i)copyq"] floating enable, resize set 400 300, border pixel 5, move position center
 
 #-------
 # Default Programs
@@ -150,7 +155,6 @@ bindsym $mod+space exec --no-startup-id "rofi -show drun"
 bindsym $mod+t exec --no-startup-id "kitty -e nvim $HOME/personal/todo/todo.md"
 bindsym $mod+n exec --no-startup-id "kitty -e nvim $HOME/personal/notes"
 bindsym $mod+Shift+n exec --no-startup-id "kitty -e fv $HOME/personal/notes"
-bindsym $mod+Shift+Return exec --no-startup-id "kitty -e dv"
 bindsym $mod+Shift+slash exec --no-startup-id "thunar"
 
 #-------
@@ -158,9 +162,8 @@ bindsym $mod+Shift+slash exec --no-startup-id "thunar"
 #-------
 new_window pixel 2
 workspace_layout tabbed
-default_border pixel 2
+default_border pixel 1
 default_floating_border pixel 2
-for_window [class="^.*"] border pixel 2
 popup_during_fullscreen smart
 
 bindsym $mod+q kill
@@ -229,20 +232,20 @@ bindsym $mod+Shift+5 move container to workspace $ws5
 bindsym $mod+Shift+6 move container to workspace $ws6
 
 # bind program to workspace and focus to them on startup:
-assign [class="kitty"] $ws1
+assign [class="(?i)kitty"] $ws1
 assign [class="(?i)firefox"] $ws2
-assign [class="Thunar"] $ws5
-assign [class="discord"] $ws3
-assign [class="Slack"] $ws3
-assign [class="teams"] $ws3
-assign [class="Spotify"] $ws4
-assign [class="Steam"] $ws6
+assign [class="(?i)thunar"] $ws5
+assign [class="(?i)discord"] $ws3
+assign [class="(?i)slack"] $ws3
+assign [class="(?i)teams"] $ws3
+assign [class="(?i)spotify"] $ws4
+assign [class="(?i)steam"] $ws6
 
 # automatic set focus new window if it opens on another workspace than the current:
-for_window [class=kitty] focus
-for_window [class=(?i)firefox] focus
-for_window [class=Thunar] focus
-for_window [class=spotify] focus
+for_window [class="(?i)kitty"] focus
+for_window [class="(?i)firefox"] focus
+for_window [class="(?i)thunar"] focus
+for_window [class="(?i)discord"] focus
 
 # leader + pageup/pagedown to switch to next/previous workspace
 bindsym $mod+Prior workspace prev
@@ -251,8 +254,10 @@ bindsym $mod+Next workspace next
 bindsym $mod+Shift+Prior move container to workspace prev
 bindsym $mod+Shift+Next move container to workspace next
 
-exec --no-startup-id sleep 5 && firefox
-exec --no-startup-id sleep 3 && kitty
+exec --no-startup-id sleep 3 && firefox
+exec --no-startup-id sleep 1 && kitty
+exec --no-startup-id sleep 2 && protonvpn-app
+exec --no-startup-id sleep 2 && 1password
 
 for_window [urgent=latest] focus
 bindsym $mod+Ctrl+a [urgent=latest] focus
@@ -275,29 +280,8 @@ bindsym $mod+Ctrl+k resize grow height $resize_unit px or $resize_unit ppt
 bindsym $mod+Ctrl+j resize shrink height $resize_unit px or $resize_unit ppt
 bindsym $mod+Ctrl+h resize grow width $resize_unit px or $resize_unit ppt
 
-######################################
-# color settings for bar and windows #
-######################################
-
-# Define colors variables:
-set $darkbluetrans #08052be6
-set $darkblue #08052b
-set $lightblue #5294e2
-set $urgentred #e53935
-set $white #ffffff
-set $black #000000
-set $purple #e345ff
-set $darkgrey #383c4a
-set $grey #b0b5bd
-set $mediumgrey #8b8b8b
-set $yellowbrown #e1b700
-
-# define colors for windows:
-# class border background text indicator child_border
-client.focused $lightblue $darkblue $white $mediumgrey $mediumgrey
-client.unfocused $darkblue $darkblue $grey $darkgrey $darkgrey
-client.focused_inactive $darkblue $darkblue $grey $black $black
-client.urgent $urgentred $urgentred $white $yellowbrown $yellowbrown
+# Load Theme
+include ~/.config/i3/themes.conf
 
 #######
 # Bar Configuration
@@ -308,7 +292,8 @@ bar {
         -p nic.states=up \
         -p indicator.include='capslock' \
         -p datetime.format="%a %b %d %H:%M:%S (%d/%m/%Y)" \
-        -t moonlight-powerline
+        -t onedark
+        # -t catppuccin-latte
+        # -t moonlight-powerline
         # -t greyish-powerline
-        # -t dracula-powerline
 }
