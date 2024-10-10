@@ -1,0 +1,75 @@
+#!/usr/bin/zsh
+
+log_file="/tmp/zellij_tab_name_update.log"
+
+mylog() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$log_file"
+}
+
+zellij_tab_name_update() {
+  mylog "Starting zellij_tab_name_update function"
+  if [[ -n $ZELLIJ ]]; then
+    mylog "Inside a Zellij session"
+    local tab_name=''
+    local current_tab=''
+    local tab_count=0
+
+    mylog "Getting current tab number and pane count"
+    while IFS= read -r line; do
+      ((tab_count++))
+      mylog "Processing line: $line"
+      if [[ $line == "(current)" ]]; then
+        current_tab=$tab_count
+        mylog "Found current tab: $current_tab"
+      fi
+    done < <(zellij action query-tab-names)
+
+    mylog "Total tabs: $tab_count, Current tab: $current_tab"
+
+    # Generate tab name
+    mylog "Generating tab name"
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+      mylog "Inside a git repository"
+      tab_name+=$(basename "$(git rev-parse --show-toplevel)")/
+      tab_name+=$(git rev-parse --show-prefix)
+      tab_name=${tab_name%/}
+      mylog "Generated git-based tab name: $tab_name"
+    else
+      mylog "Not in a git repository, using current directory"
+      tab_name=$PWD
+      if [[ $tab_name == $HOME ]]; then
+        tab_name="~"
+        mylog "In home directory, tab name set to ~"
+      else
+        tab_name=${tab_name##*/}
+        mylog "Using last part of path as tab name: $tab_name"
+      fi
+    fi
+
+    # Rename current tab
+    mylog "Renaming current tab to: $current_tab $tab_name"
+    zellij action rename-tab "$current_tab $tab_name"
+    mylog "Tab rename action completed"
+
+    # Update all tab names with correct sequential numbers
+    mylog "Updating all tab names with correct sequential numbers"
+    local i=1
+    while IFS= read -r old_name; do
+      if [[ $i != $current_tab ]]; then
+        local new_name=$(echo $old_name | sed "s/^[0-9]* /${i} /")
+        if [[ "$old_name" != "$new_name" ]]; then
+          mylog "Updating tab $i from '$old_name' to '$new_name'"
+          zellij action go-to-tab $i
+          zellij action rename-tab "$new_name"
+          if [[ $current_tab ]]; then
+            zellij action go-to-tab $current_tab
+          fi
+        fi
+      fi
+      ((i++))
+    done < <(zellij action query-tab-names)
+  else
+    mylog "Not in a Zellij session, skipping tab rename"
+  fi
+  mylog "Finished zellij_tab_name_update function"
+}

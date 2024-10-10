@@ -106,6 +106,7 @@ local -a SOURCE_FILES=(
   "$SCRIPTS/tmux"
   "$SCRIPTS/zellij"
   "$SCRIPTS/zellij_autostart_config"
+  "$SCRIPTS/zellij_tab_name_update"
   "$SCRIPTS/secrets"
 )
 
@@ -115,6 +116,9 @@ for config in $SOURCE_FILES; do
     source "$config"
   fi
 done
+
+zellij_tab_name_update
+chpwd_functions+=(zellij_tab_name_update)
 
 zellij_autostart_config
 
