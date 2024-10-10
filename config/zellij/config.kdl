@@ -1,9 +1,5 @@
 // If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
 keybinds clear-defaults=true {
-    locked {
-        bind "Alt g" { SwitchToMode "Normal"; }
-    }
-
     scroll {
         bind "e" { EditScrollback; SwitchToMode "Normal"; }
         bind "f" { SwitchToMode "EnterSearch"; SearchInput 0; }
@@ -36,30 +32,6 @@ keybinds clear-defaults=true {
         bind "Enter" { SwitchToMode "Search"; }
     }
 
-    tmux {
-        bind "[" { SwitchToMode "Scroll"; }
-        bind "Ctrl b" { Write 2; SwitchToMode "Normal"; }
-        bind "\"" { NewPane "Down"; SwitchToMode "Normal"; }
-        bind "%" { NewPane "Right"; SwitchToMode "Normal"; }
-        bind "z" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
-        bind "c" { NewTab; SwitchToMode "Normal"; }
-        bind "," { SwitchToMode "RenameTab"; }
-        bind "p" { GoToPreviousTab; SwitchToMode "Normal"; }
-        bind "n" { GoToNextTab; SwitchToMode "Normal"; }
-        bind "Left" { MoveFocus "Left"; SwitchToMode "Normal"; }
-        bind "Right" { MoveFocus "Right"; SwitchToMode "Normal"; }
-        bind "Down" { MoveFocus "Down"; SwitchToMode "Normal"; }
-        bind "Up" { MoveFocus "Up"; SwitchToMode "Normal"; }
-        bind "h" { MoveFocus "Left"; SwitchToMode "Normal"; }
-        bind "l" { MoveFocus "Right"; SwitchToMode "Normal"; }
-        bind "j" { MoveFocus "Down"; SwitchToMode "Normal"; }
-        bind "k" { MoveFocus "Up"; SwitchToMode "Normal"; }
-        bind "o" { FocusNextPane; }
-        bind "d" { Detach; }
-        bind "Space" { NextSwapLayout; }
-        bind "x" { CloseFocus; SwitchToMode "Normal"; }
-    }
-
     shared_except "locked" {
         bind "Alt g" { SwitchToMode "Locked"; }
         bind "Alt q" { Quit; }
@@ -87,22 +59,16 @@ keybinds clear-defaults=true {
         bind "Alt =" "Alt +" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt 0" { Detach; }
-        bind "Alt /" {
-            NewTab { layout "terminal"; };
-            SwitchToMode "Normal";
-        }
+        bind "Alt p" { ToggleFloatingPanes; SwitchToMode "Normal"; }
+        bind "Alt /" { EditScrollback; SwitchToMode "Normal"; }
     }
 
-    shared_except "normal" "locked" {
+    shared_except "normal" {
         bind "Enter" "Esc" { SwitchToMode "Normal"; }
     }
 
-    shared_except "scroll" "locked" {
+    shared_except "scroll" {
         bind "Alt f" { SwitchToMode "Scroll"; }
-    }
-
-    shared_except "tmux" "locked" {
-        bind "Ctrl b" { SwitchToMode "Tmux"; }
     }
 }
 
@@ -135,7 +101,7 @@ simplified_ui false
 //   - true (default)
 //   - false
 //
-// pane_frames true
+pane_frames false
 
 // Toggle between having Zellij lay out panes according to a predefined set of layouts whenever possible
 // Options:
@@ -222,7 +188,7 @@ copy_command "xclip -selection clipboard" // x11
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
 //
-// scrollback_editor "/usr/bin/vim"
+scrollback_editor "/usr/bin/nvim"
 
 // When attaching to an existing session with other users,
 // should the session be mirrored (true)
