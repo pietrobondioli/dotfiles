@@ -98,6 +98,7 @@ eval "$(zoxide init zsh)"
 
 local -a SOURCE_FILES=(
   "$PLUGINS_DIR/hlissner/zsh-autopair/autopair.plugin.zsh"
+  "$SCRIPTS/dev"
   "$SCRIPTS/fzf"
   "$SCRIPTS/git"
   "$SCRIPTS/history"

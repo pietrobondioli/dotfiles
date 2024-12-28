@@ -1,5 +1,8 @@
 [Default Applications]
-text/plain=org.gnome.gedit.desktop
+text/plain=userapp-kitty -e nvim %f-L02JW2.desktop
+x-scheme-handler/eclipse+command=_usr_lib_dbeaver_.desktop
 
 [Added Associations]
-text/plain=org.gnome.gedit.desktop;
+text/plain=org.gnome.gedit.desktop;userapp-kitty -e nvim %f-L02JW2.desktop;
+image/svg+xml=feh.desktop;
+application/vnd.appimage=gnome-disk-image-mounter.desktop;

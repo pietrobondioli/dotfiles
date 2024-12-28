@@ -25,7 +25,7 @@ exec --no-startup-id dex --autostart --environment i3
 exec_always --no-startup-id xrandr --output DP-4 --primary --pos 0x1081 --mode 2560x1080 --rate 60
 exec_always --no-startup-id setxkbmap -layout us -variant intl
 exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-# exec --no-startup-id screenkey -s small -t 2 --position fixed --geometry 191x29+2355+35 --mouse --opacity 0.4 --font "Jetbrains Mono Nerd Font"
+
 # Disable screen saving and power management
 exec --no-startup-id xset s off -dpms
 exec --no-startup-id xset s off -dpms 3600 3600 3600
@@ -56,13 +56,20 @@ exec --no-startup-id nm-applet
 # Clipboard Manager
 #-------
 
-bindsym $mod+v exec_always --no-startup-id copyq show
+bindsym $mod+v exec --no-startup-id copyq show
 
 exec --no-startup-id copyq
 
 #######
 # Keybindings
 #######
+
+# ------
+# Screenkey
+# ------
+
+bindsym $mod+Shift+equal exec --no-startup-id screenkey -s small -t 2 --position fixed --geometry 260x32+2300+0 --mouse --opacity 0.6 --font "Jetbrains Mono Nerd Font"
+bindsym $mod+Shift+minus exec --no-startup-id killall screenkey
 
 #-------
 # Bluetooth
@@ -95,8 +102,6 @@ bindsym $mod+m exec --no-startup-id "pavucontrol"
 #-------
 for_window [class="^.*"] floating disable border normal
 floating_modifier $mod
-gaps inner 6px
-gaps outer 3px
 
 for_window [class="(?i)firefox" title="(?i)Library"] floating enable border normal
 for_window [window_type="dialog"] floating enable border normal
@@ -144,6 +149,8 @@ for_window [class="(?i)steamwebhelper"] floating enable border normal
 for_window [class="(?i).*polkit.*"] floating enable border normal
 for_window [class="(?i).*prompter.*"] floating enable border normal
 for_window [class="(?i)copyq"] floating enable, resize set 400 300, border pixel 5, move position center
+for_window [class="(?i)emulator"] floating enable, border pixel 0, move position center
+for_window [class="(?i)device manager"] floating enable, border pixel 0, move position center
 
 #-------
 # Default Programs
@@ -232,9 +239,7 @@ bindsym $mod+Shift+5 move container to workspace $ws5
 bindsym $mod+Shift+6 move container to workspace $ws6
 
 # bind program to workspace and focus to them on startup:
-assign [class="(?i)kitty"] $ws1
 assign [class="(?i)firefox"] $ws2
-assign [class="(?i)thunar"] $ws5
 assign [class="(?i)discord"] $ws3
 assign [class="(?i)slack"] $ws3
 assign [class="(?i)teams"] $ws3
@@ -254,10 +259,10 @@ bindsym $mod+Next workspace next
 bindsym $mod+Shift+Prior move container to workspace prev
 bindsym $mod+Shift+Next move container to workspace next
 
-exec --no-startup-id sleep 3 && firefox
+exec --no-startup-id sleep 2 && firefox
+exec --no-startup-id sleep 2 && obsidian
+exec --no-startup-id sleep 5 && 1password
 exec --no-startup-id sleep 1 && kitty
-exec --no-startup-id sleep 2 && protonvpn-app
-exec --no-startup-id sleep 2 && 1password
 
 for_window [urgent=latest] focus
 bindsym $mod+Ctrl+a [urgent=latest] focus

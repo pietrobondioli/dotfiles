@@ -124,25 +124,55 @@ pfc() {
   local depth=1
   local pattern="*"
   local log_file="pfc.log"
+  local exclude_patterns=()
+  local dir=""
+  local print_content=true
+  local usage="Usage: pfc <directory> [-d depth] [-p pattern] [-e exclude_pattern] [-n (no content)]"
 
-  local dir="$1"
+  # Parse the directory argument first
+  if [[ $# -eq 0 ]]; then
+    echo "$usage" && return 1
+  fi
+  dir="$1"
   shift
 
-  if [[ -z "$dir" ]]; then
-    echo "Usage: pfc <directory> [-d depth] [-p pattern]" && return 1
-  fi
-
-  while getopts "d:p:" opt; do
+  # Parse options
+  while getopts "d:p:e:n" opt; do
     case $opt in
-    d) depth="$OPTARG" ;;
-    p) pattern="$OPTARG" ;;
-    *) echo "Usage: pfc <directory> [-d depth] [-p pattern]" && return 1 ;;
+      d) depth="$OPTARG" ;;
+      p) pattern="$OPTARG" ;;
+      e) exclude_patterns+=("-not -wholename \"$OPTARG\"") ;;
+      n) print_content=false ;;
+      *) echo "$usage" && return 1 ;;
     esac
   done
 
-  mylog "Searching in directory: $dir with depth: $depth and pattern: $pattern" "$log_file"
+  # Validate directory
+  if [[ ! -d "$dir" ]]; then
+    echo "Error: Directory '$dir' does not exist" && return 1
+  fi
 
-  find "$dir" -maxdepth "$depth" -type f -name "$pattern" -exec echo -e "\n--- {} ---\n" \; -exec cat {} \; 2>>"$USER_LOG_DIR/$log_file"
+  # Build the find command
+  local find_cmd="find \"$dir\" -maxdepth \"$depth\" -type f"
+  
+  # Add name pattern
+  find_cmd+=" -name \"$pattern\""
+
+  # Add exclusion patterns if any
+  if (( ${#exclude_patterns[@]} )); then
+    find_cmd+=" ${exclude_patterns[*]}"
+  fi
+
+  # Log start
+  mylog "Searching in directory: $dir with depth: $depth and pattern: $pattern" "$log_file"
+  
+  if [[ "$print_content" = true ]]; then
+    # Execute with content printing
+    eval "$find_cmd -exec echo -e '\n--- {} ---\n' \; -exec cat {} \;" 2>>"$USER_LOG_DIR/$log_file"
+  else
+    # Execute without content printing (just paths)
+    eval "$find_cmd" 2>>"$USER_LOG_DIR/$log_file"
+  fi
 
   mylog "Completed searching in directory: $dir" "$log_file"
 }

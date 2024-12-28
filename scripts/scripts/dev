@@ -1,0 +1,91 @@
+#!/usr/bin/zsh
+
+function clean_workflowruns() {
+    # Check if required commands are available
+    local -a required_cmds=(gh jq fzf)
+    for cmd in $required_cmds; do
+        if ! command -v $cmd &> /dev/null; then
+            echo "Error: $cmd is required but not installed."
+            echo "Install using: sudo pacman -S $cmd"
+            return 1
+        fi
+    done
+
+    # Check if authenticated with GitHub CLI
+    if ! gh auth status &> /dev/null; then
+        echo "Not authenticated with GitHub CLI. Starting login process..."
+        gh auth login
+        if [[ $? -ne 0 ]]; then
+            echo "Authentication failed. Please try again."
+            return 1
+        fi
+    fi
+
+    # Get repository information
+    local repo
+    echo "Enter repository (format: owner/repo):"
+    read "repo"
+
+    # Verify repository exists and is accessible
+    if ! gh repo view "$repo" &> /dev/null; then
+        echo "Error: Repository $repo not found or not accessible."
+        return 1
+    fi
+
+    # Create JQ script for formatting
+    local jqscript='
+    def symbol:
+      sub("skipped"; "SKIP") |
+      sub("success"; "GOOD") |
+      sub("failure"; "FAIL");
+
+    def tz:
+      gsub("[TZ]"; " ");
+
+    .workflow_runs[]
+      | [
+          (.conclusion | symbol),
+          (.created_at | tz),
+          .id,
+          .event,
+          .name
+        ]
+      | @tsv
+    '
+
+    # Function to delete a single run
+    function delete_single_run() {
+        local run=$1
+        local id=$(echo "$run" | cut -f3)
+        local result
+        
+        echo "Deleting run $id..."
+        if gh api -X DELETE "/repos/$repo/actions/runs/$id" &> /dev/null; then
+            result="OK!"
+        else
+            result="FAILED"
+        fi
+        printf "%s\t%s\n" "$result" "$run"
+    }
+
+    # Main deletion process
+    echo "Fetching workflow runs..."
+    local selected_runs=$(gh api --paginate "/repos/$repo/actions/runs" \
+        | jq -r "$jqscript" \
+        | fzf --multi \
+            --header="Select workflow runs to delete (TAB to select multiple, ENTER to confirm)" \
+            --preview="echo 'Selected workflow run details:'" \
+            --preview-window=up:3:wrap)
+
+    if [[ -z "$selected_runs" ]]; then
+        echo "No runs selected. Exiting..."
+        return 0
+    fi
+
+    echo "Starting deletion process..."
+    echo "$selected_runs" | while IFS= read -r run; do
+        delete_single_run "$run"
+    done
+
+    echo "Cleanup completed!"
+}
