@@ -1,6 +1,6 @@
 # i3 Dots
 
-Just another i3 rice.
+Just a man's linux configuration.
 
 Screenshot:
 
@@ -87,75 +87,63 @@ makepkg -si
 
 These are the foundational packages required for setting up the system.
 
-```bash
-# General dependencies
-yay -S linux-headers base-devel wget git curl xorg-xrandr arandr man-db git-lfs
-```
+General dependencies
 
 ```bash
-# i3
-yay -S i3 i3status i3lock-colors i3blocks bumblebee-status
+yay -S linux-headers linux-lts linux-lts-headers base-devel wget git curl xorg-xrandr arandr man-db git-lfs git-delta gitleaks
 ```
 
+i3
+
 ```bash
-# Theming and appearance
+yay -S i3-wm i3status i3lock i3blocks bumblebee-status autotiling dmenu
+```
+
+Theming and appearance
+
+```bash
 yay -S xfce4-settings gtk3 dracula-gtk-theme dracula-icons-git lxappearance materia-gtk-theme papirus-icon-theme bibata-cursor-theme vimix-cursors
 ```
 
-```bash
-# Utilities and system tools
-yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh polybar picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn zsh thunar thunar-archive-plugin xarchiver lm_sensors htop onlyoffice-bin obs-studio obs-backgroundremoval droidcam-obs-plugin gnome-disk-utility dosfstools ntfs-3g rclone rclone-browser feh qbittorrent popsicle unrar pwgen zoxide bat eza fd ripgrep dust fzf copyq unzip gedit dos2unix unix2dos google-chrome firefox speech-dispatcher lolcat cowsay fortune-mod python-coolname zellij qbittorrent lazygit
-```
+Utilities and system tools
 
 ```bash
-# Util Languages
-yay -S rust go nodejs npm yarn python python-pip python2 python2-pip ruby rubygems
->>>>>>> b5ced21 (feat: update packages on readme)
+yay -S gvfs polkit-gnome rofi dunst brightnessctl pavucontrol xclip feh picom gnome-keyring seahorse btop man-db pacman-contrib vi vim neovim mpd mpc flameshot neofetch timeshift gparted bluez bluez-utils blueman nm-connection-editor networkmanager-openvpn zsh thunar thunar-archive-plugin xarchiver lm_sensors htop obs-studio droidcam-obs-plugin gnome-disk-utility dosfstools ntfs-3g rclone rclone-browser feh qbittorrent popsicle unrar pwgen zoxide bat eza fd ripgrep dust fzf copyq unzip gedit dos2unix unix2dos google-chrome firefox speech-dispatcher lolcat cowsay fortune-mod python-coolname zellij lazygit kitty lightdm lightdm-gtk-greeter parallel pdftk poppler randonamer redshift-gtk-git screenkey simplescreenrecorder slack-desktop smartmontools starship stow tree vlc wireguard-tools wireless_tools xbacklight-ctl-git yubikey-personalization yubikey-personalization-gui zed zoom
 ```
 
+Cloud and Development Tools
+
 ```bash
-# Font essentials
+yay -S aws-cli aws-vault act docker docker-compose temporal-cli go-task fx jq xsv csvkit sqlc
+```
+
+Security and System Management
+
+```bash
+yay -S ufw gufw pam-u2f pcsc-tools proton-pass proton-vpn-gtk-app
+```
+
+Font essentials
+
+```bash
 yay -S otf-font-awesome ttf-jetbrains-mono-nerd ttf-jetbrains-mono otf-font-awesome-4 ttf-droid ttf-fantasque-sans-mono adobe-source-code-pro-fonts noto-fonts-emoji ttf-ms-fonts ttf-agave-nerd
 ```
 
 ```bash
-# Document viewers
-yay -S zathura zathura-pdf-mupdf
+# Communication and media apps
+yay -S discord spotify teams-for-linux slack-desktop zoom obsidian
 ```
 
+# Development Languages
+
 ```bash
-# Communication and media apps
-yay -S discord spotify
+yay -S rust go gopls nodejs npm python-pip python-pipx jdk-openjdk jdk8-openjdk jdk21-openjdk jdk22-graalvm-ee-bin maven
 ```
 
 ## Start Services
 
 ```bash
 sudo systemctl enable bluetooth.service
-```
-
-## Setting up Zsh with Oh My Zsh
-
-Zsh is an advanced shell, and Oh My Zsh is a framework for managing Zsh configurations.
-
-```bash
-# Install Oh My Zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-```
-
-```bash
-# Add autosuggestions plugin
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-```
-
-```bash
-# Add syntax highlighting plugin
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-```
-
-```bash
-# Adjust permissions
-chmod 700 ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 ```
 
 ## Firewall
@@ -202,13 +190,13 @@ sudo systemctl start cronie
 For github (and other services), generate a SSH key:
 
 ```bash
-ssh-keygen -t ed25519 -C "dev@pietrobondioli.com.br"
+ssh-keygen -t ed25519 -C "email@pietrobondioli.com.br"
 ```
 
 Azure only supports RSA keys, so if you want to use Azure, you need to generate an RSA key:
 
 ```bash
-ssh-keygen -t rsa -b 4096 -C "dev@pietrobondioli.com.br"
+ssh-keygen -t rsa -b 4096 -C "email@pietrobondioli.com.br"
 ```
 
 Eval the ssh-agent:
@@ -337,27 +325,13 @@ These are packages and utilities related to software development.
 
 ```bash
 # Install Visual Studio Code and Rider
-yay -S visual-studio-code-bin rider intellije-idea-ultimate-edition
-```
-
-````
-
-Change vscode desktop to exec from shell to fix PATH issues:
-
-```bash
-# Open vscode desktop file
-sudo vim /usr/share/applications/code.desktop
-````
-
-```bash
-# Change the exec line to
-Exec=zsh -i -c "code"
+yay -S rider intellije-idea-ultimate-edition
 ```
 
 ### Tools
 
 ```bash
-yay -S mysql-workbench postman-bin lazygit lazydocker bfg goreleaser
+yay -S mysql-workbench dbeaver insomnia postman-bin lazygit lazydocker lazysql bfg goreleaser pgadmin4-py redisinsight-bin github-cli
 ```
 
 ### Node.js with Nvm
@@ -412,8 +386,7 @@ yay -S go gopls goland
 Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers.
 
 ```bash
-# Install Docker
-yay -S docker docker-compose
+yay -S docker docker-compose kubectl kubectx kubeseal kubelogin k9s
 ```
 
 ```bash
@@ -431,11 +404,6 @@ sudo usermod -aG docker $USER
 ```
 
 Now you need to logout and login again to apply the changes.
-
-```bash
-# Install Kubernetes
-yay -S kubectl kubectx kubeseal kubelogin
-```
 
 ```bash
 # Install Minikube
