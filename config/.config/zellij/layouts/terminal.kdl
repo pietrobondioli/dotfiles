@@ -1,9 +1,20 @@
 layout {
-    pane split_direction="horizontal" {
-        pane
-        pane size="30%"
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
     }
-    pane size=1 borderless=true {
-        plugin location="zellij:compact-bar"
+    
+    tab hide_floating_panes=true {
+        pane
+        floating_panes {
+            pane {
+                x 0
+                y "65%"
+                width "100%"
+                height "35%"
+            }
+        }
     }
 }
