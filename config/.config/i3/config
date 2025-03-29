@@ -31,13 +31,13 @@ exec --no-startup-id xset s off -dpms
 exec --no-startup-id xset s off -dpms 3600 3600 3600
 exec --no-startup-id xautolock -time 360 -locker "systemctl suspend" -detectsleep
 exec --no-startup-id autotiling
-exec --no-startup-id redshift
+# exec --no-startup-id redshift
 
 #-------
 # Visual Autostart
 #-------
 exec_always --no-startup-id picom &
-exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/sea_watchtower.png
+exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/endless.jpg
 
 #-------
 # Utility Autostart
@@ -224,19 +224,41 @@ set $ws4 "4:🎧"
 set $ws5 "5:📂"
 set $ws6 "6:🎮"
 
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
+set $ws1_key y
+set $ws2_key u
+set $ws3_key i
+set $ws4_key o
+set $ws5_key p
 
-bindsym $mod+Shift+1 move container to workspace $ws1
-bindsym $mod+Shift+2 move container to workspace $ws2
-bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace $ws4
-bindsym $mod+Shift+5 move container to workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6
+set $ws1_numkey 1
+set $ws2_numkey 2
+set $ws3_numkey 3
+set $ws4_numkey 4
+set $ws5_numkey 5
+
+bindsym $mod+$ws1_key workspace $ws1
+bindsym $mod+$ws2_key workspace $ws2
+bindsym $mod+$ws3_key workspace $ws3
+bindsym $mod+$ws4_key workspace $ws4
+bindsym $mod+$ws5_key workspace $ws5
+
+bindsym $mod+$ws1_numkey workspace $ws1
+bindsym $mod+$ws2_numkey workspace $ws2
+bindsym $mod+$ws3_numkey workspace $ws3
+bindsym $mod+$ws4_numkey workspace $ws4
+bindsym $mod+$ws5_numkey workspace $ws5
+
+bindsym $mod+Shift+$ws1_key move container to workspace $ws1
+bindsym $mod+Shift+$ws2_key move container to workspace $ws2
+bindsym $mod+Shift+$ws3_key move container to workspace $ws3
+bindsym $mod+Shift+$ws4_key move container to workspace $ws4
+bindsym $mod+Shift+$ws5_key move container to workspace $ws5
+
+bindsym $mod+Shift+$ws1_numkey move container to workspace $ws1
+bindsym $mod+Shift+$ws2_numkey move container to workspace $ws2
+bindsym $mod+Shift+$ws3_numkey move container to workspace $ws3
+bindsym $mod+Shift+$ws4_numkey move container to workspace $ws4
+bindsym $mod+Shift+$ws5_numkey move container to workspace $ws5
 
 # bind program to workspace and focus to them on startup:
 assign [class="(?i)firefox"] $ws2
