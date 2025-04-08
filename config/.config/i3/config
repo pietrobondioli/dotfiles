@@ -22,7 +22,7 @@ font pango: Droid Sans Mono 12
 #-------
 # Start XDG autostart .desktop files using dex
 exec --no-startup-id dex --autostart --environment i3
-exec_always --no-startup-id xrandr --output DP-4 --primary --pos 0x1081 --mode 2560x1080 --rate 60
+exec_always --no-startup-id xrandr --output DP-4 --primary --mode 3840x2160 --rate 60
 exec_always --no-startup-id setxkbmap -layout us -variant intl
 exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
