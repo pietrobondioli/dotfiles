@@ -25,6 +25,7 @@ exec --no-startup-id dex --autostart --environment i3
 exec_always --no-startup-id xrandr --output DP-4 --primary --mode 3840x2160 --rate 60
 exec_always --no-startup-id setxkbmap -layout us -variant intl
 exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec_always --no-startup-id xrdb -merge ~/.Xresources
 
 # Disable screen saving and power management
 exec --no-startup-id xset s off -dpms

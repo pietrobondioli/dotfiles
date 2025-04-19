@@ -8,10 +8,10 @@ map("n", "L", "$", { desc = "Go to end of line" })
 -- Resize window using <ctrl> arrow keys --
 -- -----------------
 
-map("n", "<C-Up>", "<cmd>resize +32<cr>", { desc = "Increase window height" })
-map("n", "<C-Down>", "<cmd>resize -32<cr>", { desc = "Decrease window height" })
-map("n", "<C-Left>", "<cmd>vertical resize -24<cr>", { desc = "Decrease window width" })
-map("n", "<C-Right>", "<cmd>vertical resize +24<cr>", { desc = "Increase window width" })
+map("n", "<C-Up>", "<cmd>resize +18<cr>", { desc = "Increase window height" })
+map("n", "<C-Down>", "<cmd>resize -18<cr>", { desc = "Decrease window height" })
+map("n", "<C-Left>", "<cmd>vertical resize -18<cr>", { desc = "Decrease window width" })
+map("n", "<C-Right>", "<cmd>vertical resize +18<cr>", { desc = "Increase window width" })
 
 -- Press 'U' for redo
 map("n", "U", "<C-r>", { desc = "Redo" })
