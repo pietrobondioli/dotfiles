@@ -38,9 +38,7 @@ source $HOME/scripts/aliases
 ##############################################################################################################
 ## Znap Plugin Manager Configuration
 ##############################################################################################################
-
 source $HOME/.zsh/plugins/ohmyzsh/ohmyzsh/oh-my-zsh.sh
-
 # Set up Znap if not already installed
 [[ -r "$SNAP_DIR/znap.zsh" ]] ||
     git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git $SNAP_DIR
@@ -48,10 +46,13 @@ source "$SNAP_DIR/znap.zsh"
 zstyle ':znap:*' repos-dir $PLUGINS_DIR
 zstyle ':znap:*:*' git-maintenance off
 
+# Configure Powerlevel10k
+znap source romkatv/powerlevel10k
+
 # Define plugins to be loaded with Znap
 local -a PLUGINS=(
   "MichaelAquilina/zsh-auto-notify"
-  "MichaelAquilina/zsh-you-should-use"
+  # "MichaelAquilina/zsh-you-should-use"
   "wfxr/forgit"
   "hlissner/zsh-autopair"
   "zsh-users/zsh-autosuggestions"
@@ -59,7 +60,6 @@ local -a PLUGINS=(
   "zsh-users/zsh-history-substring-search"
   "zsh-users/zsh-syntax-highlighting"
 )
-
 # Load plugins using Znap
 for plugin in $PLUGINS; do
   if [[ -d "$PLUGINS_DIR/$plugin" ]]; then
@@ -68,27 +68,23 @@ for plugin in $PLUGINS; do
     znap clone $plugin
   fi
 done
-
 # Load additional Oh My Zsh components and plugins via Znap
 zstyle ':omz:update' mode auto
 zstyle ':omz:update' frequency 1
 znap source ohmyzsh/ohmyzsh lib/{git,bzr,cli,clipboard,compfix,completion,correction,directories,functions,git,grep,history,key-bindings,misc,termsupport}
 znap source ohmyzsh/ohmyzsh plugins/{git,fzf}
 
-# Initialize Starship prompt
-znap eval starship "starship init zsh --print-full-init"
-
+# Comment out Starship since we're using Powerlevel10k instead
+# znap eval starship "starship init zsh --print-full-init"
 
 ##############################################################################################################
 ## Fpath Hooks and Completions
 ##############################################################################################################
-
 znap fpath _fx       "source <(fx --comp zsh)"
 znap fpath _gitleaks "gitleaks completion zsh"
 znap fpath _kubectl  "kubectl completion zsh"
 znap fpath _npm      "npm completion"
 znap fpath _zellij   "zellij setup --generate-completion zsh;echo"
-
 ##############################################################################################################
 ## Source Files
 ##############################################################################################################
@@ -137,6 +133,8 @@ neofetch --ascii "$(fortune | cowsay -W 40)" | lolcat
 
 znap prompt
 
-# NVM (Node Version Manager) setup
-export NVM_DIR="$HOME/.nvm"
+# NVM (Node Version Manager) setup export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # Load NVM
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
