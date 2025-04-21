@@ -38,7 +38,7 @@ exec --no-startup-id autotiling
 # Visual Autostart
 #-------
 exec_always --no-startup-id picom &
-exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/endless.jpg
+exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/waterfall.jpg
 
 #-------
 # Utility Autostart
