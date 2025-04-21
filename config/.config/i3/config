@@ -173,9 +173,12 @@ workspace_layout tabbed
 default_border pixel 1
 default_floating_border pixel 2
 popup_during_fullscreen smart
+gaps inner 5
+gaps outer 3
 
 bindsym $mod+q kill
 bindsym $alt+F4 kill
+bindsym $mod+Delete kill
 bindsym $mod+f fullscreen toggle
 
 bindsym $mod+h focus left
