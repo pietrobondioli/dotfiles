@@ -14,18 +14,17 @@ export FZF_ALT_C_OPTS="--preview 'tree -C {}'"
 export FZF_CTRL_T_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -printf '%P\n' 2>/dev/null"
 export FORGIT_FZF_DEFAULT_OPTS="--ansi --exact --border --cycle --height '80%' --preview-window right,50%"
 
-# FZF default options
-export FZF_DEFAULT_OPTS="
+export FZF_DEFAULT_OPTS='
 --ansi
---bind 'ctrl-/:toggle-preview'
---bind 'ctrl-y:execute-silent(printf {} | cut -f 2- | pbcopy)'
+--bind "ctrl-/:toggle-preview"
+--bind "ctrl-y:execute-silent(printf {} | cut -f 2- | pbcopy)"
 --border
-$FZF_COLORS
+'"$FZF_COLORS"'
 --info=inline
---preview '~/.local/bin/lessfilter {}'
+--preview "~/scripts/fzf_preview {}"
 --preview-window right,60%
 -i
-"
+'
 
 # FZF options for CTRL-R
 export FZF_CTRL_R_OPTS="

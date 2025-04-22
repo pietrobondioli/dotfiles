@@ -1,0 +1,150 @@
+#!/usr/bin/env bash
+#
+# ~/.local/bin/fzf_preview
+# A comprehensive file preview script for fzf with proper Kitty image support
+
+input="$1"
+
+# Colors for better readability
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+# Helper function to print colored headers
+print_header() {
+  echo -e "${CYAN}=== $1 ===${NC}"
+}
+
+# Function to clear any existing image from the terminal
+clear_image() {
+  # This is the escape sequence used by kitty to clear images
+  printf "\x1b_Ga=d,d=A\x1b\\"
+}
+
+# Always clear any existing image first
+clear_image
+
+# Check if input exists
+if [[ ! -e "$input" ]]; then
+  echo -e "${RED}No preview available for:${NC} $input"
+  echo ""
+  # Fallback to fortune if available
+  if command -v fortune >/dev/null 2>&1 && command -v cowsay >/dev/null 2>&1; then
+    fortune | cowsay -W 40
+  else
+    echo "¯\_(ツ)_/¯"
+    echo "File or directory does not exist."
+  fi
+  exit 0
+fi
+
+# Check if input is an image
+if [[ -f "$input" ]] && command -v file >/dev/null 2>&1; then
+  mime_type=$(file --mime-type -b "$input" 2>/dev/null)
+
+  if [[ "$mime_type" =~ ^image/ ]]; then
+    print_header "IMAGE FILE"
+    echo -e "${GREEN}File:${NC} $(basename "$input")"
+    echo -e "${GREEN}Type:${NC} $mime_type"
+
+    # Get image dimensions if possible
+    if command -v identify >/dev/null 2>&1; then
+      dimensions=$(identify -format "%wx%h" "$input" 2>/dev/null)
+      if [[ $? -eq 0 ]]; then
+        echo -e "${GREEN}Dimensions:${NC} $dimensions"
+      fi
+    fi
+
+    # Display image if in Kitty terminal
+    if [[ -n "$KITTY_WINDOW_ID" ]]; then
+      # Check if ImageMagick is installed
+      if ! command -v convert >/dev/null 2>&1 || ! command -v identify >/dev/null 2>&1; then
+        echo -e "${YELLOW}Warning: ImageMagick (convert/identify) not found.${NC}"
+        echo "Please install ImageMagick for proper image preview: sudo apt install imagemagick (or equivalent)"
+        echo ""
+      fi
+
+      # Use the newer Kitty protocol directly as described in the GitHub issue
+      kitty icat --clear --transfer-mode=memory --stdin=no \
+        --place="${FZF_PREVIEW_COLUMNS:-80}x${FZF_PREVIEW_LINES:-20}@0x0" "$input"
+
+      exit 0
+    else
+      echo -e "${YELLOW}Not running in Kitty terminal or Kitty not detected.${NC}"
+
+      # Try alternative image previewers
+      if command -v chafa >/dev/null 2>&1; then
+        echo "Using chafa for terminal image preview:"
+        chafa -s "${FZF_PREVIEW_COLUMNS:-80}x${FZF_PREVIEW_LINES:-20}" "$input"
+      elif command -v timg >/dev/null 2>&1; then
+        echo "Using timg for terminal image preview:"
+        timg -g "${FZF_PREVIEW_COLUMNS:-80}x${FZF_PREVIEW_LINES:-20}" "$input"
+      else
+        echo "No suitable terminal image viewer found."
+        echo "Consider installing: chafa or timg"
+      fi
+    fi
+
+    exit 0
+  fi
+fi
+
+# Check if input is a directory
+if [[ -d "$input" ]]; then
+  print_header "DIRECTORY"
+  echo -e "${GREEN}Path:${NC} $input"
+
+  # Count files and subdirectories
+  file_count=$(find "$input" -maxdepth 1 -type f | wc -l)
+  dir_count=$(find "$input" -maxdepth 1 -type d | wc -l)
+  dir_count=$((dir_count - 1)) # Subtract 1 to exclude the directory itself
+
+  echo -e "${GREEN}Contains:${NC} $file_count files, $dir_count subdirectories"
+  echo ""
+
+  # Show directory content with tree if available, otherwise ls
+  if command -v tree >/dev/null 2>&1; then
+    tree -C -L 2 --filelimit 15 "$input"
+  else
+    ls -la --color=always "$input" | head -n 20
+    if [[ $(ls -la "$input" | wc -l) -gt 20 ]]; then
+      echo -e "${YELLOW}... and more (showing first 20 entries)${NC}"
+    fi
+  fi
+
+  exit 0
+fi
+
+# Check if input is a regular file
+if [[ -f "$input" ]]; then
+  # Use your existing lessfilter for regular files
+  if [[ -x ~/.local/bin/lessfilter ]]; then
+    ~/.local/bin/lessfilter "$input"
+  else
+    # Fallback to basic file preview
+    file_size=$(du -h "$input" | cut -f1)
+    file_type=$(file -b "$input")
+
+    print_header "FILE"
+    echo -e "${GREEN}File:${NC} $(basename "$input")"
+    echo -e "${GREEN}Size:${NC} $file_size"
+    echo -e "${GREEN}Type:${NC} $file_type"
+    echo ""
+
+    # Basic preview based on file type
+    if command -v bat >/dev/null 2>&1; then
+      bat --color=always --style=plain --line-range :100 "$input"
+    else
+      head -n 100 "$input"
+    fi
+  fi
+
+  exit 0
+fi
+
+# Should never get here, but just in case
+echo "Preview not available"
+exit 1
