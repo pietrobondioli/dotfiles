@@ -1,0 +1,331 @@
+#######
+# i3 Configuration
+#######
+# For complete reference: https://i3wm.org/docs/userguide.html
+
+#######
+# Set mod key (Mod1=<Alt>, Mod4=<Super>)
+#######
+set $mod Mod4
+set $alt Mod1
+
+#-------
+# Fonts
+font pango: Droid Sans Mono 11
+
+#######
+# Autostarts
+#######
+
+#-------
+# General Autostart
+#-------
+# Start XDG autostart .desktop files using dex
+exec --no-startup-id dex --autostart --environment i3
+exec_always --no-startup-id xrandr --output DP-4 --primary --pos 0x1081 --mode 2560x1080 --rate 60
+exec_always --no-startup-id setxkbmap -layout br -variant abnt2
+# exec_always --no-startup-id setxkbmap -layout us -variant intl
+exec_always --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec_always --no-startup-id xrdb -merge ~/.Xresources
+
+# Disable screen saving and power management
+exec --no-startup-id xset s off -dpms
+exec --no-startup-id xset s off -dpms 3600 3600 3600
+exec --no-startup-id xautolock -time 360 -locker "systemctl suspend" -detectsleep
+exec --no-startup-id autotiling
+# exec --no-startup-id redshift
+
+#-------
+# Visual Autostart
+#-------
+exec_always --no-startup-id picom &
+exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.config/wallpapers/waterfall.jpg
+
+#-------
+# Utility Autostart
+#-------
+exec --no-startup-id mpd &
+exec --no-startup-id dunst &
+exec --no-startup-id battery &
+
+#-------
+# Lock and Network
+#-------
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -c 04090e --nofork
+exec --no-startup-id nm-applet
+
+#-------
+# Clipboard Manager
+#-------
+
+bindsym $mod+v exec --no-startup-id copyq show
+
+exec --no-startup-id copyq
+
+#######
+# Keybindings
+#######
+
+# ------
+# Screenkey
+# ------
+
+bindsym $mod+Shift+equal exec --no-startup-id screenkey -s small -t 2 --position fixed --geometry 260x32+2300+0 --mouse --opacity 0.6 --font "Jetbrains Mono Nerd Font"
+bindsym $mod+Shift+minus exec --no-startup-id killall screenkey
+
+#-------
+# Bluetooth
+#-------
+bindsym $mod+b exec --no-startup-id "blueman-manager"
+
+#-------
+# Lock
+#-------
+bindsym $mod+0 exec --no-startup-id rofi -show p -modi p:'rofi-power-menu'
+bindsym $mod+9 exec --no-startup-id i3lock -c 000000
+
+#-------
+# Audio Controls
+#-------
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioStop exec playerctl stop
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+bindsym $mod+m exec --no-startup-id "pavucontrol"
+
+#-------
+# Floating Windows
+#-------
+for_window [class="^.*"] floating disable border normal
+floating_modifier $mod
+
+for_window [class="(?i)firefox" title="(?i)Library"] floating enable border normal
+for_window [window_type="dialog"] floating enable border normal
+for_window [class="(?i)steam" title="(?i)^Steam - Update News$"] floating enable border normal
+for_window [class="(?i)blueman-manager"] floating enable border normal
+for_window [class="(?i)nm-connection-editor"] floating enable border normal
+for_window [class="(?i)pavucontrol"] floating enable border normal
+for_window [class="(?i)seahorse"] floating enable border normal
+for_window [class="(?i)gparted"] floating enable border normal
+for_window [class="(?i)gufw.py"] floating enable border normal
+for_window [class="(?i).*1password.*"] floating enable border normal
+for_window [title="(?i)alsamixer"] floating enable border pixel 1
+for_window [class="(?i)calamares"] floating enable border normal
+for_window [class="(?i)clipgrab"] floating enable border normal
+for_window [title="(?i).*file transfer.*"] floating enable border normal
+for_window [class="(?i)fpakman"] floating enable border normal
+for_window [class="(?i)galculator"] floating enable border pixel 1
+for_window [class="(?i)gparted"] floating enable border normal
+for_window [title="(?i)i3_help"] floating enable sticky enable border normal
+for_window [class="(?i)lightdm-settings"] floating enable
+for_window [class="(?i)lxappearance"] floating enable sticky enable border normal
+for_window [class="(?i)manjaro-hello"] floating enable
+for_window [class="(?i)manjaro Settings Manager"] floating enable border normal
+for_window [title="(?i)museScore: Play Panel"] floating enable
+for_window [class="(?i)nitrogen"] floating enable sticky enable border normal
+for_window [class="(?i)Oblogout"] fullscreen enable border normal
+for_window [class="(?i)octopi"] floating enable border normal
+for_window [title="(?i)about Pale Moon"] floating enable border normal
+for_window [class="(?i)pamac-manager"] floating enable border normal
+for_window [class="(?i)pavucontrol"] floating enable border normal
+for_window [class="(?i)qt5ct"] floating enable sticky enable border normal
+for_window [class="(?i)qtconfig-qt4"] floating enable sticky enable border normal
+for_window [class="(?i)simple-scan"] floating enable border normal
+for_window [class="(?i)system-config-printer.py"] floating enable border normal
+for_window [class="(?i)skype"] floating enable border normal
+for_window [class="(?i)timeset-gui"] floating enable border normal
+for_window [class="(?i)virtualbox"] floating enable border normal
+for_window [class="(?i)xfburn"] floating enable border normal
+for_window [title="(?i)network Connections"] floating enable border normal
+for_window [title="(?i)simpleScreenRecorder"] floating enable border normal
+for_window [title="(?i)exit.*"] floating enable border normal
+for_window [class="(?i).*notification.*"] floating enable border normal
+for_window [class="(?i).*proton.*"] floating enable border normal
+for_window [class="(?i)steamwebhelper"] floating enable border normal
+for_window [class="(?i).*polkit.*"] floating enable border normal
+for_window [class="(?i).*prompter.*"] floating enable border normal
+for_window [class="(?i)copyq"] floating enable, resize set 400 300, border pixel 5, move position center
+for_window [class="(?i)emulator"] floating enable, border pixel 0, move position center
+for_window [class="(?i)device manager"] floating enable, border pixel 0, move position center
+
+#-------
+# Default Programs
+#-------
+# exec on the correct workspace
+bindsym $mod+BackSpace exec --no-startup-id "firefox"
+bindsym $mod+Return exec --no-startup-id "kitty"
+bindsym $mod+space exec --no-startup-id "rofi -show drun"
+bindsym $mod+t exec --no-startup-id "kitty -e nvim $HOME/personal/todo/todo.md"
+bindsym $mod+n exec --no-startup-id "kitty -e nvim $HOME/personal/notes"
+bindsym $mod+Shift+n exec --no-startup-id "kitty -e fv $HOME/personal/notes"
+bindsym $mod+Shift+slash exec --no-startup-id "thunar"
+
+#-------
+# Window
+#-------
+new_window pixel 2
+workspace_layout tabbed
+default_border pixel 1
+default_floating_border pixel 2
+popup_during_fullscreen smart
+gaps inner 5
+gaps outer 3
+
+bindsym $mod+q kill
+bindsym $alt+F4 kill
+bindsym $mod+Delete kill
+bindsym $mod+f fullscreen toggle
+
+bindsym $mod+h focus left
+bindsym $mod+l focus right
+bindsym $mod+k focus up
+bindsym $mod+j focus down
+bindsym $mod+Left focus left
+bindsym $mod+Right focus right
+bindsym $mod+Up focus up
+bindsym $mod+Down focus down
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+l move right
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Down move down
+
+bindsym $mod+Tab focus next
+bindsym $mod+Shift+Tab workspace next
+
+#-------
+# Screenshots
+#-------
+bindsym Print exec "flameshot gui"
+
+#-------
+# Layouts and Focus
+#-------
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+a focus parent
+
+#-------
+# Workspaces
+#-------
+workspace_auto_back_and_forth yes
+
+# terminal/programming stuff
+set $ws1 "1:👨‍💻"
+set $ws2 "2:🌐"
+set $ws3 "3:💬"
+set $ws4 "4:🎧"
+set $ws5 "5:📂"
+set $ws6 "6:🎮"
+
+set $ws1_key y
+set $ws2_key u
+set $ws3_key i
+set $ws4_key o
+set $ws5_key p
+
+set $ws1_numkey 1
+set $ws2_numkey 2
+set $ws3_numkey 3
+set $ws4_numkey 4
+set $ws5_numkey 5
+
+bindsym $mod+$ws1_key workspace $ws1
+bindsym $mod+$ws2_key workspace $ws2
+bindsym $mod+$ws3_key workspace $ws3
+bindsym $mod+$ws4_key workspace $ws4
+bindsym $mod+$ws5_key workspace $ws5
+
+bindsym $mod+$ws1_numkey workspace $ws1
+bindsym $mod+$ws2_numkey workspace $ws2
+bindsym $mod+$ws3_numkey workspace $ws3
+bindsym $mod+$ws4_numkey workspace $ws4
+bindsym $mod+$ws5_numkey workspace $ws5
+
+bindsym $mod+Shift+$ws1_key move container to workspace $ws1
+bindsym $mod+Shift+$ws2_key move container to workspace $ws2
+bindsym $mod+Shift+$ws3_key move container to workspace $ws3
+bindsym $mod+Shift+$ws4_key move container to workspace $ws4
+bindsym $mod+Shift+$ws5_key move container to workspace $ws5
+
+bindsym $mod+Shift+$ws1_numkey move container to workspace $ws1
+bindsym $mod+Shift+$ws2_numkey move container to workspace $ws2
+bindsym $mod+Shift+$ws3_numkey move container to workspace $ws3
+bindsym $mod+Shift+$ws4_numkey move container to workspace $ws4
+bindsym $mod+Shift+$ws5_numkey move container to workspace $ws5
+
+# bind program to workspace and focus to them on startup:
+assign [class="(?i)firefox"] $ws2
+assign [class="(?i)discord"] $ws3
+assign [class="(?i)slack"] $ws3
+assign [class="(?i)teams"] $ws3
+assign [class="(?i)spotify"] $ws4
+assign [class="(?i)steam"] $ws6
+
+# automatic set focus new window if it opens on another workspace than the current:
+for_window [class="(?i)kitty"] focus
+for_window [class="(?i)firefox"] focus
+for_window [class="(?i)thunar"] focus
+for_window [class="(?i)discord"] focus
+
+# leader + pageup/pagedown to switch to next/previous workspace
+bindsym $mod+Prior workspace prev
+bindsym $mod+Next workspace next
+
+bindsym $mod+Shift+Prior move container to workspace prev
+bindsym $mod+Shift+Next move container to workspace next
+
+exec --no-startup-id sleep 2 && firefox
+exec --no-startup-id sleep 2 && obsidian
+exec --no-startup-id sleep 5 && 1password
+exec --no-startup-id sleep 1 && kitty
+
+for_window [urgent=latest] focus
+bindsym $mod+Ctrl+a [urgent=latest] focus
+
+#-------
+# i3 Commands
+#-------
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+#-------
+# Resizing
+#-------
+
+set $resize_unit 8
+
+bindsym $mod+Ctrl+l resize shrink width $resize_unit px or $resize_unit ppt
+bindsym $mod+Ctrl+k resize grow height $resize_unit px or $resize_unit ppt
+bindsym $mod+Ctrl+j resize shrink height $resize_unit px or $resize_unit ppt
+bindsym $mod+Ctrl+h resize grow width $resize_unit px or $resize_unit ppt
+
+# Load Theme
+include ~/.config/i3/themes.conf
+
+#######
+# Bar Configuration
+#######
+bar {
+    status_command bumblebee-status -m indicator layout datetime pasink pasource \
+        xrandr nic cpu memory battery \
+        -p nic.states=up \
+        -p indicator.include='capslock' \
+        -p datetime.format="%a %b %d %H:%M:%S (%d/%m/%Y)" \
+        -t onedark
+        # -t catppuccin-latte
+        # -t moonlight-powerline
+        # -t greyish-powerline
+}
