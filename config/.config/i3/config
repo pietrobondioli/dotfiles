@@ -206,6 +206,7 @@ bindsym $mod+Shift+Tab workspace next
 # Screenshots
 #-------
 bindsym Print exec "flameshot gui"
+bindsym $mod+Shift+s exec --no-startup-id "xcolor -s"
 
 #-------
 # Layouts and Focus
@@ -323,8 +324,8 @@ bar {
         -p nic.states=up \
         -p indicator.include='capslock' \
         -p datetime.format="%a %b %d %H:%M:%S (%d/%m/%Y)" \
-        -t onedark
+        -t moonlight-powerline
+        # -t onedark
         # -t catppuccin-latte
-        # -t moonlight-powerline
         # -t greyish-powerline
 }
