@@ -160,6 +160,7 @@ for_window [class="(?i)device manager"] floating enable, border pixel 0, move po
 bindsym $mod+BackSpace exec --no-startup-id "firefox"
 bindsym $mod+Return exec --no-startup-id "kitty"
 bindsym $mod+space exec --no-startup-id "rofi -show drun"
+bindsym $mod+x exec rofi -modi emoji -show emoji -emoji-mode copy
 bindsym $mod+t exec --no-startup-id "kitty -e nvim $HOME/personal/todo/todo.md"
 bindsym $mod+n exec --no-startup-id "kitty -e nvim $HOME/personal/notes"
 bindsym $mod+Shift+n exec --no-startup-id "kitty -e fv $HOME/personal/notes"
@@ -222,44 +223,80 @@ bindsym $mod+a focus parent
 workspace_auto_back_and_forth yes
 
 # terminal/programming stuff
-set $ws1 "1:👨‍💻"
-set $ws2 "2:🌐"
-set $ws3 "3:💬"
-set $ws4 "4:🎧"
-set $ws5 "5:📂"
-set $ws6 "6:🎮"
+set $ws1_1 "1.1: 👨‍💻"
+set $ws1_2 "1.2: 🛠"
+set $ws1_3 "1.3: 🔧"
+set $ws2 "2: 🌐"
+set $ws3 "3: 💬"
+set $ws4 "4: 🎧"
+set $ws5 "5: 📂"
+set $ws6 "6: 🎮"
 
 set $ws1_key y
+set $ws1_1_key y
+set $ws1_2_key u
+set $ws1_3_key i
 set $ws2_key u
 set $ws3_key i
 set $ws4_key o
 set $ws5_key p
 
 set $ws1_numkey 1
+set $ws1_1_numkey 1
+set $ws1_2_numkey 2
+set $ws1_3_numkey 3
 set $ws2_numkey 2
 set $ws3_numkey 3
 set $ws4_numkey 4
 set $ws5_numkey 5
 
-bindsym $mod+$ws1_key workspace $ws1
+set $mode_code Code Tabs
+bindsym $mod+$ws1_numkey mode "$mode_code"
+bindsym $mod+$ws1_key mode "$mode_code"
+
+mode "$mode_code" {
+    bindsym $mod+$ws1_1_numkey workspace $ws1_1
+    bindsym $mod+$ws1_2_numkey workspace $ws1_2
+    bindsym $mod+$ws1_3_numkey workspace $ws1_3
+
+    bindsym $mod+$ws1_1_key workspace $ws1_1
+    bindsym $mod+$ws1_2_key workspace $ws1_2
+    bindsym $mod+$ws1_3_key workspace $ws1_3
+
+    bindsym $mod+Shift+$ws1_1_numkey move container to workspace $ws1_1
+    bindsym $mod+Shift+$ws1_2_numkey move container to workspace $ws1_2
+    bindsym $mod+Shift+$ws1_3_numkey move container to workspace $ws1_3
+
+    bindsym $mod+Shift+$ws1_1_key move container to workspace $ws1_1
+    bindsym $mod+Shift+$ws1_2_key move container to workspace $ws1_2
+    bindsym $mod+Shift+$ws1_3_key move container to workspace $ws1_3
+
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+
+    bindsym $mod+Prior workspace prev
+    bindsym $mod+Next workspace next
+    bindsym $mod+Shift+Prior move container to workspace prev
+    bindsym $mod+Shift+Next move container to workspace next
+}
+
 bindsym $mod+$ws2_key workspace $ws2
 bindsym $mod+$ws3_key workspace $ws3
 bindsym $mod+$ws4_key workspace $ws4
 bindsym $mod+$ws5_key workspace $ws5
 
-bindsym $mod+$ws1_numkey workspace $ws1
 bindsym $mod+$ws2_numkey workspace $ws2
 bindsym $mod+$ws3_numkey workspace $ws3
 bindsym $mod+$ws4_numkey workspace $ws4
 bindsym $mod+$ws5_numkey workspace $ws5
 
-bindsym $mod+Shift+$ws1_key move container to workspace $ws1
+bindsym $mod+Shift+$ws1_key move container to workspace $ws1_3
 bindsym $mod+Shift+$ws2_key move container to workspace $ws2
 bindsym $mod+Shift+$ws3_key move container to workspace $ws3
 bindsym $mod+Shift+$ws4_key move container to workspace $ws4
 bindsym $mod+Shift+$ws5_key move container to workspace $ws5
 
-bindsym $mod+Shift+$ws1_numkey move container to workspace $ws1
+bindsym $mod+Shift+$ws1_numkey move container to workspace $ws1_3
 bindsym $mod+Shift+$ws2_numkey move container to workspace $ws2
 bindsym $mod+Shift+$ws3_numkey move container to workspace $ws3
 bindsym $mod+Shift+$ws4_numkey move container to workspace $ws4
