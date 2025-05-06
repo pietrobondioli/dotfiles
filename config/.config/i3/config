@@ -223,9 +223,10 @@ bindsym $mod+a focus parent
 workspace_auto_back_and_forth yes
 
 # terminal/programming stuff
-set $ws1_1 "1.1:👨‍💻"
-set $ws1_2 "1.2:🛠"
-set $ws1_3 "1.3:🔧"
+set $ws1 "1:👨‍💻"
+# set $ws1_1 "1.1:👨‍💻"
+# set $ws1_2 "1.2:🛠"
+# set $ws1_3 "1.3:🔧"
 set $ws2 "2:🌐"
 set $ws3 "3:💬"
 set $ws4 "4:🎧"
@@ -250,60 +251,64 @@ set $ws3_numkey 3
 set $ws4_numkey 4
 set $ws5_numkey 5
 
-set $mode_code code
-bindsym $mod+$ws1_numkey mode "$mode_code"
-bindsym $mod+$ws1_key mode "$mode_code"
+# set $mode_code code
+# bindsym $mod+$ws1_numkey mode "$mode_code"
+# bindsym $mod+$ws1_key mode "$mode_code"
+#
+# mode "$mode_code" {
+#   bindsym $mod+$ws1_1_numkey workspace $ws1_1
+#   bindsym $mod+$ws1_2_numkey workspace $ws1_2
+#   bindsym $mod+$ws1_3_numkey workspace $ws1_3
+#
+#   bindsym $mod+$ws1_1_key workspace $ws1_1
+#   bindsym $mod+$ws1_2_key workspace $ws1_2
+#   bindsym $mod+$ws1_3_key workspace $ws1_3
+#
+#   bindsym $mod+Shift+$ws1_1_numkey move container to workspace $ws1_1; workspace $ws1_1
+#   bindsym $mod+Shift+$ws1_2_numkey move container to workspace $ws1_2; workspace $ws1_2
+#   bindsym $mod+Shift+$ws1_3_numkey move container to workspace $ws1_3; workspace $ws1_3
+#
+#   bindsym $mod+Shift+$ws1_1_key move container to workspace $ws1_1; workspace $ws1_1
+#   bindsym $mod+Shift+$ws1_2_key move container to workspace $ws1_2; workspace $ws1_2
+#   bindsym $mod+Shift+$ws1_3_key move container to workspace $ws1_3; workspace $ws1_3
+#
+#   bindsym Escape mode "default"
+#   bindsym Return mode "default"
+# }
 
-mode "$mode_code" {
-  bindsym $mod+$ws1_1_numkey workspace $ws1_1
-  bindsym $mod+$ws1_2_numkey workspace $ws1_2
-  bindsym $mod+$ws1_3_numkey workspace $ws1_3
-
-  bindsym $mod+$ws1_1_key workspace $ws1_1
-  bindsym $mod+$ws1_2_key workspace $ws1_2
-  bindsym $mod+$ws1_3_key workspace $ws1_3
-
-  bindsym $mod+Shift+$ws1_1_numkey move container to workspace $ws1_1; workspace $ws1_1
-  bindsym $mod+Shift+$ws1_2_numkey move container to workspace $ws1_2; workspace $ws1_2
-  bindsym $mod+Shift+$ws1_3_numkey move container to workspace $ws1_3; workspace $ws1_3
-
-  bindsym $mod+Shift+$ws1_1_key move container to workspace $ws1_1; workspace $ws1_1
-  bindsym $mod+Shift+$ws1_2_key move container to workspace $ws1_2; workspace $ws1_2
-  bindsym $mod+Shift+$ws1_3_key move container to workspace $ws1_3; workspace $ws1_3
-
-  bindsym Escape mode "default"
-  bindsym Return mode "default"
-}
-
+bindsym $mod+$ws1_key workspace $ws1
 bindsym $mod+$ws2_key workspace $ws2
 bindsym $mod+$ws3_key workspace $ws3
 bindsym $mod+$ws4_key workspace $ws4
 bindsym $mod+$ws5_key workspace $ws5
 
+bindsym $mod+$ws1_numkey workspace $ws1
 bindsym $mod+$ws2_numkey workspace $ws2
 bindsym $mod+$ws3_numkey workspace $ws3
 bindsym $mod+$ws4_numkey workspace $ws4
 bindsym $mod+$ws5_numkey workspace $ws5
 
-bindsym $mod+Shift+$ws1_key move container to workspace $ws1_1; workspace $ws1_1
+# bindsym $mod+Shift+$ws1_key move container to workspace $ws1_1; workspace $ws1_1
+bindsym $mod+Shift+$ws1_key move container to workspace $ws1; workspace $ws1
 bindsym $mod+Shift+$ws2_key move container to workspace $ws2; workspace $ws2
 bindsym $mod+Shift+$ws3_key move container to workspace $ws3; workspace $ws3
 bindsym $mod+Shift+$ws4_key move container to workspace $ws4; workspace $ws4
 bindsym $mod+Shift+$ws5_key move container to workspace $ws5; workspace $ws5
 
-bindsym $mod+Shift+$ws1_numkey move container to workspace $ws1_1; workspace $ws1_1
+# bindsym $mod+Shift+$ws1_numkey move container to workspace $ws1_1; workspace $ws1_1
+bindsym $mod+Shift+$ws1_numkey move container to workspace $ws1; workspace $ws1
 bindsym $mod+Shift+$ws2_numkey move container to workspace $ws2; workspace $ws2
 bindsym $mod+Shift+$ws3_numkey move container to workspace $ws3; workspace $ws3
 bindsym $mod+Shift+$ws4_numkey move container to workspace $ws4; workspace $ws4
 bindsym $mod+Shift+$ws5_numkey move container to workspace $ws5; workspace $ws5
 
-set $mode_pass pass-through
-
-mode $mode_pass {
-    bindsym $mod+Escape mode "default"
-}
-
-bindsym $mod+Escape mode "$mode_pass"
+# set $mode_pass pass-through
+#
+# mode $mode_pass {
+#     bindsym $mod+Escape mode "default"
+# }
+#
+# bindsym $mod+Escape mode "$mode_pass"
 
 # bind program to workspace and focus to them on startup:
 assign [class="(?i)firefox"] $ws2
