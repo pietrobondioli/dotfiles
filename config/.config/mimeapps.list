@@ -13,6 +13,7 @@ application/x-extension-shtml=firefox.desktop
 application/xhtml+xml=firefox.desktop
 application/x-extension-xhtml=firefox.desktop
 application/x-extension-xht=firefox.desktop
+application/pdf=firefox.desktop;
 
 [Added Associations]
 text/plain=org.gnome.gedit.desktop;userapp-kitty -e nvim %f-L02JW2.desktop;
@@ -28,4 +29,5 @@ application/x-extension-shtml=firefox.desktop;
 application/xhtml+xml=firefox.desktop;
 application/x-extension-xhtml=firefox.desktop;
 application/x-extension-xht=firefox.desktop;
+application/pdf=firefox.desktop;
 
