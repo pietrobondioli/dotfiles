@@ -11,7 +11,7 @@ set $alt Mod1
 
 #-------
 # Fonts
-font pango: Droid Sans Mono 12
+font pango: Droid Sans Mono 11
 
 #######
 # Autostarts
