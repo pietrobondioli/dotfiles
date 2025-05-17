@@ -31,7 +31,7 @@ ffd() {
   else
     dir="$(find "$1" -type d -maxdepth 5 -mindepth 1 -print 2>/dev/null | fzf)"
   fi
-  [ -n "$dir" ] && cd "$dir" && ll
+  [ -n "$dir" ] && cd "$dir" && ls -la
 }
 
 # Finding and opening file in editor
