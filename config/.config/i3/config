@@ -32,7 +32,7 @@ exec --no-startup-id xset s off -dpms
 exec --no-startup-id xset s off -dpms 3600 3600 3600
 exec --no-startup-id xautolock -time 360 -locker "systemctl suspend" -detectsleep
 exec --no-startup-id autotiling
-exec --no-startup-id redshift
+exec --no-startup-id redshift -x && redshift -O 4000
 
 #-------
 # Visual Autostart
@@ -288,18 +288,18 @@ bindsym $mod+$ws4_numkey workspace $ws4
 bindsym $mod+$ws5_numkey workspace $ws5
 
 # bindsym $mod+Shift+$ws1_key move container to workspace $ws1_1; workspace $ws1_1
-bindsym $mod+Shift+$ws1_key move container to workspace $ws1; workspace $ws1
-bindsym $mod+Shift+$ws2_key move container to workspace $ws2; workspace $ws2
-bindsym $mod+Shift+$ws3_key move container to workspace $ws3; workspace $ws3
-bindsym $mod+Shift+$ws4_key move container to workspace $ws4; workspace $ws4
-bindsym $mod+Shift+$ws5_key move container to workspace $ws5; workspace $ws5
+bindsym $mod+Shift+$ws1_key move container to workspace $ws1;
+bindsym $mod+Shift+$ws2_key move container to workspace $ws2;
+bindsym $mod+Shift+$ws3_key move container to workspace $ws3;
+bindsym $mod+Shift+$ws4_key move container to workspace $ws4;
+bindsym $mod+Shift+$ws5_key move container to workspace $ws5;
 
 # bindsym $mod+Shift+$ws1_numkey move container to workspace $ws1_1; workspace $ws1_1
-bindsym $mod+Shift+$ws1_numkey move container to workspace $ws1; workspace $ws1
-bindsym $mod+Shift+$ws2_numkey move container to workspace $ws2; workspace $ws2
-bindsym $mod+Shift+$ws3_numkey move container to workspace $ws3; workspace $ws3
-bindsym $mod+Shift+$ws4_numkey move container to workspace $ws4; workspace $ws4
-bindsym $mod+Shift+$ws5_numkey move container to workspace $ws5; workspace $ws5
+bindsym $mod+Shift+$ws1_numkey move container to workspace $ws1;
+bindsym $mod+Shift+$ws2_numkey move container to workspace $ws2;
+bindsym $mod+Shift+$ws3_numkey move container to workspace $ws3;
+bindsym $mod+Shift+$ws4_numkey move container to workspace $ws4;
+bindsym $mod+Shift+$ws5_numkey move container to workspace $ws5;
 
 # set $mode_pass pass-through
 #
