@@ -22,26 +22,81 @@ take() {
   fi
 }
 
+# Shared helper function for finding files or directories
+_find_with_fd() {
+  local type="$1"  # 'd' for directories, 'f' for files
+  local path="$2"  # search path, empty for defaults
+  local exclude_dirs=(
+    "gdrive"
+    "node_modules"
+    ".git"
+    "__pycache__"
+    "venv"
+    ".venv"
+    "env"
+    "bin"
+    "obj"
+    "build"
+    "dist"
+    "target"
+    ".next"
+    ".nuxt"
+    "vendor"
+    "packages"
+    ".cache"
+    ".npm"
+  )
+  
+  # Check if we're explicitly targeting an excluded directory
+  local skip_exclusions=0
+  if [ -n "$path" ]; then
+    for dir in "${exclude_dirs[@]}"; do
+      if [[ "$path" == *"$dir"* ]]; then
+        skip_exclusions=1
+        break
+      fi
+    done
+  fi
+  
+  # Build fd command arguments
+  local fd_args=(-t "$type" --max-depth 5 --min-depth 1)
+  
+  # Add exclusion parameters if not skipping
+  if [ "$skip_exclusions" -eq 0 ]; then
+    for dir in "${exclude_dirs[@]}"; do
+      fd_args+=(--exclude "$dir")
+    done
+  fi
+  
+  if [ -z "$path" ]; then
+    # Default search paths
+    fd "${fd_args[@]}" . ~/personal ~/work ~/mack-ads ~/
+  else
+    # Specific search path
+    fd "${fd_args[@]}" . "$path"
+  fi
+}
+
 # Finding and navigating to directory
 ffd() {
   mylog "Finding and navigating to directory" "$log_file_name"
   local dir
-  if [ -z "$1" ]; then
-    dir="$(find ~/personal ~/work ~/mack-ads ~/ -type d -maxdepth 5 -mindepth 1 -print 2>/dev/null | fzf)"
-  else
-    dir="$(find "$1" -type d -maxdepth 5 -mindepth 1 -print 2>/dev/null | fzf)"
-  fi
-  [ -n "$dir" ] && cd "$dir" && ls -la
+  
+  # Find directories and pipe to fzf
+  dir="$(_find_with_fd "d" "$1" | fzf)"
+  
+  # Navigate to selected directory
+  [ -n "$dir" ] && cd "$dir"
 }
 
 # Finding and opening file in editor
 ffv() {
   mylog "Finding and opening file in editor" "$log_file_name"
   local file
-  if [ -z "$1" ]; then
-    file="$(find ~/personal ~/work ~/mack-ads ~/ -type f -print 2>/dev/null | fzf)"
-  else
-    file="$(find "$1" -type f -print 2>/dev/null | fzf)"
-  fi
+  
+  # Find files and pipe to fzf
+  file="$(_find_with_fd "f" "$1" | fzf)"
+  
+  # Open selected file in nvim
   [ -n "$file" ] && nvim "$file"
 }
