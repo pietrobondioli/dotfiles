@@ -333,6 +333,7 @@ bindsym $mod+Shift+Next move container to workspace next
 exec --no-startup-id sleep 2 && firefox
 exec --no-startup-id sleep 5 && 1password
 exec --no-startup-id sleep 1 && kitty
+exec --no-startup-id sleep 15 && notify-send "VPN" "Don't forget to start VPN!" --urgency=critical --wait
 
 for_window [urgent=latest] focus
 bindsym $mod+Ctrl+a [urgent=latest] focus
