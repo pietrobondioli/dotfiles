@@ -32,7 +32,7 @@ exec --no-startup-id xset s off -dpms
 exec --no-startup-id xset s off -dpms 3600 3600 3600
 exec --no-startup-id xautolock -time 360 -locker "systemctl suspend" -detectsleep
 exec --no-startup-id autotiling
-exec --no-startup-id redshift -x && redshift -O 4000
+exec_always --no-startup-id redshift -x && redshift -O 4000
 
 #-------
 # Visual Autostart
@@ -105,6 +105,7 @@ for_window [class="^.*"] floating disable border normal
 floating_modifier $mod
 
 for_window [class="(?i)firefox" title="(?i)Library"] floating enable border normal
+for_window [class="(?i)zen" title="(?i)Library"] floating enable border normal
 for_window [window_type="dialog"] floating enable border normal
 for_window [class="(?i)steam" title="(?i)^Steam - Update News$"] floating enable border normal
 for_window [class="(?i)blueman-manager"] floating enable border normal
@@ -157,7 +158,7 @@ for_window [class="(?i)device manager"] floating enable, border pixel 0, move po
 # Default Programs
 #-------
 # exec on the correct workspace
-bindsym $mod+BackSpace exec --no-startup-id "firefox"
+bindsym $mod+BackSpace exec --no-startup-id "zen-browser"
 bindsym $mod+Return exec --no-startup-id "kitty"
 bindsym $mod+space exec --no-startup-id "rofi -show drun"
 bindsym $mod+x exec rofi -modi emoji -show emoji -emoji-mode copy
@@ -311,6 +312,7 @@ bindsym $mod+Shift+$ws5_numkey move container to workspace $ws5;
 
 # bind program to workspace and focus to them on startup:
 assign [class="(?i)firefox"] $ws2
+assign [class="(?i)zen"] $ws2
 assign [class="(?i)discord"] $ws3
 assign [class="(?i)slack"] $ws3
 assign [class="(?i)teams"] $ws3
@@ -320,6 +322,7 @@ assign [class="(?i)steam"] $ws5
 # automatic set focus new window if it opens on another workspace than the current:
 for_window [class="(?i)kitty"] focus
 for_window [class="(?i)firefox"] focus
+for_window [class="(?i)zen"] focus
 for_window [class="(?i)thunar"] focus
 for_window [class="(?i)discord"] focus
 
@@ -330,7 +333,7 @@ bindsym $mod+Next workspace next
 bindsym $mod+Shift+Prior move container to workspace prev
 bindsym $mod+Shift+Next move container to workspace next
 
-exec --no-startup-id sleep 2 && firefox
+exec --no-startup-id sleep 2 && zen-browser
 exec --no-startup-id sleep 5 && 1password
 exec --no-startup-id sleep 1 && kitty
 exec --no-startup-id sleep 15 && notify-send "VPN" "Don't forget to start VPN!" --urgency=critical --wait
