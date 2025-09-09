@@ -214,9 +214,11 @@ bindsym $mod+Shift+s exec --no-startup-id "xcolor -s"
 # Layouts and Focus
 #-------
 bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+s layout stacking
+bindsym $mod+e layout splith
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+a focus parent
+bindsym $mod+d layout toggle all
 
 #-------
 # Workspaces
